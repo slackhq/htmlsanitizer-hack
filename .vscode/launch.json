@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "HHVM: Run Test Suite",
+            "type": "hhvm",
+            "request": "launch",
+            "script": "vendor/bin/hacktest ${file}",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "HHVM: Run Script",
+            "type": "hhvm",
+            "request": "launch",
+            "script": "src/index.hack",
+            "hhvmArgs": [
+                "-v",
+                "Eval.JitEnableRenameFunction=true",
+                "-d",
+                "hhvm.jit=false"
+            ],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

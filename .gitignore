@@ -1,0 +1,4 @@
+*.parser-cache
+www.pid
+vendor/
+.DS_Store
