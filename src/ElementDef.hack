@@ -144,9 +144,9 @@ class HTMLPurifier_ElementDef {
                 "lang" => new AttrDef\HTMLPurifier_AttrDef_Lang(),
                 "style" => new AttrDef\HTMLPurifier_AttrDef_CSS(),
                 "title" => new AttrDef\HTMLPurifier_AttrDef_Text(),
-                // "id" => AttrDef_HTML_ID(),
+                "id" => new AttrDef\HTML\HTMLPurifier_AttrDef_HTML_ID(),
                 "xml:lang" => new AttrDef\HTMLPurifier_AttrDef_Lang(),
-                // "class" => new AttrDef\HTMLPurifier_AttrDef_HTML_Class(),
+                "class" => new AttrDef\HTML\HTMLPurifier_AttrDef_HTML_Class(),
                 "dir" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["ltr", "rtl"])
         ];
 
@@ -154,7 +154,7 @@ class HTMLPurifier_ElementDef {
             $this->attr = $default_dict;
         }
         else {
-            $this->attr = Dict\merge($this->attr, $add_attr);
+            $this->attr = Dict\merge($default_dict, $add_attr);
             foreach ($drop_attr as $key) {
                 unset($this->attr[$key]);
             }

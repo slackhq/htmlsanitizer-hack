@@ -40,7 +40,7 @@ class HTMLPurifier_URISchemeRegistry {
      * @param HTMLPurifier_Context $context
      * @return HTMLPurifier_URIScheme
      */
-    public function getScheme(string $scheme, HTMLPurifier_Config $config, HTMLPurifier_Context $context) : HTMLPurifier_URIScheme {
+    public function getScheme(string $scheme, HTMLPurifier_Config $config, HTMLPurifier_Context $context) : ?HTMLPurifier_URIScheme {
         if (!$config) {
             $config = HTMLPurifier_Config::createDefault();
         }
@@ -58,8 +58,7 @@ class HTMLPurifier_URISchemeRegistry {
             return $this->schemes[$scheme];
         }
         if (!C\contains($allowed_schemes, $scheme)) {
-            echo "Scheme not in allowed schemes.\n";
-            throw new \Exception();
+            return null;
         }
 
         // $class = 'HTMLPurifier_URIScheme_' . $scheme;

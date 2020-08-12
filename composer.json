@@ -8,7 +8,6 @@
 		"hhvm/hacktest": "^2.0.0",
 		"hhvm/hsl": "^4.36.0",
 		"hhvm/hsl-experimental": "^4.37.3",
-		"facebook/xhp-lib": "^2.10.2",
 		"facebook/hack-codegen": "^4.3.2"
 	},
 	"scripts": {

@@ -91,7 +91,12 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier\HTMLPurifier_Definition {
     }
 
     public function getDefaultScheme(HTMLPurifier\HTMLPurifier_Config $config, HTMLPurifier\HTMLPurifier_Context $context): HTMLPurifier\HTMLPurifier_URIScheme {
-        return HTMLPurifier\HTMLPurifier_URISchemeRegistry::instance()->getScheme($this->defaultScheme, $config, $context);
+        $scheme = HTMLPurifier\HTMLPurifier_URISchemeRegistry::instance()->getScheme($this->defaultScheme, $config, $context);
+        if ($scheme is null) {
+            throw new \Exception("Default scheme needs to be non-null");
+        } else {
+            return $scheme;
+        }
     }
 
 

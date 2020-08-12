@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7445241629f6934e040dff61dcac5bf5",
+    "content-hash": "790712adb517d1360f40801e2c07e8dd",
     "packages": [
         {
             "name": "facebook/difflib",
@@ -44,16 +44,16 @@
         },
         {
             "name": "facebook/fbexpect",
-            "version": "v2.7.4",
+            "version": "v2.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hhvm/fbexpect.git",
-                "reference": "02a831d27bc928460c1407e0d48d02d339b03798"
+                "reference": "62e2c39741e1c86c373da3ab75617dbedfaed419"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hhvm/fbexpect/zipball/02a831d27bc928460c1407e0d48d02d339b03798",
-                "reference": "02a831d27bc928460c1407e0d48d02d339b03798",
+                "url": "https://api.github.com/repos/hhvm/fbexpect/zipball/62e2c39741e1c86c373da3ab75617dbedfaed419",
+                "reference": "62e2c39741e1c86c373da3ab75617dbedfaed419",
                 "shasum": ""
             },
             "require": {
@@ -72,7 +72,7 @@
                 "MIT"
             ],
             "description": "Unit test helpers for Facebook projects",
-            "time": "2020-04-23T03:58:41+00:00"
+            "time": "2020-07-29T17:03:08+00:00"
         },
         {
             "name": "facebook/hack-codegen",
@@ -171,49 +171,6 @@
                 "MIT"
             ],
             "time": "2019-11-07T21:21:31+00:00"
-        },
-        {
-            "name": "facebook/xhp-lib",
-            "version": "2.10.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/hhvm/xhp-lib.git",
-                "reference": "81786186841f19624b0d9b4a3b4581f9f35ae6a9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/hhvm/xhp-lib/zipball/81786186841f19624b0d9b4a3b4581f9f35ae6a9",
-                "reference": "81786186841f19624b0d9b4a3b4581f9f35ae6a9",
-                "shasum": ""
-            },
-            "require": {
-                "hhvm": "^4.13.0",
-                "hhvm/type-assert": "^3.0"
-            },
-            "require-dev": {
-                "facebook/fbexpect": "^2.0.0",
-                "hhvm/hacktest": "^1.0.0",
-                "hhvm/hhvm-autoload": "^2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Class library for XHP",
-            "homepage": "https://github.com/facebook/xhp-lib",
-            "keywords": [
-                "facebook",
-                "hack",
-                "hhvm",
-                "xhp"
-            ],
-            "time": "2019-08-27T03:06:55+00:00"
         },
         {
             "name": "hhvm/hacktest",

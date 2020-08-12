@@ -3,14 +3,14 @@
 # Design Choices
 
 ### DOMLex.hack
-* PHP version uses a queue data structure object to keep iterate through tokens,  would using a list work as well?
+* PHP version uses a queue data structure object to keep iterate through tokens, using a vec instead.
 ### DirectLex.hack
 * `scriptCallback` function parameter $matches array, defining it to only take in strings
 ### Lexer.hack
-* Line 14, directly called `get` on Config without checking if its an instance of the Config class because Hacklanf is type checked
+* Line 14, directly called `get` on Config without checking if its an instance of the Config class because Hacklang is type checked
 * Leaving out PHP5 lexer class support and Direct lexer implementation (only implementing the DOMLex in this version)
 ### Token.hack
-* In the `get` function what happens if `string  $n` does not match string ‘type’?
+* In the `get` function, a switch case is used to create new to get the token type.
 
 ### ConfigSchema.hack
 * Making defaults a shape instead of a dict. When using a dict, because there were different types of values, we had to make the value type mixed, meaning that the type checking was put off until run time. Now with a shape, we can explicitly state what each type should be.
@@ -20,7 +20,6 @@
 
 ### Encode.hack
 * Changed any of the return false statements to return ‘’ because the return type is supposed to be false and ‘’ == false
-* Would it make more sense to trigger some error instead of false? I opted for the string instead of triggering an error because we still want something to be returned - not a crash
 * In `cleanUTF8` two changes were made:
 The ‘force_php’ was removed because it was an optional parameter, and nowhere in the repo was cleanUTF8() ever called with a second boolean parameter. Additionally, `force_php` was never used anywhere in the function.
 Anything that does not enter the if statement that matches the regex triggers an error. The code after the if statement cleaned the UTF-8 string, and if anything doesn’t match the regex, then that is a string that we should not even consider unfurling anyways. The fact that only 1% of cases does not match the regex is further reasoning behind why it makes sense to trigger an error and not support unfurling in those cases. If there is an issue supporting any approved unfurls that meet this cse, the error will be triggered and we can adjust as needed.
@@ -79,10 +78,11 @@ Throwing exception instead of returning false in toString()
 
 # Future Improvements #
 * Fixing the constructor for `HTMLPurifier_ElementDef`.
-* Implementing some sort of switch statement if there are some patterns for the other parameters of `ElementDef`? For example, instead of putting the whole new `ChildDef\HTMLPurifier_ChildDef_...` in every constructor, just have the input to the `ElementDef` constructor be “Required”, and then a case within the switch statement that sets the `Child` to a new `ChildDef_Required`.
+* Implementing some sort of switch statement if there are some patterns for the other parameters of `ElementDef`. For example, instead of putting the whole new `ChildDef\HTMLPurifier_ChildDef_...` in every constructor, just have the input to the `ElementDef` constructor be “Required”, and then a case within the switch statement that sets the `Child` to a new `ChildDef_Required`.
+* Finish incorporating the usage of the `RemoveSpansWithoutAttributes` and `SafeObject` injectors. For now, these injectors are not allowed to be turned on in the configuration because they do not behave in the same manner as the original PHP implementaition. Note that the injectors are purly aesthetic and do not affect the security aspects of the library.
 
 
-# Not implementated #
+# Not implemented #
 
 ## Directories
 * AttrTransform/*
@@ -93,8 +93,6 @@ Throwing exception instead of returning false in toString()
     * Some of the Filter implementation was too PHP specific to be well ported over to Hack.
 * HTMLModule/*
     * With the configuration implemented, no HTMLModule code was ever hit. The child classes are not implemented for this reason.
-* Injector/*
-    * Injectors are not implemented because the default values that injectors would use are all false. Additionally, some of the injector implementation was too PHP specific to be well ported over to Hack.
 * TagTransform/*
     * Note that the child classes have not been implemented as the configurations do not process entire tag arrays.
 * VarParser/*
@@ -111,4 +109,3 @@ Throwing exception instead of returning false in toString()
     * Some of the Filter implementation was too PHP specific to be well ported over to Hack.
 * TagTransform
     * The configurations do not process entire tag arrays.
-
