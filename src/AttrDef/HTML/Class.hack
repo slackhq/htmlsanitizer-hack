@@ -29,7 +29,12 @@ class HTMLPurifier_AttrDef_HTML_Class extends AttrDef\HTML\HTMLPurifier_AttrDef_
         if ($name == "XHTML 1.1" || $name == "XHTML 2.0") {
             return parent::split($string, $config, $context);
         } else {
-            return \preg_split('/\s+/', $string);
+            $split = \preg_split('/\s+/', $string);
+            $ret = vec[];
+            foreach ($split as $key => $value) {
+                $ret[] = $value;
+            }
+            return $ret;
         }
     }
 

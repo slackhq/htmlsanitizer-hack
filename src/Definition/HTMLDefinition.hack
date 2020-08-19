@@ -43,6 +43,8 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
     public ?HTMLPurifier\HTMLPurifier_HTMLModule $anonModule;
     public ?HTMLPurifier\HTMLPurifier_Doctype $doctype;
     public function __construct() {
+        $this->doctype = new HTMLPurifier\HTMLPurifier_Doctype();
+
         $alt_child_elements = dict[
             "h1" => true,
             "h2" => true,
@@ -370,6 +372,9 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
         $div_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict["align" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["left", "center", "right", "justify", "char"])], vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional(), null, '', false, vec[], vec[], vec[], '', false);
         $this->info["div"] = $div_element;
 
+        $aside_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional(), null, '', false, vec[], vec[], vec[], '', false);
+        $this->info["aside"] = $aside_element;
+
         $del_child_element = new ChildDef\HTMLPurifier_ChildDef_Chameleon(new ChildDef\HTMLPurifier_ChildDef_Optional(), new ChildDef\HTMLPurifier_ChildDef_Optional($alt_child_elements));
         $del_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict["cite" => new AttrDef\HTMLPurifier_AttrDef_URI()], vec[], vec[], vec[], 
             $del_child_element, null, '', false, vec[], vec[], vec[], '', false);
@@ -386,9 +391,10 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
             "alt" => new AttrDef\HTMLPurifier_AttrDef_Text(),
             "border" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(),
             "height" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(),
-
+            "srcset" => new AttrDef\HTMLPurifier_AttrDef_URI(),
+            "sizes" => new AttrDef\HTMLPurifier_AttrDef_Text()
         ];
-        $img_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[], 
+        $img_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $img_add_attr, vec[], vec[], vec[], 
             new ChildDef\HTMLPurifier_ChildDef_Empty(), null, '', false, vec["alt", "src"], vec[],
             vec[], '', false);
         $this->info["img"] = $img_element;
@@ -530,7 +536,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
                         "blockquote" => true,
                         "pre" => true,
                         "p" => true,
-                         "div" => true,
+                        "div" => true,
                         "hr" => true,
                         "table" => true,
                         "script" => true,
@@ -622,7 +628,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 
 
         // support template text
-        $support = "(for information on implementing this, see the support forums) ";
+        $support = "at the moment. Please implement the element you would like to support, and add the element to the HTMLDefinition constructor.";
 
         // setup allowed elements -----------------------------------------
 

@@ -89,7 +89,7 @@ class HTMLPurifier_AttrDef_URI extends HTMLPurifier\HTMLPurifier_AttrDef
 
         $context->destroy('EmbeddedURI');
         if (!$ok) {
-            throw new \Exception("Not OK in AttrDef\URI");
+            return '';
         }
         // back to string
         return $uri->toString();
