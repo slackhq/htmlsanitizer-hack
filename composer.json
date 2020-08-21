@@ -4,7 +4,7 @@
 	"require": {
 		"hhvm/hhast": "^4.33.5",
 		"facebook/fbexpect": "^2.7.3",
-		"hhvm/hhvm-autoload": "^2.0",
+		"hhvm/hhvm-autoload": "^2.0|^3.0",
 		"hhvm/hacktest": "^2.0.0",
 		"hhvm/hsl": "^4.36.0",
 		"hhvm/hsl-experimental": "^4.37.3",
