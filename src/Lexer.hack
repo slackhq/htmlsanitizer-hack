@@ -1,6 +1,6 @@
 /* Created by Nikita Ashok and Jake Polacek on 08/04/2020 */
 namespace HTMLPurifier;
-use namespace HH\Shapes;
+use namespace HH\Lib\Regex;
 
 /**
  * Forgivingly lexes HTML markup into tokens. 
@@ -155,12 +155,8 @@ class HTMLPurifier_Lexer {
      * @return string HTML with CDATA sections escaped.
      */
     protected static function escapeCDATA(string $string): string {
-        $count = null;
-        return \preg_replace_callback(
-            '/<!\[CDATA\[(.+?)\]\]>/s',
-            class_meth(HTMLPurifier_Lexer::class, 'CDATACallback'),
-            $string, -1, inout $count);
-    }
+		return Regex\replace_with($string, re"/<!\[CDATA\[(.+?)\]\]>/s", $m ==> static::CDATACallback($m[1]));
+	}
 
     /**
      * Special CDATA case that is especially convoluted for <script>
@@ -168,12 +164,12 @@ class HTMLPurifier_Lexer {
      * @return string HTML with CDATA sections escaped.
      */
     protected static function escapeCommentedCDATA(string $string): string {
-        $count = null;
-        return \preg_replace_callback(
-            '#<!--//--><!\[CDATA\[//><!--(.+?)//--><!\]\]>#s',
-            class_meth(HTMLPurifier_Lexer::class, 'CDATACallback'),
-            $string, -1, inout $count);
-    }
+		return Regex\replace_with(
+			$string,
+			re"#<!--//--><!\[CDATA\[//><!--(.+?)//--><!\]\]>#s",
+			$m ==> static::CDATACallback($m[1]),
+		);
+	}
 
     /**
      * Special Internet Explorer conditional comments should be removed.
@@ -193,14 +189,13 @@ class HTMLPurifier_Lexer {
      *
      * @warning Though this is public in order to let the callback happen,
      *          calling it directly is not recommended.
-     * @param array $matches PCRE matches array, with index 0 the entire match
-     *                  and 1 the inside of the CDATA section.
-     * @return string Escaped internals of the CDATA section.
+	 * @param string $matches the inside of the CDATA section.
+	 * @return string Escaped internals of the CDATA section.
      */
-    public static function CDATACallback(vec<string> $matches): string {
-        // not exactly sure why the character set is needed, but whatever
-        return \htmlspecialchars($matches[1], \ENT_COMPAT, 'UTF-8');
-    }
+	public static function CDATACallback(string $match): string {
+		// not exactly sure why the character set is needed, but whatever
+		return \htmlspecialchars($match, \ENT_COMPAT, 'UTF-8');
+	}
 
     /**
      * Takes a piece of HTML and normalizes it by converting entities, fixing
