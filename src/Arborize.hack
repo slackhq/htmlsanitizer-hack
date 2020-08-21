@@ -18,7 +18,7 @@ class HTMLPurifier_Arborize {
         $stack = new \SplStack<HTMLPurifier_Node>();
         $stack->push($parent->toNode());
         foreach ($tokens as $token) {
-            $token->skip = false; // [MUT]
+            $token->skip = vec[]; // [MUT]
             $token->carryover = false; // [MUT]
             if ($token is Token\HTMLPurifier_Token_End) {
                 $token->start = null; // [MUT]
