@@ -67,6 +67,13 @@ class HTMLPurifier_AttrDef_HTML_LinkTypes extends HTMLPurifier\HTMLPurifier_Attr
             $ret_lookup[$part] = true;
         }
 
+        // make all allowed exist
+        foreach ($allowed as $add => $_) {
+            if (!C\contains_key($ret_lookup, $add)) {
+                $ret_lookup[$add] = true;
+            }
+        }
+
         if (C\is_empty($ret_lookup)) {
             return '';
         }

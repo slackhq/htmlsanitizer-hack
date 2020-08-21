@@ -13,12 +13,12 @@ class HTMLPurifier_AttrDef_HTML_Pixels extends HTMLPurifier\HTMLPurifier_AttrDef
     /**
      * @type int
      */
-    protected int $max;
+    protected ?int $max;
 
     /**
      * @param int $max
      */
-    public function __construct(int $max = 0)
+    public function __construct(?int $max = null)
     {
         $this->max = $max;
     }
@@ -60,7 +60,7 @@ class HTMLPurifier_AttrDef_HTML_Pixels extends HTMLPurifier\HTMLPurifier_AttrDef
         // crash operating systems, see <http://ha.ckers.org/imagecrash.html>
         // WARNING, above link WILL crash you if you're using Windows
 
-        if ($this->max !== 0 && $int > $this->max) {
+        if ($this->max !== null && $int > $this->max) {
             return (string)$this->max;
         }
         return (string)$int;

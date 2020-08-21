@@ -43,7 +43,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
     public ?HTMLPurifier\HTMLPurifier_HTMLModule $anonModule;
     public ?HTMLPurifier\HTMLPurifier_Doctype $doctype;
     public function __construct() {
-        $this->doctype = new HTMLPurifier\HTMLPurifier_Doctype();
+        $this->doctype = new HTMLPurifier\HTMLPurifier_Doctype('', false);
 
         $alt_child_elements = dict[
             "h1" => true,
@@ -254,7 +254,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
             "name" => new AttrDef\HTMLPurifier_AttrDef_Text(),
             "rev" => new HTML\HTMLPurifier_AttrDef_HTML_LinkTypes("rev"),
             "rel" => new HTML\HTMLPurifier_AttrDef_HTML_LinkTypes("rel"),
-            "target" => new HTML\HTMLPurifier_AttrDef_HTML_FrameTarget(),
+            "target" => new HTML\HTMLPurifier_AttrDef_HTML_FrameTarget(vec["_blank"]),
             "href" => new AttrDef\HTMLPurifier_AttrDef_URI()
         ];
         $a_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $a_add_attr, vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional(),
@@ -385,13 +385,13 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
             "name" => new AttrDef\HTMLPurifier_AttrDef_Text(),
             "hspace" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(),
             "align" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["top", "middle", "bottom", "left", "right"]),
-            "width" => new AttrDef\HTMLPurifier_AttrDef_Integer(),
+            "width" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(1200),
             "vspace" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(),
             "longdesc" => new AttrDef\HTMLPurifier_AttrDef_URI(),
             "alt" => new AttrDef\HTMLPurifier_AttrDef_Text(),
             "border" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(),
-            "height" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(),
-            "srcset" => new AttrDef\HTMLPurifier_AttrDef_URI(),
+            "height" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(1200),
+            "srcset" => new AttrDef\HTMLPurifier_AttrDef_Text(),
             "sizes" => new AttrDef\HTMLPurifier_AttrDef_Text()
         ];
         $img_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $img_add_attr, vec[], vec[], vec[], 

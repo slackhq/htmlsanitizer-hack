@@ -65,6 +65,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
         }
 
         foreach ($tokens as $token) {
+            $context->register('CurrentToken', $token);
             if ($remove_until) {
                 // This $token->name !== $remove_until is always true...
                 if (!($token is Token\HTMLPurifier_Token_Tag)) {
@@ -96,7 +97,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
                         $attr_validator->validateToken($token, $config, $context);
                         $ok = true;
                         foreach ($definition->info[$token->name]->required_attr as $name) {
-                            if (!isset($token->attr[$name])) {
+                            if (!C\contains_key($token->attr, $name)) {
                                 $ok = false;
                                 break;
                             }
@@ -109,6 +110,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
                         }
                         if ($token->armor is nonnull) {
                             $token->armor[] = "ValidateAttributes";
+                            $context->register('CurrentToken', $token);
                         }
                     }
 
@@ -126,6 +128,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
                     $token = new Token\HTMLPurifier_Token_Text(
                         $generator->generateFromToken($token)
                     );
+                    $context->register('CurrentToken', $token);
                 } else {
                     // check if we need to destroy all of the tag's children
                     // CAN BE GENERICIZED
@@ -152,6 +155,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
                 if ($textify_comments !== false) {
                     $data = $token->data;
                     $token = new Token\HTMLPurifier_Token_Text($data);
+                    $context->register('CurrentToken', $token);
                 } elseif ($trusted || $check_comments) {
                     // always cleanup comments
                     $trailing_hyphen = false;
@@ -162,10 +166,12 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
                         }
                     }
                     $token->data = Str\trim_right($token->data, '-');
+                    $context->register('CurrentToken', $token);
                     $found_double_hyphen = false;
                     while (Str\search($token->data, '--') is nonnull) {
                         $found_double_hyphen = true;
                         $token->data = Str\replace('--', '-', $token->data);
+                        $context->register('CurrentToken', $token);
                     }
                     if ($trusted || C\contains($comment_lookup, Str\trim($token->data)) ||
                         ($comment_regexp !== null && \preg_match($comment_regexp, Str\trim($token->data)))) {
