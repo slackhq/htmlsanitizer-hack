@@ -23,42 +23,6 @@ abstract class HTMLPurifier_Injector
     */
     public string $name;
 
-<<<<<<< HEAD
-    // // protected HTMLPurifier_HTMLDefinition $htmlDefinition;
-
-    // /**
-    //  * Reference to CurrentNesting variable in Context. This is an array
-    //  * list of tokens that we are currently "inside"
-    //  */
-    // protected vec<HTMLPurifier_Token> $currentNesting = vec[];
-
-    // /**
-    //  * Reference to current token.
-    //  * @type HTMLPurifier_Token
-    //  */
-    // protected HTMLPurifier_Token $currentToken;
-
-    // /**
-    //  * Reference to InputZipper variable in Context.
-    //  * @type HTMLPurifier_Zipper
-    //  */
-    // protected HTMLPurifier_Zipper<HTMLPurifier_Token> $inputZipper;
-
-    // /**
-    //  * Array of elements and attributes this injector creates and therefore
-    //  * need to be allowed by the definition. Takes form of
-    //  * array('element' => array('attr', 'attr2'), 'element2')
-    //  * @type array
-    //  */
-    // public $needed = array();
-
-    // /**
-    //  * Number of elements to rewind backwards (relative).
-    //  * @type bool|int
-    //  */
-    // protected $rewindOffset = false;
-
-=======
     protected ?Definition\HTMLPurifier_HTMLDefinition $htmlDefinition;
 
     /**
@@ -325,5 +289,4 @@ abstract class HTMLPurifier_Injector
      * Handler that is called when an end token is processed
      */
     abstract public function handleEnd(HTMLPurifier_Token $token) : mixed;
->>>>>>> 63d4923... Injector Implementation (#81)
 }
