@@ -4,7 +4,7 @@ namespace HTMLPurifier\Strategy;
 
 use HH\Lib\{C, Str, Vec};
 use namespace HTMLPurifier;
-use namespace HTMLPurifier\{Definition, Token};
+use namespace HTMLPurifier\{Definition, Injector, Token};
 use namespace Facebook\TypeAssert;
 
 /**
@@ -58,7 +58,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
 
     public function execute(vec<HTMLPurifier\HTMLPurifier_Token> $tokens, HTMLPurifier\HTMLPurifier_Config $config,
         HTMLPurifier\HTMLPurifier_Context $context) : vec<HTMLPurifier\HTMLPurifier_Token> {
-        $definition = TypeAssert\instance_of(Definition\HTMLPurifier_HTMLDefinition::class, $config->getDefinition('HTML'));
+        $definition = TypeAssert\instance_of(Definition\HTMLPurifier_HTMLDefinition::class, $config->getHTMLDefinition());
 
         // local variables
         $generator = new HTMLPurifier\HTMLPurifier_Generator($config, $context);
@@ -94,45 +94,58 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
         $this->injectors = vec[];
 
         $injectors = $config->getBatch('AutoFormat');
-        //$def_injectors = $definition->info_injector;
-        $custom_injectors = $injectors['Custom'];
+        $def_injectors = $definition->info_injector;
+        $custom_injectors = TypeAssert\matches<vec<HTMLPurifier\HTMLPurifier_Injector>>($injectors['Custom']);
         unset($injectors['Custom']); // special case
         foreach ($injectors as $injector => $b) {
             // XXX: Fix with a legitimate lookup table of enabled filters
             if (Str\search($injector, '.') !== null) {
                 continue;
             }
-            $injector = "HTMLPurifier_Injector_$injector";
             if (!$b) {
                 continue;
             }
-            // $this->injectors[] = new $injector;
+
+            switch($injector) {
+                case("AutoParagraph"):
+                    $this->injectors[] = new Injector\HTMLPurifier_Injector_AutoParagraph();
+                    break;
+                case("DisplayLinkURI"):
+                    $this->injectors[] = new Injector\HTMLPurifier_Injector_DisplayLinkURI();
+                    break;
+                case("Linkify"):
+                    $this->injectors[] = new Injector\HTMLPurifier_Injector_Linkify();
+                    break;
+                case("PurifierLinkify"):
+                    $this->injectors[] = new Injector\HTMLPurifier_Injector_PurifierLinkify();
+                    break;
+                case("RemoveEmpty"):
+                    $this->injectors[] = new Injector\HTMLPurifier_Injector_RemoveEmpty();
+                    break;
+                default :
+                    throw new \Exception("$injector is not allowed for the time being. If you are seeing this, please change your AutoFormat configuration.");
+            }
         }
-        // foreach ($def_injectors as $injector) {
-        //     // assumed to be objects
-        //     $this->injectors[] = $injector;
-        // }
-        // foreach ($custom_injectors as $injector) {
-        //     if (!$injector) {
-        //         continue;
-        //     }
-        //     if (is_string($injector)) {
-        //         $injector = "HTMLPurifier_Injector_$injector";
-        //         $injector = new $injector;
-        //     }
-        //     $this->injectors[] = $injector;
-        // }
+        foreach ($def_injectors as $injector) {
+            // assumed to be objects
+            $this->injectors[] = $injector;
+        }
+        foreach ($custom_injectors as $injector) {
+            $this->injectors[] = $injector;
+        }
 
         // give the injectors references to the definition and context
         // variables for performance reasons
-        // foreach ($this->injectors as $ix => $injector) {
-        //     $error = $injector->prepare($config, $context);
-        //     if (!$error) {
-        //         continue;
-        //     }
-        //     array_splice($this->injectors, $ix, 1); // rm the injector
-        //     trigger_error("Cannot enable {$injector->name} injector because $error is not allowed", E_USER_WARNING);
-        // }
+        foreach ($this->injectors as $ix => $injector) {
+            $error = $injector->prepare($config, $context);
+            if (!$error) {
+                continue;
+            }
+            $injectors = $this->injectors;
+            \array_splice(inout $injectors, $ix, 1); // rm the injector
+            $this->injectors = TypeAssert\matches<vec<HTMLPurifier\HTMLPurifier_Injector>>($injectors);
+            throw new \Error("Cannot enable {$injector->name} injector because $error is not allowed", \E_USER_WARNING);
+        }
 
         // -- end INJECTOR --
 
@@ -148,29 +161,35 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
         // only increment if we don't need to reprocess
         while(true) {
             // check for a rewind
-            // The following if block is commented out because it handles an injector ($i).
-            // if (is_int($i)) {
-            //     // possibility: disable rewinding if the current token has a
-            //     // rewind set on it already. This would offer protection from
-            //     // infinite loop, but might hinder some advanced rewinding.
-            //     $rewind_offset = $this->injectors[$i]->getRewindOffset();
-            //     if (is_int($rewind_offset)) {
-            //         for ($j = 0; $j < $rewind_offset; $j++) {
-            //             if (empty($zipper->front)) break;
-            //             $token = $zipper->prev($token);
-            //             // indicate that other injectors should not process this token,
-            //             // but we need to reprocess it.  See Note [Injector skips]
-            //             unset($token->skip[$i]);
-            //             $token->rewind = $i;
-            //             if ($token instanceof HTMLPurifier_Token_Start) {
-            //                 array_pop($this->stack);
-            //             } elseif ($token instanceof HTMLPurifier_Token_End) {
-            //                 $this->stack[] = $token->start;
-            //             }
-            //         }
-            //     }
-            //     $i = false;
-            // }
+            if ($i is int) {
+                // possibility: disable rewinding if the current token has a
+                // rewind set on it already. This would offer protection from
+                // infinite loop, but might hinder some advanced rewinding.
+                $rewind_offset = $this->injectors[$i]->getRewindOffset();
+                if ($rewind_offset is int) {
+                    for ($j = 0; $j < $rewind_offset; $j++) {
+                        if (C\is_empty($zipper->front)) break;
+                        $token = $zipper->prev($token);
+                        // indicate that other injectors should not process this token,
+                        // but we need to reprocess it.  See Note [Injector skips]
+                        if ($token is null) {
+                            throw new \Exception("Token should not be null at this point - check injector implementation");
+                        }
+                        $first_part = Vec\slice($token->skip, 0, $i);
+                        $second_part = Vec\slice($token->skip, $i + 1);
+                        $token->skip = Vec\concat($first_part, $second_part);
+                        $token->rewind = $i;
+                        if ($token is Token\HTMLPurifier_Token_Start) {
+                            $stack_length = C\count($this->stack);
+                            $this->stack = Vec\take($this->stack, $stack_length - 1);
+                        } elseif ($token is Token\HTMLPurifier_Token_End && $token->start is nonnull) {
+                            $this->stack[] = $token->start;
+
+                        }
+                    }
+                }
+                $i = false;
+            }
             if ($token is null) {
                 // kill processing if stack is empty
                 if (C\count($this->stack) == 0) {
@@ -203,21 +222,24 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
             // quick-check: if it's not a tag, no need to process
             if (!($token is Token\HTMLPurifier_Token_Tag)) {
                 if ($token is Token\HTMLPurifier_Token_Text) {
-                    // foreach ($this->injectors as $i => $injector) {
-                    //     if (isset($token->skip[$i])) {
-                    //         // See Note [Injector skips]
-                    //         continue;
-                    //     }
-                    //     if ($token->rewind !== null && $token->rewind !== $i) {
-                    //         continue;
-                    //     }
-                    //     // XXX fuckup
-                    //     $r = $token;
-                    //     $injector->handleText($r);
-                    //     $token = $this->processToken($r, $i);
-                    //     $reprocess = true;
-                    //     break;
-                    // }
+                    foreach ($this->injectors as $i => $injector) {
+                        if (C\contains_key($token->skip, $i)) {
+                            // See Note [Injector skips]
+                            continue;
+                        }
+                        if ($token->rewind !== null && $token->rewind !== $i) {
+                            continue;
+                        }
+                        $r = $token;
+                        $r_mixed = $injector->handleText($r);
+                        if ($r_mixed is nonnull) {
+                            $token = $this->processToken($r_mixed, $i, $injector);
+                        } else {
+                            $token = $this->processToken($r, $i, $injector);
+                        }
+                        $reprocess = true;
+                        break;
+                    }
                 }
                 // another possibility is a comment
                 if ($reprocess) { 
@@ -273,25 +295,31 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
             }
 
             if ($ok) {
-                // foreach ($this->injectors as $i => $injector) {
-                //     echo "in foreach injector in injectors\n";
-                //     if (isset($token->skip[$i])) {
-                //         // See Note [Injector skips]
-                //         continue;
-                //     }
-                //     if ($token->rewind !== null && $token->rewind !== $i) {
-                //         continue;
-                //     }
-                //     $r = $token;
-                //     $injector->handleElement($r);
-                //     $token = $this->processToken($r, $i);
-                //     $reprocess = true;
-                //     break;
-                // }
+                foreach ($this->injectors as $i => $injector) {
+                    if (C\contains_key($token->skip, $i)) {
+                        // See Note [Injector skips]
+                        continue;
+                    }
+                    if ($token->rewind !== null && $token->rewind !== $i) {
+                        continue;
+                    }
+                    $r = $token;
+                    $r_mixed = $injector->handleElement($r);
+                    if ($r_mixed is nonnull) {
+                        $token = $this->processToken($r_mixed, $i, $injector);
+                    } else {
+                        $token = $this->processToken($r, $i, $injector);
+                    }
+                    $reprocess = true;
+                    break;
+                }
                 if (!$reprocess) {
                     // ah, nothing interesting happened; do normal processing
                     if ($token is Token\HTMLPurifier_Token_Start) {
                         $this->stack[] = $token;
+                        if ($i is int){
+                            $this->injectors[$i]->currentNesting[] = $token;
+                        }
                     } elseif ($token is Token\HTMLPurifier_Token_End) {
                         throw new \Exception(
                             'Improper handling of end tag in start code; possible error in MakeWellFormed'
@@ -341,21 +369,25 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
                 || $current_parent is Token\HTMLPurifier_Token_Text)
                 && $current_parent->name == $token->name) {
                 $token->start = $current_parent;
-                // foreach ($this->injectors as $i => $injector) {
-                //     if (isset($token->skip[$i])) {
-                //         // See Note [Injector skips]
-                //         continue;
-                //     }
-                //     if ($token->rewind !== null && $token->rewind !== $i) {
-                //         continue;
-                //     }
-                //     $r = $token;
-                //     $injector->handleEnd($r);
-                //     $token = $this->processToken($r, $i);
-                //     $this->stack[] = $current_parent;
-                //     $reprocess = true;
-                //     break;
-                // }
+                foreach ($this->injectors as $i => $injector) {
+                    if (C\contains_key($token->skip, $i)) {
+                        // See Note [Injector skips]
+                        continue;
+                    }
+                    if ($token->rewind !== null && $token->rewind !== $i) {
+                        continue;
+                    }
+                    $r = $token;
+                    $r_mixed = $injector->handleEnd($r);
+                    if ($r_mixed is nonnull) {
+                        $token = $this->processToken($r_mixed, $i, $injector);
+                    } else {
+                        $token = $this->processToken($r, $i, $injector);
+                    }
+                    $this->stack[] = $current_parent;
+                    $reprocess = true;
+                    break;
+                }
                 if ($reprocess) { 
                     $reprocess = false;
                 } else {
@@ -471,9 +503,70 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
      *        this is not an injector related operation.
      * @throws HTMLPurifier_Exception
      */
-    protected function processToken(HTMLPurifier\HTMLPurifier_Token $token,
-        HTMLPurifier\HTMLPurifier_Injector $injector) : void {
-            throw new \Exception("not implemented");
+    protected function processToken(mixed $token, int $i,
+        HTMLPurifier\HTMLPurifier_Injector $injector) : ?HTMLPurifier\HTMLPurifier_Token {
+        // Zend OpCache miscompiles $token = array($token), so
+        // avoid this pattern.  See: https://github.com/ezyang/htmlpurifier/issues/108
+        // normalize forms of token
+
+        if (\is_object($token)) {
+            $tmp = $token;
+            $token = vec[1, $tmp];
+        }
+        if ($token is int) {
+            $tmp = $token;
+            $token = vec[$tmp];
+        }
+        if ($token === false) {
+            $token = vec[1];
+        }
+        if (!($token is vec<_>)) {
+            throw new \Exception('Invalid token type from injector');
+        }
+        if (!($token[0] is int)) {
+            \array_unshift(inout $token, 1);
+        }
+        if ($token[0] === 0) {
+            throw new \Exception('Deleting zero tokens is not valid');
+        }
+
+        // $token is now an array with the following form:
+        // array(number nodes to delete, new node 1, new node 2, ...)
+
+        $delete = \array_shift(inout $token);
+        $zipper = $this->zipper;
+        if ($zipper is null) {
+            throw new \Exception("Zipper should not be null in processToken in MakeWellFormed");
+        }
+        $thisToken = $this->token;
+        if ($thisToken is null) {
+            throw new \Exception("This token should not be null in processToken in MakeWellFormed");
+        }
+        list($old, $r) = $zipper->splice($thisToken, $delete, $token);
+        $this->zipper = $zipper;
+        $this->token = $thisToken;
+
+        if ($injector is nonnull) {
+            // See Note [Injector skips]
+            // Determine appropriate skips.  Here's what the code does:
+            //  *If* we deleted one or more tokens, copy the skips
+            //  of those tokens into the skips of the new tokens (in $token).
+            //  Also, mark the newly inserted tokens as having come from
+            //  $injector.
+            $old0 = $old[0];
+            $oldskip = $old0 is nonnull ? $old0->skip : vec[];
+            foreach ($token as $object) {
+                $object->skip = $oldskip;
+                $skip_len = C\count($object->skip);
+                if ($i < $skip_len) {
+                    $object->skip[$i] = true;
+                } else {
+                    $object->skip[] = true;
+                }
+            }
+        }
+
+        return $r;
     }
 
     /**

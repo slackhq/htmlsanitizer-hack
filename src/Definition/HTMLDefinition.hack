@@ -258,7 +258,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
             "href" => new AttrDef\HTMLPurifier_AttrDef_URI()
         ];
         $a_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $a_add_attr, vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional(),
-                    null, '', true, vec[], vec[], vec[], '', true);
+                    null, '', true, vec[], vec['a'], vec[], '', true);
         $this->info["a"] = $a_element;
 
         $ol_add_attr = dict[

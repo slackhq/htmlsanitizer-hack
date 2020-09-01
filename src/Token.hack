@@ -6,9 +6,10 @@ abstract class HTMLPurifier_Token {
     public int $col = 0;
     public vec<string> $armor = vec[];
 
-    public bool $skip = false;
-    public bool $rewind = false;
+    public vec<bool> $skip = vec[];
+    public int $rewind = 0;
     public bool $carryover = false;
+    public bool $markForDeletion = false;
 
     public function get(string $n): string {
         if ($n === 'type') {

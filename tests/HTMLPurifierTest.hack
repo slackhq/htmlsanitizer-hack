@@ -290,4 +290,38 @@ class HTMLPurifierTest extends HackTest {
 		echo "finished.\n\n";
 	}
 
+	public function testWebappPolicy() : void {
+		echo "\nrunning testWebappPolicy()...";
+        $policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
+            'b' => vec[],
+            'ul'=> vec[],
+            'li' => vec[],
+            'ol' => vec[],
+            'h2' => vec[],
+            'h4' => vec[],
+            'br' => vec[],
+            'div' => vec[],
+            'strong' => vec[],
+            'del' => vec[],
+            'em' => vec[],
+            'pre' => vec[],
+            'code' => vec[],
+            'table' => vec[],
+            'tbody' => vec[],
+            'td' => vec[],
+            'th' => vec[],
+            'thead' => vec[],
+            'tr' => vec[],
+            'a' => vec['id', 'name', 'href', 'target', 'rel'],
+            'h3' => vec['classes'],
+            'p' => vec['classes'],
+            'aside' => vec['classes'],
+            'img' => vec['src', 'alt', 'classes', 'width', 'height', 'srcset', 'sizes']
+            ]
+        );
+        $config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+        $purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+        expect(true)->toNotBeNull();
+		echo "finished.\n\n";
+    }
 }
