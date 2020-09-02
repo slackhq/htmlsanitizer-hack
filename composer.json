@@ -1,5 +1,5 @@
 {
-	"name": "slack/htmlsanitizer-hack",
+	"name": "slackhq/htmlsanitizer-hack",
 	"description": "Slack Hack HTML Sanitizer",
 	"require": {
 		"hhvm/hhast": "^4.33.5",
