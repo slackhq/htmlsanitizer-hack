@@ -2,7 +2,7 @@
 namespace HTMLPurifier\Lexer;
 
 use namespace HTMLPurifier;
-use namespace HH\Lib\{C, Str};
+use namespace HH\Lib\{C, Regex, Str};
 use namespace HTMLPurifier\Token;
 
 
@@ -30,13 +30,13 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
         if ($config->def->defaults['Core.AggressivelyFixLt']) {
             $__unused_var = null;
             $char = '[^a-z!\/]';
-            $comment = "/<!--(.*?)(-->|\z)/is";
-            $html = \preg_replace_callback($comment, inst_meth($this, "callbackArmorCommentEntities"), $html, -1, inout $__unused_var);
+            $comment = re"/<!--(?<comment>.*?)(?<close>-->|\z)/is";
+            $html = Regex\replace_with($html, $comment, $match ==> $this->callbackArmorCommentEntities($match['comment'], $match['close']));
             do {
                 $old = $html;
                 $html = \preg_replace("/<($char)/i", '&lt;\\1', $html);
             } while ($html !== $old);
-            $html = \preg_replace_callback($comment, inst_meth($this, "callbackUndoCommentSubst"), $html, -1, inout $__unused_var); // fix comments
+            $html = Regex\replace_with($html, $comment, $match ==> $this->callbackUndoCommentSubst($match['comment'], $match['close']));
         }
 
         //preprocess html, essential for UTF-8
@@ -196,13 +196,13 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
     }
 
     //callback function for undoing escaping of stray 
-    public function callbackUndoCommentSubst(vec<string> $matches): string {
-        return '<!--' . Str\replace_every($matches[1], dict['&amp;' => '&', '&lt' => '<']) . $matches[2];
+    public function callbackUndoCommentSubst(string $comment_content, string $closing_marker): string {
+        return '<!--' . Str\replace_every($comment_content, dict['&amp;' => '&', '&lt' => '<']) . $closing_marker;
     }
 
-    //callback function that entity-izes ampersands in comments so that callbackUndoCommentSubst doesn't clobber them
-    public function callbackArmorCommentEntities(vec<string> $matches): string {
-         return '<!--' . Str\replace('&', '&amp;', $matches[1]) . $matches[2];
+    // callback function that entity-izes ampersands in comments so that callbackUndoCommentSubst doesn't clobber them
+    public function callbackArmorCommentEntities(string $comment_content, string $closing_marker): string {
+         return '<!--' . Str\replace('&', '&amp;', $comment_content) . $closing_marker;
     }
 
     //wraps an HTML fragment in the necessary HTML
