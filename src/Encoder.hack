@@ -409,7 +409,7 @@ class HTMLPurifier_Encoder {
         }
         $ret = dict[];
         if (self::unsafeIconv('UTF-8', $encoding, 'a') === '') {
-            // this is the case where we have an unusable iconv, might as well trigger error2020
+            // this is the case where we have an unusable iconv, might as well trigger error?
             \trigger_error('The encoding leads to an unsafe iconv', \E_USER_WARNING);
             return dict[]; // I need to return something - in the PHP false is return
         }
