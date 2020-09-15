@@ -83,7 +83,6 @@ class HTMLPurifier_Language {
 
     /**
     * Retrieves a localised error name.
-    * WHAT SHOULD THE TYPE OF THIS BE2020?
     */
     public function getErrorName(int $int) : string {
         if (!$this->_loaded) {

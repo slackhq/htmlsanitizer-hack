@@ -103,19 +103,12 @@ class HTMLPurifierTest extends HackTest {
 </table>';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
-		expect($clean_html)->toEqual('<table>
-  <caption>
+		expect($clean_html)->toEqual('<table><caption>
     Cool table
   </caption>
-  <tfoot>
-    <tr>
-      <th>I can do so much!</th>
-    </tr>
-  </tfoot>
-  <tbody><tr>
-    <td style="font-size:16pt;color:#F00;font-family:sans-serif;text-align:center;">Wow</td>
-  </tr>
-</tbody></table>');
+  <tfoot><tr><th>I can do so much!</th>
+    </tr></tfoot><tbody><tr><td style="font-size:16pt;color:#F00;font-family:sans-serif;text-align:center;">Wow</td>
+  </tr></tbody></table>');
 	}
 
 	public function testDOM() : void {

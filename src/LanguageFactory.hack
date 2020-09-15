@@ -39,7 +39,7 @@ class HTMLPurifier_LanguageFactory {
 
     /** 
     * Keys whose contents are a hash map and can be merged.
-    * @todo Lists of what tho2020 Make sure to change from keyset for type safety
+    * @todo Make sure to change from keyset for type safety
     */
     protected dict<string, bool> $mergeable_keys_map = dict['messages' => true, 'errorNames' => true];
 
@@ -90,7 +90,7 @@ class HTMLPurifier_LanguageFactory {
             $depth = 0; // recursion protection
 
             /**
-            * Is there really any other possibility for $code 2020
+            * Is there really any other possibility for $code? 
             */
             //if ($code == 'en') {
             $lang = $this->create($config, $context);
@@ -98,7 +98,7 @@ class HTMLPurifier_LanguageFactory {
             //     $class = 'HTMLPurifier_Language_'.$pcode;
             //     $file = $this->dir.'/Language/classes/'.$code.'.hack';
                 
-            //     // Does it make sense to just hard code for the one actual case of this2020
+            //     // Does it make sense to just hard code for the one actual case of this?
             //     // HTMLPurifer/Language/messages
             //     if (\file_exists($file) || \class_exists($class, false)) {
             //         // this is a concerning line
@@ -110,7 +110,7 @@ class HTMLPurifier_LanguageFactory {
             //     } else {
             //         // Go fallback
             //         $raw_fallback = $this->getFallbackFor($code);
-            //         $fallback = $raw_fallback 2020 'en';
+            //         $fallback = $raw_fallback ?? 'en';
             //         $depth++;
             //         $lang = $this->create($config, $context, $fallback);
             //         if (!$raw_fallback) {
