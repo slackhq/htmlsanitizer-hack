@@ -21,12 +21,12 @@ abstract class HTMLPurifier_AttrTransform {
     }
 
     // Retrieves and removes an attribute.
-    public function confiscateAttr(inout dict<string, mixed> $attr, mixed $key): mixed {
-        if (!C\contains($attr, $key)) {
+    public function confiscateAttr<Tk as arraykey, Tv>(inout dict<Tk, Tv> $attr, Tk $key): ?Tv {
+        if (!C\contains_key($attr, $key)) {
             return null;
         }
-        $value = $attr[(string)$key];
-        unset($attr[(string)$key]);
+        $value = $attr[$key];
+        unset($attr[$key]);
         return $value;
     }
 }
