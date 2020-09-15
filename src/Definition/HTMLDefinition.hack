@@ -43,7 +43,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
     public ?HTMLPurifier\HTMLPurifier_HTMLModule $anonModule;
     public ?HTMLPurifier\HTMLPurifier_Doctype $doctype;
     public function __construct() {
-        $this->doctype = new HTMLPurifier\HTMLPurifier_Doctype();
+        $this->doctype = new HTMLPurifier\HTMLPurifier_Doctype('', false);
 
         $alt_child_elements = dict[
             "h1" => true,
@@ -254,7 +254,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
             "name" => new AttrDef\HTMLPurifier_AttrDef_Text(),
             "rev" => new HTML\HTMLPurifier_AttrDef_HTML_LinkTypes("rev"),
             "rel" => new HTML\HTMLPurifier_AttrDef_HTML_LinkTypes("rel"),
-            "target" => new HTML\HTMLPurifier_AttrDef_HTML_FrameTarget(),
+            "target" => new HTML\HTMLPurifier_AttrDef_HTML_FrameTarget(vec["_blank"]),
             "href" => new AttrDef\HTMLPurifier_AttrDef_URI()
         ];
         $a_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $a_add_attr, vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional(),
@@ -385,13 +385,13 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
             "name" => new AttrDef\HTMLPurifier_AttrDef_Text(),
             "hspace" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(),
             "align" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["top", "middle", "bottom", "left", "right"]),
-            "width" => new AttrDef\HTMLPurifier_AttrDef_Integer(),
+            "width" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(1200),
             "vspace" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(),
             "longdesc" => new AttrDef\HTMLPurifier_AttrDef_URI(),
             "alt" => new AttrDef\HTMLPurifier_AttrDef_Text(),
             "border" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(),
-            "height" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(),
-            "srcset" => new AttrDef\HTMLPurifier_AttrDef_URI(),
+            "height" => new HTML\HTMLPurifier_AttrDef_HTML_Pixels(1200),
+            "srcset" => new AttrDef\HTMLPurifier_AttrDef_Text(),
             "sizes" => new AttrDef\HTMLPurifier_AttrDef_Text()
         ];
         $img_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $img_add_attr, vec[], vec[], vec[], 
@@ -527,6 +527,103 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
         $iframe_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $iframe_add_attr, $iframe_drop_attr, vec[], vec[],
             new ChildDef\HTMLPurifier_ChildDef_Optional(), null, '', true, vec[], vec[], vec[], '', false);
         $this->info["iframe"] = $iframe_element;
+
+        $article_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Flow | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["article"] = $article_element;
+
+        $nav_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Flow | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["nav"] = $nav_element;
+
+        $section_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Flow | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["section"] = $section_element;
+
+        $header_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Flow | #PCDATA', true, vec[], vec["header", "footer", "main"], vec[], '', false);
+        $this->info["header"] = $header_element;
+
+        $footer_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Flow | #PCDATA', true, vec[], vec["header", "footer", "main"], vec[], '', false);
+        $this->info["footer"] = $footer_element;
+
+        $hgroup_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Required(dict["h1" => true, "h2" => true, "h3" => true, "h4" => true, "h5" => true, "h6" => true]), null,
+            'Flow | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["hgroup"] = $hgroup_element;
+
+        $main_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Flow | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["main"] = $main_element;
+
+        $figcaption_element = new HTMLPurifier\HTMLPurifier_ElementDef(false, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Flow | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["figcaption"] = $figcaption_element;
+
+        $mark_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Inline | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["mark"] = $mark_element;
+
+        $wbr_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Empty(), null, '', true, vec[], vec[], vec[], '', false);
+        $this->info["wbr"] = $wbr_element;
+
+        $audio_add_attrs = dict[
+            "controls" => new AttrDef\HTML\HTMLPurifier_AttrDef_HTML_Bool("controls"),
+            "preload" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["auto", "metadata", "none"]),
+            "src" => new AttrDef\HTMLPurifier_AttrDef_URI()
+        ];
+        $audio_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $audio_add_attrs, vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Flow | #PCDATA', true, vec["source", "track"], vec[], vec[], '', false);
+        $this->info["audio"] = $audio_element;
+
+        $source_add_attrs = dict[
+            "media"  => new AttrDef\HTMLPurifier_AttrDef_Text(),
+            "sizes"  => new AttrDef\HTMLPurifier_AttrDef_Text(),
+            "src"    => new AttrDef\HTMLPurifier_AttrDef_URI(),
+            "srcset" => new AttrDef\HTMLPurifier_AttrDef_Text(),
+            "type"   => new AttrDef\HTMLPurifier_AttrDef_Text()
+        ];
+        $source_element = new HTMLPurifier\HTMLPurifier_ElementDef(false, $source_add_attrs, vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Empty(), null, '', true, vec[], vec[], vec[], '', false);
+        $this->info["source"] = $source_element;
+
+        $track_add_attrs = dict[
+            "kind" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["captions", "chapters", "descriptions", "metadata", "subtitles"]),
+            "src" => new AttrDef\HTMLPurifier_AttrDef_URI(),
+            "srclang" => new AttrDef\HTMLPurifier_AttrDef_Text(),
+            "lang" => new AttrDef\HTMLPurifier_AttrDef_Text(),
+            "default" => new AttrDef\HTML\HTMLPurifier_AttrDef_HTML_Bool("default")
+        ];
+        $track_element = new HTMLPurifier\HTMLPurifier_ElementDef(false, $track_add_attrs, vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Empty(), null, '', true, vec[], vec[], vec[], '', false);
+        $this->info["track"] = $track_element;
+
+        $picture_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Required(dict["img" => true]), null,
+            'Flow | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["picture"] = $picture_element;
+
+        $progress_add_attrs = dict[
+            "value" => new AttrDef\HTMLPurifier_AttrDef_Integer(),
+            "max" => new AttrDef\HTMLPurifier_AttrDef_Integer(),
+        ];
+        $progress_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $progress_add_attrs, vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Flow | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["progress"] = $progress_element;
+
+        $summary_element = new HTMLPurifier\HTMLPurifier_ElementDef(false, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Flow | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["summary"] = $summary_element;
+
+        $dialog_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict["open" => new AttrDef\HTML\HTMLPurifier_AttrDef_HTML_Bool("open")], 
+            vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Flow | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["dialog"] = $dialog_element;
+
+        $bdi_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[],
+            new ChildDef\HTMLPurifier_ChildDef_Optional(), null, 'Inline | #PCDATA', true, vec[], vec[], vec[], '', false);
+        $this->info["bdi"] = $bdi_element;
 
         $this->info_parent_def = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional($alt_child_elements),
                                 null, "optional", false, vec[], vec[], vec[], '', false);

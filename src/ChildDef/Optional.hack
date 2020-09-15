@@ -31,7 +31,7 @@ class HTMLPurifier_ChildDef_Optional extends HTMLPurifier_ChildDef_Required
     {
         $result = parent::validateChildren($children, $config, $context);
         // we assume that $children is not modified
-        if ($result === false) {
+        if ($result[0] === false) {
             if ($children is nonnull) {
                 return tuple(true, vec[]);
             } else if ($this->whitespace) {

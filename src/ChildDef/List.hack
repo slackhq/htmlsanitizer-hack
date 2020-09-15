@@ -20,6 +20,8 @@ class HTMLPurifier_ChildDef_List extends HTMLPurifier\HTMLPurifier_ChildDef {
     public dict<string, bool> $elements = dict['li' => true, 'ul' => true, 'ol' => true];
 
     public bool $allow_empty = false;
+
+    public bool $whitespace = false;
     /**
      * @param array $children
      * @param HTMLPurifier_Config $config
@@ -30,7 +32,7 @@ class HTMLPurifier_ChildDef_List extends HTMLPurifier\HTMLPurifier_ChildDef {
         HTMLPurifier\HTMLPurifier_Config $config, HTMLPurifier\HTMLPurifier_Context $_context) : 
         (bool, vec<HTMLPurifier\HTMLPurifier_Node>) {
         // Flag for subclasses
-        // $this->whitespace = false;
+        $this->whitespace = false;
 
         // if there are no tokens, delete parent node
         if (C\count($children) == 0) {
@@ -81,7 +83,7 @@ class HTMLPurifier_ChildDef_List extends HTMLPurifier\HTMLPurifier_ChildDef {
                 }
             }
         }
-        if (C\count($result)) {
+        if (C\is_empty($result)) {
             return tuple(false, vec[]);
         }
         if ($all_whitespace) {

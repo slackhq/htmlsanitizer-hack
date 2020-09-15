@@ -20,9 +20,9 @@ class HTMLPurifier_AttrDef_HTML_FrameTarget extends AttrDef\HTMLPurifier_AttrDef
      */
     protected bool $case_sensitive = false;
 
-    public function __construct()
+    public function __construct(vec<string> $valid_values=vec[], bool $case_sensitive = false)
     {
-        parent::__construct();
+        parent::__construct($valid_values, $case_sensitive);
     }
 
     /**
