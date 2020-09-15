@@ -4,15 +4,10 @@ services: docker
 env:
     - HHVM_VERSION=4.39-latest
     - HHVM_VERSION=4.41-latest
-    - HHVM_VERSION=4.44-latest
-    - HHVM_VERSION=4.47-latest
-    - HHVM_VERSION=4.50-latest
-    - HHVM_VERSION=4.53-latest
     - HHVM_VERSION=4.56-latest
+    - HHVM_VERSION=4.57-latest
+    - HHVM_VERSION=4.58-latest
     - HHVM_VERSION=4.59-latest
-    - HHVM_VERSION=4.62-latest
-    - HHVM_VERSION=4.65-latest
-    - HHVM_VERSION=4.68-latest
 
 install:
 - docker pull hhvm/hhvm:$HHVM_VERSION
