@@ -1,4 +1,7 @@
 /* Created by Nikita Ashok and Jake Polacek on 08/04/2020 */
+
+namespace HTMLPurifier\_Private\Tests;
+
 use function Facebook\FBExpect\expect;
 use type Facebook\HackTest\HackTest;
 use namespace HTMLPurifier;

@@ -1,0 +1,26 @@
+{
+  "roots": [ "src/", "tests/" ],
+  "builtinLinters": "all",
+  "overrides": [
+    {
+      "patterns": ["*"],
+      "disabledLinters": [
+        "Facebook\\HHAST\\PreferSingleQuotedStringLiteralLinter",
+        "Facebook\\HHAST\\NoPHPEqualityLinter",
+        "Facebook\\HHAST\\MustUseBracesForControlFlowLinter",
+        "Facebook\\HHAST\\MustUseOverrideAttributeLinter",
+        "Facebook\\HHAST\\NoStringInterpolationLinter",
+        "Facebook\\HHAST\\NoWhitespaceAtEndOfLineLinter",
+        "Facebook\\HHAST\\NoElseifLinter",
+        "Facebook\\HHAST\\NewlineAtEndOfFileLinter",
+        "Facebook\\HHAST\\UnusedParameterLinter",
+        "Facebook\\HHAST\\UnusedUseClauseLinter",
+        "Facebook\\HHAST\\GroupUseStatementsLinter",
+        "Facebook\\HHAST\\UnusedVariableLinter",
+        "Facebook\\HHAST\\CamelCasedMethodsUnderscoredFunctionsLinter",
+        "Facebook\\HHAST\\UseStatementWithoutKindLinter",
+        "Facebook\\HHAST\\GroupUseStatementAlphabetizationLinter"
+      ]
+    }
+  ]
+}

@@ -20,14 +20,10 @@ class HTMLPurifier_Encoder {
      *  transcoding purposes */
     const int ICONV_UNUSABLE = 2;
 
-    /**
-    * Constructor throws fatal error if you attempt to instantiate class
-    */
-    public function __construct() {
-        \trigger_error('Cannot instantiate encoder, call methods statically');
-    }
+	<<__Deprecated('Cannot instantiate encoder, call methods statically')>>
+	final private function __construct() {}
 
-    /**
+	/**
     * Error-handler that mutes errors, alternative to shut-up operator
     * To be honest, I'm not sure when/if this is used
     */
