@@ -320,4 +320,13 @@ class HTMLPurifierTest extends HackTest {
         expect(true)->toNotBeNull();
 		echo "finished.\n\n";
     }
+
+	public function testDomDocumentMayLoseWhitespaceSometimes(): void {
+		$dirty_html = '<table> </table>';
+		$doc = new \DOMDocument();
+		$doc->encoding = 'UTF-8';
+
+		$doc->loadHTML($dirty_html, 0);
+		expect($doc->getElementsByTagName('table')->item(0)->nodeValue)->toEqual(' ', 'Whitespace lost');
+	}
 }
