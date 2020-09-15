@@ -1,7 +1,6 @@
 #!/bin/sh
 set -ex
 apt update -y
-apt upgrade -y
 DEBIAN_FRONTEND=noninteractive apt install -y php-cli zip unzip
 hhvm --version
 php --version
