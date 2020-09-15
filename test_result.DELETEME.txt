@@ -1,0 +1,35 @@
+On my machine (Ubuntu hhvm 4.68.1), the test suite has one failure:
+
+I'd expect Travis to succeed when a PR is created and the tests are run.
+
+1) HTMLPurifier\_Private\Tests\HTMLPurifierTest::testRichFormattingPreserved
+
+Failed asserting that two values are the same:
+@@ -1,4 +1,4 @@
+-<table><caption>
++<table>
++  <caption>
+     Cool table
+   </caption>
+-  <tfoot><tr><th>I can do so much!</th>
+@@ -5,2 +5,9 @@
+-    </tr></tfoot><tbody><tr><td style="font-size:16pt;color:#F00;font-family:sans-serif;text-align:center;">Wow</td>
+-  </tr></tbody></table>
++  <tfoot>
++    <tr>
++      <th>I can do so much!</th>
++    </tr>
++  </tfoot>
++  <tbody><tr>
++    <td style="font-size:16pt;color:#F00;font-family:sans-serif;text-align:center;">Wow</td>
++  </tr>
++</tbody></table>
+
+
+
+/path/to/tests/HTMLPurifierTest.hack:111
+  108|   </caption>
+  109|   <tfoot><tr><th>I can do so much!</th>
+  110|     </tr></tfoot><tbody><tr><td style="font-size:16pt;color:
+
+Summary: 45 test(s), 44 passed, 1 failed, 0 skipped, 0 error(s).

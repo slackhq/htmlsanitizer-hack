@@ -1,0 +1,236 @@
+7c7
+<     "content-hash": "790712adb517d1360f40801e2c07e8dd",
+---
+>     "content-hash": "80a3618a8de99214feef1aca647928a0",
+47c47
+<             "version": "v2.7.5",
+---
+>             "version": "v2.7.7",
+51c51
+<                 "reference": "62e2c39741e1c86c373da3ab75617dbedfaed419"
+---
+>                 "reference": "dcf1beb1b9e264396495aa120a3752fddfbeca95"
+55,56c55,56
+<                 "url": "https://api.github.com/repos/hhvm/fbexpect/zipball/62e2c39741e1c86c373da3ab75617dbedfaed419",
+<                 "reference": "62e2c39741e1c86c373da3ab75617dbedfaed419",
+---
+>                 "url": "https://api.github.com/repos/hhvm/fbexpect/zipball/dcf1beb1b9e264396495aa120a3752fddfbeca95",
+>                 "reference": "dcf1beb1b9e264396495aa120a3752fddfbeca95",
+61c61
+<                 "hhvm": "^4.25",
+---
+>                 "hhvm": "^4.45",
+75c75
+<             "time": "2020-07-29T17:03:08+00:00"
+---
+>             "time": "2020-09-11T00:43:51+00:00"
+140c140
+<             "version": "v2.2.4",
+---
+>             "version": "v2.5.1",
+144c144
+<                 "reference": "7e5a0acdae42ab33b332f94f43cfcf25636bddee"
+---
+>                 "reference": "5b914cb3a0b84d6476393ff7f04812b24d7163f8"
+148,149c148,149
+<                 "url": "https://api.github.com/repos/hhvm/hh-clilib/zipball/7e5a0acdae42ab33b332f94f43cfcf25636bddee",
+<                 "reference": "7e5a0acdae42ab33b332f94f43cfcf25636bddee",
+---
+>                 "url": "https://api.github.com/repos/hhvm/hh-clilib/zipball/5b914cb3a0b84d6476393ff7f04812b24d7163f8",
+>                 "reference": "5b914cb3a0b84d6476393ff7f04812b24d7163f8",
+153c153
+<                 "hhvm": "^4.13",
+---
+>                 "hhvm": "^4.60",
+155,156c155,157
+<                 "hhvm/hsl-experimental": "^4.0",
+<                 "hhvm/type-assert": "^3.2"
+---
+>                 "hhvm/hsl-experimental": "^4.58.0rc1",
+>                 "hhvm/hsl-io": "^0.2.0",
+>                 "hhvm/type-assert": "^4.0"
+160,161c161,162
+<                 "hhvm/hacktest": "^1.0.0",
+<                 "hhvm/hhast": "^4.0.2"
+---
+>                 "hhvm/hacktest": "^2.2.0rc1",
+>                 "hhvm/hhvm-autoload": "^3.1.0"
+173c174
+<             "time": "2019-11-07T21:21:31+00:00"
+---
+>             "time": "2020-07-07T20:34:32+00:00"
+177c178
+<             "version": "v2.0.1",
+---
+>             "version": "v2.2.0",
+181c182
+<                 "reference": "cde86b675923d56955a2f0f95840206e52bd8618"
+---
+>                 "reference": "aa2167eb5ed52d8a8e437272f9474a86103a50ca"
+185,186c186,187
+<                 "url": "https://api.github.com/repos/hhvm/hacktest/zipball/cde86b675923d56955a2f0f95840206e52bd8618",
+<                 "reference": "cde86b675923d56955a2f0f95840206e52bd8618",
+---
+>                 "url": "https://api.github.com/repos/hhvm/hacktest/zipball/aa2167eb5ed52d8a8e437272f9474a86103a50ca",
+>                 "reference": "aa2167eb5ed52d8a8e437272f9474a86103a50ca",
+190,191c191,192
+<                 "facebook/hh-clilib": "^2.0.0",
+<                 "hhvm": "^4.15",
+---
+>                 "facebook/hh-clilib": "^2.5.0rc1",
+>                 "hhvm": "^4.60",
+193,194c194,196
+<                 "hhvm/hsl": "^4.0",
+<                 "hhvm/type-assert": "^3.2"
+---
+>                 "hhvm/hsl-experimental": "^4.58.0rc1",
+>                 "hhvm/hsl-io": "^0.2.0",
+>                 "hhvm/type-assert": "^3.0|^4.0"
+215c217
+<             "time": "2020-02-07T21:57:16+00:00"
+---
+>             "time": "2020-07-01T22:27:25+00:00"
+219c221
+<             "version": "v4.33.9",
+---
+>             "version": "v4.64.6",
+223c225
+<                 "reference": "9f586c80055f73c17b95742ec97627c1d11a1deb"
+---
+>                 "reference": "42241db3215342e108e7167c61203373ed15001f"
+227,228c229,230
+<                 "url": "https://api.github.com/repos/hhvm/hhast/zipball/9f586c80055f73c17b95742ec97627c1d11a1deb",
+<                 "reference": "9f586c80055f73c17b95742ec97627c1d11a1deb",
+---
+>                 "url": "https://api.github.com/repos/hhvm/hhast/zipball/42241db3215342e108e7167c61203373ed15001f",
+>                 "reference": "42241db3215342e108e7167c61203373ed15001f",
+233,234c235,236
+<                 "facebook/hh-clilib": "^2.0.0",
+<                 "hhvm": "^4.33",
+---
+>                 "facebook/hh-clilib": "^2.5.0rc1",
+>                 "hhvm": "^4.62",
+237,238c239,241
+<                 "hhvm/hsl-experimental": "^4.25",
+<                 "hhvm/type-assert": "^3.4"
+---
+>                 "hhvm/hsl-experimental": "^4.58.0rc1",
+>                 "hhvm/hsl-io": "^0.2.0",
+>                 "hhvm/type-assert": "^3.0|^4.0"
+243c246
+<                 "hhvm/hacktest": "^2.0"
+---
+>                 "hhvm/hacktest": "^2.2.0"
+264c267
+<             "time": "2020-02-28T18:38:22+00:00"
+---
+>             "time": "2020-08-17T22:26:50+00:00"
+268c271
+<             "version": "v2.0.13",
+---
+>             "version": "v3.1.3",
+272c275
+<                 "reference": "816e33cd940844898b04e1c2101d2cfeb3879272"
+---
+>                 "reference": "0cae9edacf1f17dc0449e9a6bcc7cb38fa7a213a"
+276,277c279,280
+<                 "url": "https://api.github.com/repos/hhvm/hhvm-autoload/zipball/816e33cd940844898b04e1c2101d2cfeb3879272",
+<                 "reference": "816e33cd940844898b04e1c2101d2cfeb3879272",
+---
+>                 "url": "https://api.github.com/repos/hhvm/hhvm-autoload/zipball/0cae9edacf1f17dc0449e9a6bcc7cb38fa7a213a",
+>                 "reference": "0cae9edacf1f17dc0449e9a6bcc7cb38fa7a213a",
+311c314
+<             "time": "2020-02-07T20:45:31+00:00"
+---
+>             "time": "2020-08-17T19:22:55+00:00"
+315c318
+<             "version": "v4.40.0",
+---
+>             "version": "v4.41.0",
+319c322
+<                 "reference": "b14a430062ad95c378765899f955457f3454f2f9"
+---
+>                 "reference": "80a42c02f036f72a42f0415e80d6b847f4bf62d5"
+323,324c326,327
+<                 "url": "https://api.github.com/repos/hhvm/hsl/zipball/b14a430062ad95c378765899f955457f3454f2f9",
+<                 "reference": "b14a430062ad95c378765899f955457f3454f2f9",
+---
+>                 "url": "https://api.github.com/repos/hhvm/hsl/zipball/80a42c02f036f72a42f0415e80d6b847f4bf62d5",
+>                 "reference": "80a42c02f036f72a42f0415e80d6b847f4bf62d5",
+328c331
+<                 "hhvm": "^4.25"
+---
+>                 "hhvm": "^4.41"
+333,334c336,337
+<                 "hhvm/hhvm-autoload": "^2.0",
+<                 "hhvm/hsl-experimental": "dev-master"
+---
+>                 "hhvm/hhvm-autoload": "^2.0|^3.0",
+>                 "hhvm/hsl-experimental": "^4.37|dev-master"
+347c350
+<             "time": "2020-01-08T23:12:08+00:00"
+---
+>             "time": "2020-05-01T23:05:23+00:00"
+351c354
+<             "version": "v4.37.3",
+---
+>             "version": "v4.66.0",
+355c358
+<                 "reference": "e0306dc237d0b3a92eddefb8b4d6b6047a43229d"
+---
+>                 "reference": "1491b97fffd1db91fd7254d2bae10c20eb01e3e0"
+359,360c362,363
+<                 "url": "https://api.github.com/repos/hhvm/hsl-experimental/zipball/e0306dc237d0b3a92eddefb8b4d6b6047a43229d",
+<                 "reference": "e0306dc237d0b3a92eddefb8b4d6b6047a43229d",
+---
+>                 "url": "https://api.github.com/repos/hhvm/hsl-experimental/zipball/1491b97fffd1db91fd7254d2bae10c20eb01e3e0",
+>                 "reference": "1491b97fffd1db91fd7254d2bae10c20eb01e3e0",
+364c367
+<                 "hhvm": "^4.25",
+---
+>                 "hhvm": "^4.66",
+366a370,372
+>             "provide": {
+>                 "hhvm/hsl-io": "0.2.1"
+>             },
+369d374
+<                 "facebook/hh-clilib": ">= v2.2.4 <2.3.0",
+384c389
+<             "time": "2020-04-16T21:25:40+00:00"
+---
+>             "time": "2020-09-02T18:55:57+00:00"
+388c393
+<             "version": "v3.7.3",
+---
+>             "version": "v4.1.2",
+392c397
+<                 "reference": "e076c42ed718929dbea96c0b354ebe96cccc2335"
+---
+>                 "reference": "0983260af4dc918b33ca154757b537daa38c88a0"
+396,397c401,402
+<                 "url": "https://api.github.com/repos/hhvm/type-assert/zipball/e076c42ed718929dbea96c0b354ebe96cccc2335",
+<                 "reference": "e076c42ed718929dbea96c0b354ebe96cccc2335",
+---
+>                 "url": "https://api.github.com/repos/hhvm/type-assert/zipball/0983260af4dc918b33ca154757b537daa38c88a0",
+>                 "reference": "0983260af4dc918b33ca154757b537daa38c88a0",
+401c406
+<                 "hhvm": "^4.30",
+---
+>                 "hhvm": "^4.64",
+408c413
+<                 "hhvm/hhvm-autoload": "^2.0"
+---
+>                 "hhvm/hhvm-autoload": "^2.0|^3.0"
+413c418
+<                     "dev-master": "3.x-dev"
+---
+>                     "dev-master": "4.x-dev"
+425c430
+<             "time": "2020-01-13T21:48:58+00:00"
+---
+>             "time": "2020-08-17T19:26:29+00:00"
+435,436c440
+<     "platform-dev": [],
+<     "plugin-api-version": "1.1.0"
+---
+>     "platform-dev": []
