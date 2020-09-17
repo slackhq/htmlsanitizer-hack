@@ -106,7 +106,8 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
             "textarea" => true,
             "button" => true,
             "label" => true,
-            "#PCDATA" => true
+            "#PCDATA" => true,
+            "aside" => true
         ];
 
         $this->manager = new HTMLPurifier\HTMLPurifier_HTMLModuleManager();
