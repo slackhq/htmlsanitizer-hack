@@ -62,8 +62,7 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier\HTMLPurifier_ChildDef 
             "ul" => true,
             "li" => true,
             "aside" => true,
-            "ol" => true,
-            "a" => true
+            "ol" => true
         ];
 
     /**
