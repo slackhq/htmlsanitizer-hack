@@ -309,10 +309,10 @@ class HTMLPurifierTest extends HackTest {
             'thead' => vec[],
             'tr' => vec[],
             'a' => vec['id', 'name', 'href', 'target', 'rel'],
-            'h3' => vec['classes'],
-            'p' => vec['classes'],
-            'aside' => vec['classes'],
-            'img' => vec['src', 'alt', 'classes', 'width', 'height', 'srcset', 'sizes']
+            'h3' => vec['class'],
+            'p' => vec['class'],
+            'aside' => vec['class'],
+            'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes']
             ]
         );
         $config = HTMLPurifier\HTMLPurifier_Config::createDefault();

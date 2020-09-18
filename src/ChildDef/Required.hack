@@ -58,7 +58,6 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier\HTMLPurifier_ChildDef 
             "h3" => true,
             "h4" => true,
             "p" => true,
-            "div" => true,
             "ul" => true,
             "li" => true,
             "aside" => true,
