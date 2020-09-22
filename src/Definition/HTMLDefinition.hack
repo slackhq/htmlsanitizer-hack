@@ -106,7 +106,8 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
             "textarea" => true,
             "button" => true,
             "label" => true,
-            "#PCDATA" => true
+            "#PCDATA" => true,
+            "aside" => true
         ];
 
         $this->manager = new HTMLPurifier\HTMLPurifier_HTMLModuleManager();
@@ -372,7 +373,22 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
         $div_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict["align" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["left", "center", "right", "justify", "char"])], vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional(), null, '', false, vec[], vec[], vec[], '', false);
         $this->info["div"] = $div_element;
 
-        $aside_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict[], vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional(), null, '', false, vec[], vec[], vec[], '', false);
+		$aside_element = new HTMLPurifier\HTMLPurifier_ElementDef(
+			true,
+			dict[],
+			vec[],
+			vec[],
+			vec[],
+			new ChildDef\HTMLPurifier_ChildDef_Optional($alt_child_elements),
+			null,
+			'',
+			false,
+			vec[],
+			vec[],
+			vec[],
+			'',
+			false,
+		);
         $this->info["aside"] = $aside_element;
 
         $del_child_element = new ChildDef\HTMLPurifier_ChildDef_Chameleon(new ChildDef\HTMLPurifier_ChildDef_Optional(), new ChildDef\HTMLPurifier_ChildDef_Optional($alt_child_elements));

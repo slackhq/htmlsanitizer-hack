@@ -52,7 +52,16 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier\HTMLPurifier_ChildDef 
             "textarea" => true,
             "button" => true,
             "label" => true,
-            "#PCDATA" => true
+            "#PCDATA" => true,
+            "h1" => true,
+            "h2" => true,
+            "h3" => true,
+            "h4" => true,
+            "p" => true,
+            "ul" => true,
+            "li" => true,
+            "aside" => true,
+            "ol" => true
         ];
 
     /**
