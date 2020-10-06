@@ -117,9 +117,149 @@ class HTMLPurifier_Encoder {
             return $str;
         }
 
-        // If anything does not match the regex, it is the 1% that doesn't and thus we really do NOT 
-        // want to be supporting that, so we just throw an exception instead
-        throw new \Exception('This string is in the 1% that does not fall in the main case');
+		$mState = 0; // cached expected number of octets after the current octet
+		// until the beginning of the next UTF8 character sequence
+		$mUcs4 = 0; // cached Unicode character
+		$mBytes = 1; // cached expected number of octets in the current sequence
+
+		// original code involved an $out that was an array of Unicode
+		// codepoints.  Instead of having to convert back into UTF-8, we've
+		// decided to directly append valid UTF-8 characters onto a string
+		// $out once they're done.  $char accumulates raw bytes, while $mUcs4
+		// turns into the Unicode code point, so there's some redundancy.
+
+		$out = '';
+		$char = '';
+
+		$len = Str\length($str);
+		for ($i = 0; $i < $len; $i++) {
+			$in = \ord($str[$i]);
+			$char .= $str[$i]; // append byte to char
+			if (0 == $mState) {
+				// When mState is zero we expect either a US-ASCII character
+				// or a multi-octet sequence.
+				if (0 == (0x80 & ($in))) {
+					// US-ASCII, pass straight through.
+					if (
+						($in <= 31 || $in == 127) && !($in == 9 || $in == 13 || $in == 10) // save \r\t\n
+					) {
+						// control characters, remove
+					} else {
+						$out .= $char;
+					}
+					// reset
+					$char = '';
+					$mBytes = 1;
+				} elseif (0xC0 == (0xE0 & ($in))) {
+					// First octet of 2 octet sequence
+					$mUcs4 = ($in);
+					$mUcs4 = ($mUcs4 & 0x1F) << 6;
+					$mState = 1;
+					$mBytes = 2;
+				} elseif (0xE0 == (0xF0 & ($in))) {
+					// First octet of 3 octet sequence
+					$mUcs4 = ($in);
+					$mUcs4 = ($mUcs4 & 0x0F) << 12;
+					$mState = 2;
+					$mBytes = 3;
+				} elseif (0xF0 == (0xF8 & ($in))) {
+					// First octet of 4 octet sequence
+					$mUcs4 = ($in);
+					$mUcs4 = ($mUcs4 & 0x07) << 18;
+					$mState = 3;
+					$mBytes = 4;
+				} elseif (0xF8 == (0xFC & ($in))) {
+					// First octet of 5 octet sequence.
+					//
+					// This is illegal because the encoded codepoint must be
+					// either:
+					// (a) not the shortest form or
+					// (b) outside the Unicode range of 0-0x10FFFF.
+					// Rather than trying to resynchronize, we will carry on
+					// until the end of the sequence and let the later error
+					// handling code catch it.
+					$mUcs4 = ($in);
+					$mUcs4 = ($mUcs4 & 0x03) << 24;
+					$mState = 4;
+					$mBytes = 5;
+				} elseif (0xFC == (0xFE & ($in))) {
+					// First octet of 6 octet sequence, see comments for 5
+					// octet sequence.
+					$mUcs4 = ($in);
+					$mUcs4 = ($mUcs4 & 1) << 30;
+					$mState = 5;
+					$mBytes = 6;
+				} else {
+					// Current octet is neither in the US-ASCII range nor a
+					// legal first octet of a multi-octet sequence.
+					$mState = 0;
+					$mUcs4 = 0;
+					$mBytes = 1;
+					$char = '';
+				}
+			} else {
+				// When mState is non-zero, we expect a continuation of the
+				// multi-octet sequence
+				if (0x80 == (0xC0 & ($in))) {
+					// Legal continuation.
+					$shift = ($mState - 1) * 6;
+					$tmp = $in;
+					$tmp = ($tmp & 0x0000003F) << $shift;
+					$mUcs4 |= $tmp;
+					--$mState;
+					if (0 == $mState) {
+						// End of the multi-octet sequence. mUcs4 now contains
+						// the final Unicode codepoint to be output
+
+						// Check for illegal sequences and codepoints.
+
+						// From Unicode 3.1, non-shortest form is illegal
+						if (
+							((2 == $mBytes) && ($mUcs4 < 0x0080)) ||
+							((3 == $mBytes) && ($mUcs4 < 0x0800)) ||
+							((4 == $mBytes) && ($mUcs4 < 0x10000)) ||
+							(4 < $mBytes) ||
+							// From Unicode 3.2, surrogate characters = illegal
+							(($mUcs4 & 0xFFFFF800) == 0xD800) ||
+							// Codepoints outside the Unicode range are illegal
+							($mUcs4 > 0x10FFFF)
+						) {
+
+						} elseif (
+							0xFEFF != $mUcs4 && // omit BOM
+							// check for valid Char unicode codepoints
+							(
+								0x9 == $mUcs4 ||
+								0xA == $mUcs4 ||
+								0xD == $mUcs4 ||
+								(0x20 <= $mUcs4 && 0x7E >= $mUcs4) ||
+								// 7F-9F is not strictly prohibited by XML,
+								// but it is non-SGML, and thus we don't allow it
+								(0xA0 <= $mUcs4 && 0xD7FF >= $mUcs4) ||
+								(0xE000 <= $mUcs4 && 0xFFFD >= $mUcs4) ||
+								(0x10000 <= $mUcs4 && 0x10FFFF >= $mUcs4)
+							)
+						) {
+							$out .= $char;
+						}
+						// initialize UTF8 cache (reset)
+						$mState = 0;
+						$mUcs4 = 0;
+						$mBytes = 1;
+						$char = '';
+					}
+				} else {
+					// ((0xC0 & (*in) != 0x80) && (mState != 0))
+					// Incomplete multi-octet sequence.
+					// used to result in complete fail, but we'll reset
+					$mState = 0;
+					$mUcs4 = 0;
+					$mBytes = 1;
+					$char = '';
+				}
+			}
+		}
+		return $out;
     }
 
     /**
