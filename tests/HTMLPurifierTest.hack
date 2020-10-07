@@ -88,26 +88,26 @@ class HTMLPurifierTest extends HackTest {
 
 		$dirty_html = '<table>
   <caption>
-    Cool table
+	Cool table
   </caption>
   <tfoot>
-    <tr>
-      <th>I can do so much!</th>
-    </tr>
+	<tr>
+	  <th>I can do so much!</th>
+	</tr>
   </tfoot>
   <tr>
-    <td style="font-size:16pt;
-      color:#F00;font-family:sans-serif;
-      text-align:center;">Wow</td>
+	<td style="font-size:16pt;
+	  color:#F00;font-family:sans-serif;
+	  text-align:center;">Wow</td>
   </tr>
 </table>';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<table><caption>
-    Cool table
+	Cool table
   </caption>
   <tfoot><tr><th>I can do so much!</th>
-    </tr></tfoot><tbody><tr><td style="font-size:16pt;color:#F00;font-family:sans-serif;text-align:center;">Wow</td>
+	</tr></tfoot><tbody><tr><td style="font-size:16pt;color:#F00;font-family:sans-serif;text-align:center;">Wow</td>
   </tr></tbody></table>');
 	}
 
@@ -237,24 +237,24 @@ class HTMLPurifierTest extends HackTest {
   		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict["iframe"=>vec["title","width","height","src","allowfullscreen"]]);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
-        // Test1 clean iframe with usertesting domain with no protocol
-        $dirty_html = '<iframe
-            title="Wildlife"
-            width="500"
-            height="400"
-            src="//www.example.com"
-            allowfullscreen=true
-            ></iframe>';
+		// Test1 clean iframe with usertesting domain with no protocol
+		$dirty_html = '<iframe
+			title="Wildlife"
+			width="500"
+			height="400"
+			src="//www.example.com"
+			allowfullscreen=true
+			></iframe>';
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<iframe title="Wildlife" width="500" height="400" src="//www.example.com" allowfullscreen="true"></iframe>');
 
-        $dirty_html = '<iframe
-            title="Wildlife"
-            width="500"
-            height="400"
-            src="https://www.example.com/"
-            allowfullscreen=true
-            ></iframe>';		
+		$dirty_html = '<iframe
+			title="Wildlife"
+			width="500"
+			height="400"
+			src="https://www.example.com/"
+			allowfullscreen=true
+			></iframe>';		
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<iframe title="Wildlife" width="500" height="400" src="https://www.example.com/" allowfullscreen="true"></iframe>');
 		echo "finished.\n\n";
@@ -288,70 +288,70 @@ class HTMLPurifierTest extends HackTest {
 
 	public function testWebappPolicy() : void {
 		echo "\nrunning testWebappPolicy()...";
-        $policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
-            'b' => vec[],
-            'ul'=> vec[],
-            'li' => vec[],
-            'ol' => vec[],
-            'h2' => vec[],
-            'h4' => vec[],
-            'br' => vec[],
-            'div' => vec[],
-            'strong' => vec[],
-            'del' => vec[],
-            'em' => vec[],
-            'pre' => vec[],
-            'code' => vec[],
-            'table' => vec[],
-            'tbody' => vec[],
-            'td' => vec[],
-            'th' => vec[],
-            'thead' => vec[],
-            'tr' => vec[],
-            'a' => vec['id', 'name', 'href', 'target', 'rel'],
-            'h3' => vec['class'],
-            'p' => vec['class'],
-            'aside' => vec['class'],
-            'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes']
-            ]
-        );
-        $config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-        $purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
-        expect(true)->toNotBeNull();
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
+			'b' => vec[],
+			'ul'=> vec[],
+			'li' => vec[],
+			'ol' => vec[],
+			'h2' => vec[],
+			'h4' => vec[],
+			'br' => vec[],
+			'div' => vec[],
+			'strong' => vec[],
+			'del' => vec[],
+			'em' => vec[],
+			'pre' => vec[],
+			'code' => vec[],
+			'table' => vec[],
+			'tbody' => vec[],
+			'td' => vec[],
+			'th' => vec[],
+			'thead' => vec[],
+			'tr' => vec[],
+			'a' => vec['id', 'name', 'href', 'target', 'rel'],
+			'h3' => vec['class'],
+			'p' => vec['class'],
+			'aside' => vec['class'],
+			'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes']
+			]
+		);
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		expect(true)->toNotBeNull();
 		echo "finished.\n\n";
-    }
+	}
 
 	public function testSpecialCharacterValidateUTF8() : void {
 		echo "\nrunning testWebappPolicy()...";
-        $policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
-            'b' => vec[],
-            'ul'=> vec[],
-            'li' => vec[],
-            'ol' => vec[],
-            'h2' => vec[],
-            'h4' => vec[],
-            'br' => vec[],
-            'div' => vec[],
-            'strong' => vec[],
-            'del' => vec[],
-            'em' => vec[],
-            'pre' => vec[],
-            'code' => vec[],
-            'table' => vec[],
-            'tbody' => vec[],
-            'td' => vec[],
-            'th' => vec[],
-            'thead' => vec[],
-            'tr' => vec[],
-            'a' => vec['id', 'name', 'href', 'target', 'rel'],
-            'h3' => vec['class'],
-            'p' => vec['class'],
-            'aside' => vec['class'],
-            'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes']
-            ]
-        );
-        $config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-        $purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
+			'b' => vec[],
+			'ul'=> vec[],
+			'li' => vec[],
+			'ol' => vec[],
+			'h2' => vec[],
+			'h4' => vec[],
+			'br' => vec[],
+			'div' => vec[],
+			'strong' => vec[],
+			'del' => vec[],
+			'em' => vec[],
+			'pre' => vec[],
+			'code' => vec[],
+			'table' => vec[],
+			'tbody' => vec[],
+			'td' => vec[],
+			'th' => vec[],
+			'thead' => vec[],
+			'tr' => vec[],
+			'a' => vec['id', 'name', 'href', 'target', 'rel'],
+			'h3' => vec['class'],
+			'p' => vec['class'],
+			'aside' => vec['class'],
+			'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes']
+			]
+		);
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<h2>Guest accounts and shared channels</h2>
 <h3>Guest accounts</h3>
 <p>These are great for working with someone who feels like a member of your organization but needs only limited access to Slack.</p>
@@ -435,5 +435,5 @@ class HTMLPurifierTest extends HackTest {
 [aside headline="Invites / admin management" description="" bullets="Guests: Admins must manually provision guest accounts one by one. Admins can choose an automatic expiration date for each guest account  | Shared channels: Once the shared channel is created, both teams can invite others from their workspace to join the channel as projects evolve and additional people need access" /]';
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
-    }
+	}
 }
