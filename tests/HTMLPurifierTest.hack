@@ -103,19 +103,12 @@ class HTMLPurifierTest extends HackTest {
 </table>';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
-		expect($clean_html)->toEqual('<table>
-  <caption>
+		expect($clean_html)->toEqual('<table><caption>
     Cool table
   </caption>
-  <tfoot>
-    <tr>
-      <th>I can do so much!</th>
-    </tr>
-  </tfoot>
-  <tbody><tr>
-    <td style="font-size:16pt;color:#F00;font-family:sans-serif;text-align:center;">Wow</td>
-  </tr>
-</tbody></table>');
+  <tfoot><tr><th>I can do so much!</th>
+    </tr></tfoot><tbody><tr><td style="font-size:16pt;color:#F00;font-family:sans-serif;text-align:center;">Wow</td>
+  </tr></tbody></table>');
 	}
 
 	public function testDOM() : void {
@@ -327,55 +320,4 @@ class HTMLPurifierTest extends HackTest {
         expect(true)->toNotBeNull();
 		echo "finished.\n\n";
     }
-
-	public function testWebappInput(): void {
-		echo "\nrunning testWebappPolicy()...";
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(
-			dict[
-				'b' => vec[],
-				'ul' => vec[],
-				'li' => vec[],
-				'ol' => vec[],
-				'h2' => vec[],
-				'h4' => vec[],
-				'br' => vec[],
-				'div' => vec[],
-				'strong' => vec[],
-				'del' => vec[],
-				'em' => vec[],
-				'pre' => vec[],
-				'code' => vec[],
-				'table' => vec[],
-				'tbody' => vec[],
-				'td' => vec[],
-				'th' => vec[],
-				'thead' => vec[],
-				'tr' => vec[],
-				'a' => vec['id', 'name', 'href', 'target', 'rel'],
-				'h3' => vec['class'],
-				'p' => vec['class'],
-				'aside' => vec['class'],
-				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
-			],
-		);
-		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
-		$dirty_html = '<ul>
-<li>Working with external parties is as straightforward and fluid as working with your own colleagues. </li>
-<li>Both teams have a common place to collaborate, loop in the right people on an as-needed basis, and build a collective repository of knowledge that anyone on either team can add to and reference.</li>
-<li>Both teams can send messages, share files, and access the channel history.</li>
-<li>Any member of the shared channel can also direct-message (DM) any other member in the channel, even if they’re from the other team.</li>
-</ul>';
-
-		$expected_html = '<ul>
-<li>Working with external parties is as straightforward and fluid as working with your own colleagues. </li>
-<li>Both teams have a common place to collaborate, loop in the right people on an as-needed basis, and build a collective repository of knowledge that anyone on either team can add to and reference.</li>
-<li>Both teams can send messages, share files, and access the channel history.</li>
-<li>Any member of the shared channel can also direct-message (DM) any other member in the channel, even if they’re from the other team.</li>
-</ul>';
-
-		$clean_html = $purifier->purify($dirty_html);
-		expect($clean_html)->toEqual($expected_html);
-		echo "finished.\n\n";
-	}
 }
