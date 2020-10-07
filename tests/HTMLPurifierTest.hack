@@ -320,4 +320,120 @@ class HTMLPurifierTest extends HackTest {
         expect(true)->toNotBeNull();
 		echo "finished.\n\n";
     }
+
+	public function testSpecialCharacterValidateUTF8() : void {
+		echo "\nrunning testWebappPolicy()...";
+        $policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
+            'b' => vec[],
+            'ul'=> vec[],
+            'li' => vec[],
+            'ol' => vec[],
+            'h2' => vec[],
+            'h4' => vec[],
+            'br' => vec[],
+            'div' => vec[],
+            'strong' => vec[],
+            'del' => vec[],
+            'em' => vec[],
+            'pre' => vec[],
+            'code' => vec[],
+            'table' => vec[],
+            'tbody' => vec[],
+            'td' => vec[],
+            'th' => vec[],
+            'thead' => vec[],
+            'tr' => vec[],
+            'a' => vec['id', 'name', 'href', 'target', 'rel'],
+            'h3' => vec['class'],
+            'p' => vec['class'],
+            'aside' => vec['class'],
+            'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes']
+            ]
+        );
+        $config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+        $purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$dirty_html = '<h2>Guest accounts and shared channels</h2>
+<h3>Guest accounts</h3>
+<p>These are great for working with someone who feels like a member of your organization but needs only limited access to Slack.</p>
+<p><strong>It’s important to note that guest accounts:</strong></p>
+<ul>
+<li>Are available for paid workspaces. Guests can belong to a single channel or multiple channels.</li>
+<li>Can be invited to your workspace just like regular members via the invitations page.</li>
+<li>Have icons by their profile photos: a triangle for single-channel guests and a square for multi-channel guests.</li>
+</ul>
+<h3>Shared channels</h3>
+<p>Two separate organizations can work together in Slack, each from within their own Slack workspace.</p>
+<p><strong>The benefits of shared channels include:</strong></p>
+<ul>
+<li>Working with external parties is as straightforward and fluid as working with your own colleagues. </li>
+<li>Both teams have a common place to collaborate, loop in the right people on an as-needed basis, and build a collective repository of knowledge that anyone on either team can add to and reference.</li>
+<li>Both teams can send messages, share files, and access the channel history.</li>
+<li>Any member of the shared channel can also direct-message (DM) any other member in the channel, even if they’re from the other team.</li>
+</ul>
+<h2>Should I create a guest account or use a shared channel?</h2>
+<p><strong>If you’re working with&#8230;</strong></p>
+<ul>
+<li>An individual &#8211; Then use a guest account</li>
+<li>A team &#8211; Then use a shared channel</li>
+</ul>
+<p>More and more organizations are moving toward shared channels for the additional control and flexibility they provide—especially when collaborating with two or more people at another company.</p>
+<h2>Guests vs. shared channels comparison</h2>
+[aside headline="Who are you working with?" description="" bullets="Guests: Someone who feels like a member of your organization but needs limited access to Slack, such as contractors and interns | Shared channels: An external organization, like clients, vendors and partners. Both organizations need to be on a paid Slack plan. " /]
+<p>&nbsp;</p>
+[aside headline="How many people are involved?" description="" bullets="Guests: Only one or two people from the guest organization | Shared channels: Multiple people from each company are involved, with the ability to add members as work scales" /]
+<p>&nbsp;</p>
+[aside headline="Data access" description="" bullets="Guests: Only the host organization has access to the communication and files when the guest account expires | Shared channels: Each company keeps a record of the communication and files after the channel is disconnected" /]
+<p>&nbsp;</p>
+[aside headline="Security" description="" bullets="Guests: Only workspace admins or owners can invite or manage guest accounts | Shared channels: Users can initiate a shared channel by sharing an invitation link with their external partner. Depending on your settings, admins on both sides must approve the shared channel and can disconnect the shared channel at any time" /]
+<p>&nbsp;</p>
+[aside headline="Cost" description="" bullets="Guests: Teams get 5 free single-channel guests per paid active member, and multi-channel guests are billed as regular users | Shared channels: Unlimited number of shared channels at no cost" /]
+<p>&nbsp;</p>
+[aside headline="Ease of access" description="" bullets="Guests: Guests need to log into your organization&rsquo;s workspace, rather than using their own Slack workspace | Shared channels: People from other companies can collaborate in the shared channel right away from their own Slack workspace" /]
+<p>&nbsp;</p>
+[aside headline="Custom emoji" description="" bullets="Guests: Guests will have access to your full library of emoji | Shared channels: Custom emoji can be used and will be displayed to both teams. The other team can +1 a custom emoji of yours but can&rsquo;t see your set in their emoji picker" /]
+<p>&nbsp;</p>
+[aside headline="Direct messages" description="" bullets="Guests: Guests can DM only members of the channel(s) that they&rsquo;re in | Shared channels: You can DM or group DM anyone in a shared channel, including external members" /]
+<p>&nbsp;</p>
+[aside headline="Invites / admin management" description="" bullets="Guests: Admins must manually provision guest accounts one by one. Admins can choose an automatic expiration date for each guest account  | Shared channels: Once the shared channel is created, both teams can invite others from their workspace to join the channel as projects evolve and additional people need access" /]';
+		$clean_html = $purifier->purify($dirty_html);
+		$expected_html = '<h2>Guest accounts and shared channels</h2>
+<h3>Guest accounts</h3>
+<p>These are great for working with someone who feels like a member of your organization but needs only limited access to Slack.</p>
+<p><strong>It’s important to note that guest accounts:</strong></p>
+<ul><li>Are available for paid workspaces. Guests can belong to a single channel or multiple channels.</li>
+<li>Can be invited to your workspace just like regular members via the invitations page.</li>
+<li>Have icons by their profile photos: a triangle for single-channel guests and a square for multi-channel guests.</li>
+</ul><h3>Shared channels</h3>
+<p>Two separate organizations can work together in Slack, each from within their own Slack workspace.</p>
+<p><strong>The benefits of shared channels include:</strong></p>
+<ul><li>Working with external parties is as straightforward and fluid as working with your own colleagues. </li>
+<li>Both teams have a common place to collaborate, loop in the right people on an as-needed basis, and build a collective repository of knowledge that anyone on either team can add to and reference.</li>
+<li>Both teams can send messages, share files, and access the channel history.</li>
+<li>Any member of the shared channel can also direct-message (DM) any other member in the channel, even if they’re from the other team.</li>
+</ul><h2>Should I create a guest account or use a shared channel?</h2>
+<p><strong>If you’re working with…</strong></p>
+<ul><li>An individual – Then use a guest account</li>
+<li>A team – Then use a shared channel</li>
+</ul><p>More and more organizations are moving toward shared channels for the additional control and flexibility they provide—especially when collaborating with two or more people at another company.</p>
+<h2>Guests vs. shared channels comparison</h2>
+[aside headline="Who are you working with?" description="" bullets="Guests: Someone who feels like a member of your organization but needs limited access to Slack, such as contractors and interns | Shared channels: An external organization, like clients, vendors and partners. Both organizations need to be on a paid Slack plan. " /]
+<p> </p>
+[aside headline="How many people are involved?" description="" bullets="Guests: Only one or two people from the guest organization | Shared channels: Multiple people from each company are involved, with the ability to add members as work scales" /]
+<p> </p>
+[aside headline="Data access" description="" bullets="Guests: Only the host organization has access to the communication and files when the guest account expires | Shared channels: Each company keeps a record of the communication and files after the channel is disconnected" /]
+<p> </p>
+[aside headline="Security" description="" bullets="Guests: Only workspace admins or owners can invite or manage guest accounts | Shared channels: Users can initiate a shared channel by sharing an invitation link with their external partner. Depending on your settings, admins on both sides must approve the shared channel and can disconnect the shared channel at any time" /]
+<p> </p>
+[aside headline="Cost" description="" bullets="Guests: Teams get 5 free single-channel guests per paid active member, and multi-channel guests are billed as regular users | Shared channels: Unlimited number of shared channels at no cost" /]
+<p> </p>
+[aside headline="Ease of access" description="" bullets="Guests: Guests need to log into your organization’s workspace, rather than using their own Slack workspace | Shared channels: People from other companies can collaborate in the shared channel right away from their own Slack workspace" /]
+<p> </p>
+[aside headline="Custom emoji" description="" bullets="Guests: Guests will have access to your full library of emoji | Shared channels: Custom emoji can be used and will be displayed to both teams. The other team can +1 a custom emoji of yours but can’t see your set in their emoji picker" /]
+<p> </p>
+[aside headline="Direct messages" description="" bullets="Guests: Guests can DM only members of the channel(s) that they’re in | Shared channels: You can DM or group DM anyone in a shared channel, including external members" /]
+<p> </p>
+[aside headline="Invites / admin management" description="" bullets="Guests: Admins must manually provision guest accounts one by one. Admins can choose an automatic expiration date for each guest account  | Shared channels: Once the shared channel is created, both teams can invite others from their workspace to join the channel as projects evolve and additional people need access" /]';
+		expect($clean_html)->toEqual($expected_html);
+		echo "finished.\n\n";
+    }
 }
