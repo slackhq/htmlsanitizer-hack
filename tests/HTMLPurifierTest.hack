@@ -81,6 +81,22 @@ class HTMLPurifierTest extends HackTest {
 		echo "finished.\n\n";
 	}
 
+	public function testMaintainSuperfluousDivs(): void {
+		echo "\ntestMaintainSuperfluousDivs()...";
+		// porting over first config classes....
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict["h2"=>vec[], "div"=>vec[]]);
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$dirty_html = '<div class="style1">
+<div class="style2">
+<h2>text</h2>
+</div>
+</div>';
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$clean_html = $purifier->purify($dirty_html);
+		// no-op, extra div should remain
+		expect($clean_html)->toEqual($dirty_html);
+	}
+
 	public function testRichFormattingPreserved() : void {
 		echo "\ntestRichFormattingPreserved()...";
 		//porting over first config classes....

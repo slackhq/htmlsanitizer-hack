@@ -370,25 +370,40 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
                         null, '', true, vec[], vec[], vec[], '', true);
         $this->info["b"] = $b_element;
 
-        $div_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, dict["align" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["left", "center", "right", "justify", "char"])], vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional(), null, '', false, vec[], vec[], vec[], '', false);
+        $div_element = new HTMLPurifier\HTMLPurifier_ElementDef(
+          true,
+          dict["align" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["left", "center", "right", "justify", "char"])],
+          vec[],
+          vec[],
+          vec[],
+          new ChildDef\HTMLPurifier_ChildDef_Optional($alt_child_elements),
+          null,
+          '',
+          false,
+          vec[],
+          vec[],
+          vec[],
+          '',
+          false
+        );
         $this->info["div"] = $div_element;
 
-		$aside_element = new HTMLPurifier\HTMLPurifier_ElementDef(
-			true,
-			dict[],
-			vec[],
-			vec[],
-			vec[],
-			new ChildDef\HTMLPurifier_ChildDef_Optional($alt_child_elements),
-			null,
-			'',
-			false,
-			vec[],
-			vec[],
-			vec[],
-			'',
-			false,
-		);
+        $aside_element = new HTMLPurifier\HTMLPurifier_ElementDef(
+          true,
+          dict[],
+          vec[],
+          vec[],
+          vec[],
+          new ChildDef\HTMLPurifier_ChildDef_Optional($alt_child_elements),
+          null,
+          '',
+          false,
+          vec[],
+          vec[],
+          vec[],
+          '',
+          false,
+        );
         $this->info["aside"] = $aside_element;
 
         $del_child_element = new ChildDef\HTMLPurifier_ChildDef_Chameleon(new ChildDef\HTMLPurifier_ChildDef_Optional(), new ChildDef\HTMLPurifier_ChildDef_Optional($alt_child_elements));
