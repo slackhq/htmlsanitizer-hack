@@ -1,7 +1,7 @@
 /* Created by Nikita Ashok and Jake Polacek on 08/04/2020 */
 namespace HTMLPurifier\Definition;
 use namespace HTMLPurifier;
-use namespace HTMLPurifier\{AttrDef, ChildDef};
+use namespace HTMLPurifier\{AttrDef, AttrTransform, ChildDef};
 use namespace HTMLPurifier\AttrDef\HTML;
 use namespace HH\Lib\{C, Str};
 
@@ -425,9 +425,22 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
             "srcset" => new AttrDef\HTMLPurifier_AttrDef_Text(),
             "sizes" => new AttrDef\HTMLPurifier_AttrDef_Text()
         ];
-        $img_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $img_add_attr, vec[], vec[], vec[], 
-            new ChildDef\HTMLPurifier_ChildDef_Empty(), null, '', false, vec["alt", "src"], vec[],
-            vec[], '', false);
+        $img_element = new HTMLPurifier\HTMLPurifier_ElementDef(
+          true,
+          $img_add_attr,
+          vec[],
+          vec[new AttrTransform\HTMLPurifier_AttrTransform_ImgRequired()],
+          vec[new AttrTransform\HTMLPurifier_AttrTransform_ImgRequired()],
+          new ChildDef\HTMLPurifier_ChildDef_Empty(),
+          null,
+          '',
+          false,
+          vec["alt", "src"],
+          vec[],
+          vec[],
+          '',
+          false
+        );
         $this->info["img"] = $img_element;
 
         $td_add_attr = dict[
