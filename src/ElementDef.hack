@@ -134,20 +134,30 @@ class HTMLPurifier_ElementDef {
     //  */
     // public bool $formatting;
 
-    public function __construct(public bool $standalone, dict<string, HTMLPurifier_AttrDef> $add_attr, vec<string> $drop_attr,
-                                public vec<HTMLPurifier_AttrTransform> $attr_transform_pre, public vec<HTMLPurifier_AttrTransform> $attr_transform_post,
-                                public HTMLPurifier_ChildDef $child, public ?HTMLPurifier_ContentSets $content_model, public string $content_model_type,
-                                public bool $descendants_are_inline, public vec<string> $required_attr, public vec<string> $excludes,
-                                public vec<string> $autoclose, public string $wrap, public bool $formatting) {
+    public function __construct(
+        public bool $standalone,
+        dict<string, HTMLPurifier_AttrDef> $add_attr,
+        vec<string> $drop_attr,
+        public vec<HTMLPurifier_AttrTransform> $attr_transform_pre,
+        public vec<HTMLPurifier_AttrTransform> $attr_transform_post,
+        public HTMLPurifier_ChildDef $child,
+        public ?HTMLPurifier_ContentSets $content_model,
+        public string $content_model_type,
+        public bool $descendants_are_inline,
+        public vec<string> $required_attr,
+        public vec<string> $excludes,
+        public vec<string> $autoclose,
+        public string $wrap, public bool $formatting
+    ) {
 
         $default_dict = dict[
-                "lang" => new AttrDef\HTMLPurifier_AttrDef_Lang(),
-                "style" => new AttrDef\HTMLPurifier_AttrDef_CSS(),
-                "title" => new AttrDef\HTMLPurifier_AttrDef_Text(),
-                "id" => new AttrDef\HTML\HTMLPurifier_AttrDef_HTML_ID(),
-                "xml:lang" => new AttrDef\HTMLPurifier_AttrDef_Lang(),
-                "class" => new AttrDef\HTML\HTMLPurifier_AttrDef_HTML_Class(),
-                "dir" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["ltr", "rtl"])
+            "lang" => new AttrDef\HTMLPurifier_AttrDef_Lang(),
+            "style" => new AttrDef\HTMLPurifier_AttrDef_CSS(),
+            "title" => new AttrDef\HTMLPurifier_AttrDef_Text(),
+            "id" => new AttrDef\HTML\HTMLPurifier_AttrDef_HTML_ID(),
+            "xml:lang" => new AttrDef\HTMLPurifier_AttrDef_Lang(),
+            "class" => new AttrDef\HTML\HTMLPurifier_AttrDef_HTML_Class(),
+            "dir" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["ltr", "rtl"])
         ];
 
         if (C\is_empty($add_attr) && C\is_empty($drop_attr)) {
