@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80a3618a8de99214feef1aca647928a0",
+    "content-hash": "d81488ed7e66272b5ba6fe531326e189",
     "packages": [
         {
             "name": "facebook/difflib",
@@ -190,22 +190,22 @@
         },
         {
             "name": "hhvm/hacktest",
-            "version": "v2.0.1",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hhvm/hacktest.git",
-                "reference": "cde86b675923d56955a2f0f95840206e52bd8618"
+                "reference": "2c70f92f235ea5bfb4d2d6f99ed83e44484cdcdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hhvm/hacktest/zipball/cde86b675923d56955a2f0f95840206e52bd8618",
-                "reference": "cde86b675923d56955a2f0f95840206e52bd8618",
+                "url": "https://api.github.com/repos/hhvm/hacktest/zipball/2c70f92f235ea5bfb4d2d6f99ed83e44484cdcdf",
+                "reference": "2c70f92f235ea5bfb4d2d6f99ed83e44484cdcdf",
                 "shasum": ""
             },
             "require": {
                 "facebook/hh-clilib": "^2.0.0",
-                "hhvm": "^4.15",
-                "hhvm/hhvm-autoload": "^2.0.2|^3.0",
+                "hhvm": "^4.6",
+                "hhvm/hhvm-autoload": "^2.0.2",
                 "hhvm/hsl": "^4.0",
                 "hhvm/type-assert": "^3.2"
             },
@@ -220,7 +220,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.x-dev"
+                    "dev-master": "1.x-dev"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -230,22 +230,22 @@
             "description": "The Hack Test Library",
             "support": {
                 "issues": "https://github.com/hhvm/hacktest/issues",
-                "source": "https://github.com/hhvm/hacktest/tree/master"
+                "source": "https://github.com/hhvm/hacktest/tree/v2.0.0"
             },
-            "time": "2020-02-07T21:57:16+00:00"
+            "time": "2019-10-25T16:00:51+00:00"
         },
         {
             "name": "hhvm/hhast",
-            "version": "v4.33.9",
+            "version": "v4.33.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hhvm/hhast.git",
-                "reference": "9f586c80055f73c17b95742ec97627c1d11a1deb"
+                "reference": "6fb31c5b38162fb0236f62270d17d009533e0f76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hhvm/hhast/zipball/9f586c80055f73c17b95742ec97627c1d11a1deb",
-                "reference": "9f586c80055f73c17b95742ec97627c1d11a1deb",
+                "url": "https://api.github.com/repos/hhvm/hhast/zipball/6fb31c5b38162fb0236f62270d17d009533e0f76",
+                "reference": "6fb31c5b38162fb0236f62270d17d009533e0f76",
                 "shasum": ""
             },
             "require": {
@@ -283,22 +283,22 @@
             "description": "A mutable AST library for Hack with linting and code migrations",
             "support": {
                 "issues": "https://github.com/hhvm/hhast/issues",
-                "source": "https://github.com/hhvm/hhast/tree/v4.33.9"
+                "source": "https://github.com/hhvm/hhast/tree/v4.33.6"
             },
-            "time": "2020-02-28T18:38:22+00:00"
+            "time": "2020-02-18T17:16:51+00:00"
         },
         {
             "name": "hhvm/hhvm-autoload",
-            "version": "v3.1.6",
+            "version": "v2.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hhvm/hhvm-autoload.git",
-                "reference": "9fbe10a1a11783085f3165cceb102b67af403aca"
+                "reference": "7da803b64fded641e672a7094b8ccd0fb2b6f464"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hhvm/hhvm-autoload/zipball/9fbe10a1a11783085f3165cceb102b67af403aca",
-                "reference": "9fbe10a1a11783085f3165cceb102b67af403aca",
+                "url": "https://api.github.com/repos/hhvm/hhvm-autoload/zipball/7da803b64fded641e672a7094b8ccd0fb2b6f464",
+                "reference": "7da803b64fded641e672a7094b8ccd0fb2b6f464",
                 "shasum": ""
             },
             "require": {
@@ -323,8 +323,7 @@
                     "Facebook\\AutoloadMap\\ComposerPlugin"
                 ],
                 "branch-alias": {
-                    "dev-master": "2.x-dev",
-                    "dev-CI_current_pull_request": "2.x-dev"
+                    "dev-master": "2.x-dev"
                 }
             },
             "autoload": {
@@ -335,9 +334,9 @@
             "notification-url": "https://packagist.org/downloads/",
             "support": {
                 "issues": "https://github.com/hhvm/hhvm-autoload/issues",
-                "source": "https://github.com/hhvm/hhvm-autoload/tree/v3.1.6"
+                "source": "https://github.com/hhvm/hhvm-autoload/tree/v2.0.14"
             },
-            "time": "2020-11-09T23:44:33+00:00"
+            "time": "2020-11-04T19:01:08+00:00"
         },
         {
             "name": "hhvm/hsl",
