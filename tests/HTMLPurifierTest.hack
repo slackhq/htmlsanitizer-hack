@@ -302,6 +302,21 @@ class HTMLPurifierTest extends HackTest {
 		echo "finished.\n\n";
 	}
 
+	public function testImagePolicyWithMissingAltAttribute() : void {
+		echo "\nrunning testImagePolicyWithMissingAltAttribute()...";
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
+			'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes']
+		]);
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$dirty_html = '<img loading="lazy" class="alignright" src="https://biz-hq.co/request-unlimited-pto@2x.jpg?w=360">';
+		$clean_html = $purifier->purify($dirty_html);
+		$expected_html = '<img class="alignright" src="https://biz-hq.co/request-unlimited-pto@2x.jpg?w=360" alt="request-unlimited-pto@2x.jpg?w=360">';
+		// do not remove images without alt attributes, add the basename as alt
+		expect($clean_html)->toEqual($expected_html);
+		echo "finished.\n\n";
+	}
+
 	public function testWebappPolicy() : void {
 		echo "\nrunning testWebappPolicy()...";
 		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
@@ -338,7 +353,7 @@ class HTMLPurifierTest extends HackTest {
 	}
 
 	public function testSpecialCharacterValidateUTF8() : void {
-		echo "\nrunning testWebappPolicy()...";
+		echo "\nrunning testSpecialCharacterValidateUTF8()...";
 		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
 			'b' => vec[],
 			'ul'=> vec[],
