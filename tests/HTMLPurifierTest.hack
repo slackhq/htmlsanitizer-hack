@@ -464,4 +464,43 @@ class HTMLPurifierTest extends HackTest {
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
 	}
+
+	public function testAtagTargetAttribute(): void {
+		echo "\nrunning testAtagTargetAttribute()...";
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict[
+				'b' => vec[],
+				'ul' => vec[],
+				'li' => vec[],
+				'ol' => vec[],
+				'h2' => vec[],
+				'h4' => vec[],
+				'br' => vec[],
+				'div' => vec[],
+				'strong' => vec[],
+				'del' => vec[],
+				'em' => vec[],
+				'pre' => vec[],
+				'code' => vec[],
+				'table' => vec[],
+				'tbody' => vec[],
+				'td' => vec[],
+				'th' => vec[],
+				'thead' => vec[],
+				'tr' => vec[],
+				'a' => vec['id', 'name', 'href', 'target', 'rel'],
+				'h3' => vec['class'],
+				'p' => vec['class'],
+				'aside' => vec['class'],
+				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
+			],
+		);
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$dirty_html = '<p><a name="bobcat" target="_blank"></a></p>';
+		$clean_html = $purifier->purify($dirty_html);
+		$expected_html = '<p><a name="bobcat" target="_blank"></a></p>';
+		expect($clean_html)->toEqual($expected_html);
+		echo "finished.\n\n";
+	}
 }
