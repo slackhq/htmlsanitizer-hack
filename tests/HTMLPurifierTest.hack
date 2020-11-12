@@ -425,4 +425,45 @@ class HTMLPurifierTest extends HackTest {
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
 	}
+
+	public function testQuote(): void {
+		echo "\nrunning testWebappPolicy()...";
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict[
+				'b' => vec[],
+				'ul' => vec[],
+				'li' => vec[],
+				'ol' => vec[],
+				'h2' => vec[],
+				'h4' => vec[],
+				'br' => vec[],
+				'div' => vec[],
+				'strong' => vec[],
+				'del' => vec[],
+				'em' => vec[],
+				'pre' => vec[],
+				'code' => vec[],
+				'table' => vec[],
+				'tbody' => vec[],
+				'td' => vec[],
+				'th' => vec[],
+				'thead' => vec[],
+				'tr' => vec[],
+				'a' => vec['id', 'name', 'href', 'target', 'rel'],
+				'h3' => vec['class'],
+				'p' => vec['class'],
+				'aside' => vec['class'],
+				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
+			],
+		);
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$dirty_html =
+			'<h3><img loading="lazy" class="alignnone size-full wp-image-1466" src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/at-mention-user-slack%402x.png" alt="Slack UI showing how to use the &quot;at&quot; mention to organize tasks and owners" width="1024" height="579" />How it works</h3>';
+		$clean_html = $purifier->purify($dirty_html);
+		$expected_html =
+			'<h3><img class="alignnone size-full wp-image-1466" src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/at-mention-user-slack%402x.png" alt="Slack UI showing how to use the &quot;at&quot; mention to organize tasks and owners" width="1024" height="579">How it works</h3>';
+		expect($clean_html)->toEqual($expected_html);
+		echo "finished.\n\n";
+	}
 }
