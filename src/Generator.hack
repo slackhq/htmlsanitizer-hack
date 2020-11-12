@@ -201,7 +201,7 @@ class HTMLPurifier_Generator {
     public function escape(string $string, int $quote = 0): string {
         // Workaround for APC bug on Mac Leopard reported by sidepodcast
         // http://htmlpurifier.org/phorum/read.php?3,4823,4846
-        if ($quote is null) {
+        if ($quote == 0) {
             $quote = \ENT_COMPAT;
         }
         return \htmlspecialchars($string, $quote, 'UTF-8');
