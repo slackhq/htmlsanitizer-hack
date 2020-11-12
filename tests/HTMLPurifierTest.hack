@@ -470,10 +470,10 @@ class HTMLPurifierTest extends HackTest {
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html =
-			'<h3><img loading="lazy" class="alignnone size-full wp-image-1466" src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/at-mention-user-slack%402x.png" alt="Slack UI showing how to use the &quot;at&quot; mention to organize tasks and owners" width="1024" height="579" />How it works</h3>';
+			'<h3><img loading="lazy" class="alignnone size-full wp-image-1466" src="https://a1b.cloudfront.net/test/6/at-test-user-test%402x.png" alt="how to use the &quot;at&quot; html sanitizer" width="1024" height="579" />How it works</h3>';
 		$clean_html = $purifier->purify($dirty_html);
 		$expected_html =
-			'<h3><img class="alignnone size-full wp-image-1466" src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/at-mention-user-slack%402x.png" alt="Slack UI showing how to use the &quot;at&quot; mention to organize tasks and owners" width="1024" height="579">How it works</h3>';
+			'<h3><img class="alignnone size-full wp-image-1466" src="https://a1b.cloudfront.net/test/6/at-test-user-test%402x.png" alt="how to use the &quot;at&quot; html sanitizer" width="1024" height="579">How it works</h3>';
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
 	}
