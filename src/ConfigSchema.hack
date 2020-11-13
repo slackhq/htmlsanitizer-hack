@@ -409,7 +409,7 @@ class HTMLPurifier_ConfigSchema {
             "Attr.AllowedClasses" => dict[],
             "Attr.ForbiddenClasses" => dict[],
             "Attr.AllowedFrameTargets" => vec[],
-			"Attr.AllowedRel" => dict["noopener" => true, "noreferrer" => true],
+            "Attr.AllowedRel" => dict["noopener" => true, "noreferrer" => true],
             "Attr.AllowedRev" => dict[],
             "Attr.ClassUseCDATA" => null,
             "Attr.DefaultImageAlt" => '',
