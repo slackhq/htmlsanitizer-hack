@@ -466,7 +466,7 @@ class HTMLPurifierTest extends HackTest {
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
 	}
-*/
+
 	public function testRel(): void {
 		echo "\nrunning testRel()...";
 		$policy = new HTMLPurifier\HTMLPurifier_Policy(
