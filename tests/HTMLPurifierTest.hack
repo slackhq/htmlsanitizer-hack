@@ -466,7 +466,7 @@ class HTMLPurifierTest extends HackTest {
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
 	}
-
+*/
 	public function testRel(): void {
 		echo "\nrunning testRel()...";
 		$policy = new HTMLPurifier\HTMLPurifier_Policy(
@@ -506,6 +506,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "finished.\n\n";
 	}
 
+
 	public function testAtagTargetAttribute(): void {
 		echo "\nrunning testAtagTargetAttribute()...";
 		$policy = new HTMLPurifier\HTMLPurifier_Policy(
@@ -538,9 +539,9 @@ class HTMLPurifierTest extends HackTest {
 		);
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
-		$dirty_html = '<p><a name="bobcat" target="_blank"></a></p>';
+		$dirty_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
 		$clean_html = $purifier->purify($dirty_html);
-		$expected_html = '<p><a name="bobcat" target="_blank"></a></p>';
+		$expected_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
 	}
