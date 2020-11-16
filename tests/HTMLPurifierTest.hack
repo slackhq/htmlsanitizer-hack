@@ -539,7 +539,7 @@ class HTMLPurifierTest extends HackTest {
 		);
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
-		$dirty_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
+		$dirty_html = '<p><a name="bobcat" target="_blank"></a></p>';
 		$clean_html = $purifier->purify($dirty_html);
 		$expected_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
 		expect($clean_html)->toEqual($expected_html);
