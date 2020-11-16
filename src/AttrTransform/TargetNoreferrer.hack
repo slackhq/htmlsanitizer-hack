@@ -13,17 +13,17 @@ use namespace HTMLPurifier;
  */
 class HTMLPurifier_AttrTransform_TargetNoreferrer extends HTMLPurifier\HTMLPurifier_AttrTransform {
 	/**
-	* @param dic<string, mixed> $attr
+	* @param dic<string, string> $attr
 	* @param HTMLPurifier_Config $config
 	* @param HTMLPurifier_Context $context
-	* @return dict<string, mixed>
+	* @return dict<string, string>
 	 */
 	public function transform(
 		dict<string, string> $attr,
 		HTMLPurifier\HTMLPurifier_Config $config,
 		HTMLPurifier\HTMLPurifier_Context $context,
 	): dict<string, string> {
-		if (C\contains_key($attr, 'rel') && $attr['rel'] is string) {
+		if (C\contains_key($attr, 'rel')) {
 			$rels = Str\split((string)$attr['rel'], ' ');
 		} else {
 			$rels = array();

@@ -35,7 +35,7 @@ class HTMLPurifier_AttrTransform_TargetBlank extends HTMLPurifier\HTMLPurifier_A
 		}
 
 		// XXX Kind of inefficient
-		$url = $this->parser->parse((string)$attr['href']);
+		$url = $this->parser->parse($attr['href']);
 		$scheme = $url->getSchemeObj($config, $context);
 
 		if ($scheme is nonnull && $scheme->browsable && !$url->isBenign($config, $context)) {
