@@ -11,7 +11,7 @@ use namespace HH\Lib\C;
  */
 abstract class HTMLPurifier_AttrTransform {
     // Makes changes to the attributes dependent on multiple values.
-    abstract public function transform(dict<string, mixed> $attr, HTMLPurifier_Config $config, HTMLPurifier_Context $context): dict<string, mixed>;
+    abstract public function transform(dict<string, string> $attr, HTMLPurifier_Config $config, HTMLPurifier_Context $context): dict<string, string>;
 
     // Prepends CSS properties to the style attribute, creating the attribute if it doesn't exist.
     public function prependCSS(inout dict<string, mixed> $attr, string $css): void {

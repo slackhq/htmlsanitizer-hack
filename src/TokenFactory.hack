@@ -21,7 +21,7 @@ class HTMLPurifier_TokenFactory {
         $this->p_comment = new Token\HTMLPurifier_Token_Comment('');
     }
 
-    public function createStart(string $name, dict<string, mixed> $attr): Token\HTMLPurifier_Token_Start {
+    public function createStart(string $name, dict<string, string> $attr): Token\HTMLPurifier_Token_Start {
         return new Token\HTMLPurifier_Token_Start($name, $attr);
     }
 
@@ -29,7 +29,7 @@ class HTMLPurifier_TokenFactory {
         return new Token\HTMLPurifier_Token_End($name);
     }
 
-    public function createEmpty(string $name, dict<string, mixed> $attr = dict[]): Token\HTMLPurifier_Token_Empty {
+    public function createEmpty(string $name, dict<string, string> $attr = dict[]): Token\HTMLPurifier_Token_Empty {
         return new Token\HTMLPurifier_Token_Empty($name, $attr);
     }
 

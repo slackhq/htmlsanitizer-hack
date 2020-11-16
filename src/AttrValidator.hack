@@ -80,14 +80,14 @@ class HTMLPurifier_AttrValidator {
         // DEFINITION CALL
         $defs = $definition->info[$token->name]->attr;
 
-        $attr_key = false;
-        $context->register('CurrentAttr', $attr_key);
+
+		$context->register('CurrentAttr', false);
 
         // iterate through all the attribute keypairs
         // Watch out for name collisions: $key has previously been used
         // $attr = $spec->assertType($attr);
         foreach ($attr as $attr_key => $value) {
-            $attr_key = (string)$attr_key;
+            //$attr_key = (string)$attr_key;
             // call the definition
             if (C\contains_key($defs, $attr_key)) {
                 // there is a local definition definedcod
@@ -137,7 +137,7 @@ class HTMLPurifier_AttrValidator {
                 // delegate it to the attribute classes to say exactly what.
 
                 // simple substitution
-                $attr[$attr_key] = $result;
+                $attr[$attr_key] = (string)$result;
             } else {
                 // nothing happens
             }

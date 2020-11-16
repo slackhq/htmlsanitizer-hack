@@ -26,11 +26,11 @@ class HTMLPurifier_AttrTransform_TargetBlank extends HTMLPurifier\HTMLPurifier_A
 	* @return dict<string, mixed>
 	 */
 	public function transform(
-		dict<string, mixed> $attr,
+		dict<string, string> $attr,
 		HTMLPurifier\HTMLPurifier_Config $config,
 		HTMLPurifier\HTMLPurifier_Context $context,
-	): dict<string, mixed> {
-		if (!isset($attr['href'])) {
+	): dict<string, string> {
+		if (!C\contains_key($attr, 'href')) {
 			return $attr;
 		}
 

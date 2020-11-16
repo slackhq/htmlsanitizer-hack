@@ -19,19 +19,19 @@ class HTMLPurifier_AttrTransform_TargetNoreferrer extends HTMLPurifier\HTMLPurif
 	* @return dict<string, mixed>
 	 */
 	public function transform(
-		dict<string, mixed> $attr,
+		dict<string, string> $attr,
 		HTMLPurifier\HTMLPurifier_Config $config,
 		HTMLPurifier\HTMLPurifier_Context $context,
-	): dict<string, mixed> {
-		if (isset($attr['rel']) && $attr['rel'] is string) {
+	): dict<string, string> {
+		if (C\contains_key($attr, 'rel') && $attr['rel'] is string) {
 			$rels = Str\split((string)$attr['rel'], ' ');
 		} else {
 			$rels = array();
 		}
-		if (isset($attr['target']) && !C\contains($rels, 'noreferrer')) {
+		if (C\contains_key($attr, 'target') && !C\contains($rels, 'noreferrer')) {
 			$rels[] = 'noreferrer';
 		}
-		if (!C\is_empty($rels) || isset($attr['rel'])) {
+		if (!C\is_empty($rels) || C\contains_key($attr, 'rel')) {
 			$attr['rel'] = Str\join($rels, ' ');
 		}
 

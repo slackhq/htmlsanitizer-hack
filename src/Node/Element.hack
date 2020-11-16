@@ -9,7 +9,7 @@ use namespace HTMLPurifier\Token;
  */
 class HTMLPurifier_Node_Element extends HTMLPurifier\HTMLPurifier_Node {
     public string $name;
-    public dict<string, mixed> $attr = dict[];
+    public dict<string, string> $attr = dict[];
     public vec<HTMLPurifier\HTMLPurifier_Node> $children = vec[];
     /**
      * Does this use the <a></a> form or the </a> form, i.e.
@@ -21,7 +21,13 @@ class HTMLPurifier_Node_Element extends HTMLPurifier\HTMLPurifier_Node {
     public int $endLine = 0;
     public vec<string> $endArmor = vec[];
 
-    public function __construct(string $name, dict<string, mixed> $attr = dict[], int $line=0, int $col=0, vec<string> $armor=vec[]) {
+	public function __construct(
+		string $name,
+		dict<string, string> $attr = dict[],
+		int $line = 0,
+		int $col = 0,
+		vec<string> $armor = vec[],
+	) {
         $this->name = $name;
         $this->attr = $attr;
         $this->line = $line;
