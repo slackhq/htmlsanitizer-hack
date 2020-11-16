@@ -545,4 +545,160 @@ class HTMLPurifierTest extends HackTest {
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
 	}
+
+	public function testAtagNoChange(): void {
+		echo "\nrunning testAtagNoChange()...";
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict[
+				'b' => vec[],
+				'ul' => vec[],
+				'li' => vec[],
+				'ol' => vec[],
+				'h2' => vec[],
+				'h4' => vec[],
+				'br' => vec[],
+				'div' => vec[],
+				'strong' => vec[],
+				'del' => vec[],
+				'em' => vec[],
+				'pre' => vec[],
+				'code' => vec[],
+				'table' => vec[],
+				'tbody' => vec[],
+				'td' => vec[],
+				'th' => vec[],
+				'thead' => vec[],
+				'tr' => vec[],
+				'a' => vec['id', 'name', 'href', 'target', 'rel'],
+				'h3' => vec['class'],
+				'p' => vec['class'],
+				'aside' => vec['class'],
+				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
+			],
+		);
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$dirty_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
+		$clean_html = $purifier->purify($dirty_html);
+		$expected_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
+		expect($clean_html)->toEqual($expected_html);
+		echo "finished.\n\n";
+	}
+
+	public function testAtagStripAdd(): void {
+		echo "\nrunning testAtagStripAdd()...";
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict[
+				'b' => vec[],
+				'ul' => vec[],
+				'li' => vec[],
+				'ol' => vec[],
+				'h2' => vec[],
+				'h4' => vec[],
+				'br' => vec[],
+				'div' => vec[],
+				'strong' => vec[],
+				'del' => vec[],
+				'em' => vec[],
+				'pre' => vec[],
+				'code' => vec[],
+				'table' => vec[],
+				'tbody' => vec[],
+				'td' => vec[],
+				'th' => vec[],
+				'thead' => vec[],
+				'tr' => vec[],
+				'a' => vec['id', 'name', 'href', 'target', 'rel'],
+				'h3' => vec['class'],
+				'p' => vec['class'],
+				'aside' => vec['class'],
+				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
+			],
+		);
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$dirty_html = '<p><a name="bobcat" target="_blank" rel="ab" target="_blank"></a></p>';
+		$clean_html = $purifier->purify($dirty_html);
+		$expected_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
+		expect($clean_html)->toEqual($expected_html);
+		echo "finished.\n\n";
+	}
+
+	public function testAtagStripLeave(): void {
+		echo "\nrunning testAtagStripLeave()...";
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict[
+				'b' => vec[],
+				'ul' => vec[],
+				'li' => vec[],
+				'ol' => vec[],
+				'h2' => vec[],
+				'h4' => vec[],
+				'br' => vec[],
+				'div' => vec[],
+				'strong' => vec[],
+				'del' => vec[],
+				'em' => vec[],
+				'pre' => vec[],
+				'code' => vec[],
+				'table' => vec[],
+				'tbody' => vec[],
+				'td' => vec[],
+				'th' => vec[],
+				'thead' => vec[],
+				'tr' => vec[],
+				'a' => vec['id', 'name', 'href', 'target', 'rel'],
+				'h3' => vec['class'],
+				'p' => vec['class'],
+				'aside' => vec['class'],
+				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
+			],
+		);
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$dirty_html = '<p><a name="bobcat" target="_blank" rel="ab noopener noreferrer"></a></p>';
+		$clean_html = $purifier->purify($dirty_html);
+		$expected_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
+		expect($clean_html)->toEqual($expected_html);
+		echo "finished.\n\n";
+	}
+
+	public function testAtagNoTarget(): void {
+		echo "\nrunning testAtagNoTarget()...";
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict[
+				'b' => vec[],
+				'ul' => vec[],
+				'li' => vec[],
+				'ol' => vec[],
+				'h2' => vec[],
+				'h4' => vec[],
+				'br' => vec[],
+				'div' => vec[],
+				'strong' => vec[],
+				'del' => vec[],
+				'em' => vec[],
+				'pre' => vec[],
+				'code' => vec[],
+				'table' => vec[],
+				'tbody' => vec[],
+				'td' => vec[],
+				'th' => vec[],
+				'thead' => vec[],
+				'tr' => vec[],
+				'a' => vec['id', 'name', 'href', 'target', 'rel'],
+				'h3' => vec['class'],
+				'p' => vec['class'],
+				'aside' => vec['class'],
+				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
+			],
+		);
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$dirty_html = '<p><a name="bobcat" rel="noopener noreferrer"></a></p>';
+		$clean_html = $purifier->purify($dirty_html);
+		$expected_html = '<p><a name="bobcat" rel="noopener noreferrer"></a></p>';
+		expect($clean_html)->toEqual($expected_html);
+		echo "finished.\n\n";
+	}
 }
