@@ -86,7 +86,6 @@ class HTMLPurifier_AttrValidator {
         // iterate through all the attribute keypairs
         // Watch out for name collisions: $key has previously been used
         foreach ($attr as $attr_key => $value) {
-            //$attr_key = (string)$attr_key;
             // call the definition
             if (C\contains_key($defs, $attr_key)) {
                 // there is a local definition definedcod
@@ -136,7 +135,7 @@ class HTMLPurifier_AttrValidator {
                 // delegate it to the attribute classes to say exactly what.
 
                 // simple substitution
-                $attr[$attr_key] = (string)$result;
+                $attr[$attr_key] = $result;
             } else {
                 // nothing happens
             }
