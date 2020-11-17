@@ -701,4 +701,18 @@ class HTMLPurifierTest extends HackTest {
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
 	}
+
+	public function testDisabledTargetBlankTransform(): void {
+		echo "\nrunning testAtagNoTarget()...";
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict['a' => vec['id', 'name', 'href', 'target', 'rel']],
+		);
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$dirty_html = '<a href="https://google.com"></a>';
+		$clean_html = $purifier->purify($dirty_html);
+		$expected_html = '<a href="https://google.com"></a>';
+		expect($clean_html)->toEqual($expected_html);
+		echo "finished.\n\n";
+	}
 }

@@ -30,6 +30,10 @@ class HTMLPurifier_AttrTransform_TargetBlank extends HTMLPurifier\HTMLPurifier_A
 		HTMLPurifier\HTMLPurifier_Config $config,
 		HTMLPurifier\HTMLPurifier_Context $context,
 	): dict<string, string> {
+		if (!$config->def->defaults['HTML.TargetBlank']) {
+			# This transform is turned off in the configuration
+			return $attr;
+		}
 		if (!C\contains_key($attr, 'href')) {
 			return $attr;
 		}
