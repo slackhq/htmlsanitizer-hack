@@ -95,10 +95,10 @@ class HTMLPurifier_AttrValidator {
                     // that must be overridden.
                     // Theoretically speaking, we could have a
                     // AttrDef_DenyAll, but this is faster!
-                    $result = false;
+                    $result = null;
                 } else {
                     // validate according to the element's definition
-                    $value = (string)$value;
+                    $value = $value;
                     $result = $defs[$attr_key]->validate(
                         $value,
                         $config,
@@ -108,7 +108,7 @@ class HTMLPurifier_AttrValidator {
             } elseif (C\contains_key($d_defs, $attr_key)) {
                 // there is a global definition defined, validate according
                 // to the global definition
-                $value = (string)$value;
+                $value = $value;
                 $result = $d_defs[$attr_key]->validate(
                     $value,
                     $config,
@@ -116,11 +116,11 @@ class HTMLPurifier_AttrValidator {
                 );
             } else {
                 // system never heard of the attribute? DELETE!
-                $result = false;
+                $result = null;
             }
 
             // put the results into effect
-            if (($result === '' && $value !== '') || $result === false || $result === null) {
+            if (($result === '' && $value !== '') ||  $result === null) {
                 // this is a generic error message that should replaced
                 // with more specific ones when possible
                 // if ($e) {
@@ -135,7 +135,7 @@ class HTMLPurifier_AttrValidator {
                 // delegate it to the attribute classes to say exactly what.
 
                 // simple substitution
-                $attr[$attr_key] = (string)$result;
+                $attr[$attr_key] = $result;
             } else {
                 // nothing happens
             }
