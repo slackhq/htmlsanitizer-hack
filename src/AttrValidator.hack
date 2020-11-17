@@ -135,7 +135,7 @@ class HTMLPurifier_AttrValidator {
                 // delegate it to the attribute classes to say exactly what.
 
                 // simple substitution
-                $attr[$attr_key] = $result;
+                $attr[$attr_key] = (string)$result;
             } else {
                 // nothing happens
             }
