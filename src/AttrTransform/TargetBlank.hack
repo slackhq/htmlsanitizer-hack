@@ -20,10 +20,10 @@ class HTMLPurifier_AttrTransform_TargetBlank extends HTMLPurifier\HTMLPurifier_A
 	}
 
 	/**
-	* @param dic<string, mixed> $attr
+	* @param dic<string, string> $attr
 	* @param HTMLPurifier_Config $config
 	* @param HTMLPurifier_Context $context
-	* @return dict<string, mixed>
+	* @return dict<string, string>
 	 */
 	public function transform(
 		dict<string, string> $attr,

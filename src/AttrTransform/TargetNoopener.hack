@@ -28,7 +28,7 @@ class HTMLPurifier_AttrTransform_TargetNoopener extends HTMLPurifier\HTMLPurifie
 			return $attr;
 		}
 		if (C\contains_key($attr, 'rel')) {
-			$rels = Str\split((string)$attr['rel'], ' ');
+			$rels = Str\split($attr['rel'], ' ');
 		} else {
 			$rels = vec<string>[];
 		}
