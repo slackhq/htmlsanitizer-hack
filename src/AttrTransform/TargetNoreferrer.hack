@@ -30,7 +30,7 @@ class HTMLPurifier_AttrTransform_TargetNoreferrer extends HTMLPurifier\HTMLPurif
 		if (C\contains_key($attr, 'rel')) {
 			$rels = Str\split($attr['rel'], ' ');
 		} else {
-			$rels = array();
+			$rels = vec<string>[];
 		}
 		if (C\contains_key($attr, 'target') && !C\contains($rels, 'noreferrer')) {
 			$rels[] = 'noreferrer';

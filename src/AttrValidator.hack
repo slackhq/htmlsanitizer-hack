@@ -81,11 +81,10 @@ class HTMLPurifier_AttrValidator {
         $defs = $definition->info[$token->name]->attr;
 
 
-		$context->register('CurrentAttr', false);
+        $context->register('CurrentAttr', false);
 
         // iterate through all the attribute keypairs
         // Watch out for name collisions: $key has previously been used
-        // $attr = $spec->assertType($attr);
         foreach ($attr as $attr_key => $value) {
             //$attr_key = (string)$attr_key;
             // call the definition
