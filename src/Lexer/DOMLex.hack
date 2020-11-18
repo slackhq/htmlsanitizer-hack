@@ -149,7 +149,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
             return false;
         }
 
-        $attr = $node->hasAttributes() ? $this->transformAttrToAssoc($node->attributes) : dict<string, mixed>[];
+        $attr = $node->hasAttributes() ? $this->transformAttrToAssoc($node->attributes) : dict<string, string>[];
         //not sure if hack domnode's have tag name
         $tag_name = $this->getTagName($node);
         if (!$tag_name) {
@@ -179,7 +179,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
     }
 
     // Converts a DOMNamedNodeMap of DOMAttr objects into an assoc array.
-    protected function transformAttrToAssoc(?\DOMNamedNodeMap<\DOMAttr> $node_map): dict<string, mixed> {
+    protected function transformAttrToAssoc(?\DOMNamedNodeMap<\DOMAttr> $node_map): dict<string, string> {
         $node_map = $node_map;
         if ($node_map is null) {
             throw new \Exception('Node Map should be nonnull, but it is null');

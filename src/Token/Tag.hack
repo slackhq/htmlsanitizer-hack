@@ -10,9 +10,9 @@ use namespace HH\Lib\{Dict, Str};
 class HTMLPurifier_Token_Tag extends HTMLPurifier\HTMLPurifier_Token {
     public bool $is_tag = true;
     public string $name;
-    public dict<string, mixed> $attr = dict[];
+    public dict<string, string> $attr = dict[];
 
-    public function __construct(string $name, dict<string, mixed> $attr = dict[], int $line=0, int $col=0, vec<string> $armor = vec[]) {
+    public function __construct(string $name, dict<string, string> $attr = dict[], int $line=0, int $col=0, vec<string> $armor = vec[]) {
         $this->name = Str\lowercase($name);
         if (!$attr) {
             $attr = dict[];

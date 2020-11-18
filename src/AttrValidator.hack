@@ -80,14 +80,12 @@ class HTMLPurifier_AttrValidator {
         // DEFINITION CALL
         $defs = $definition->info[$token->name]->attr;
 
-        $attr_key = false;
-        $context->register('CurrentAttr', $attr_key);
+
+        $context->register('CurrentAttr', false);
 
         // iterate through all the attribute keypairs
         // Watch out for name collisions: $key has previously been used
-        // $attr = $spec->assertType($attr);
         foreach ($attr as $attr_key => $value) {
-            $attr_key = (string)$attr_key;
             // call the definition
             if (C\contains_key($defs, $attr_key)) {
                 // there is a local definition definedcod
@@ -97,10 +95,10 @@ class HTMLPurifier_AttrValidator {
                     // that must be overridden.
                     // Theoretically speaking, we could have a
                     // AttrDef_DenyAll, but this is faster!
-                    $result = false;
+                    $result = null;
                 } else {
                     // validate according to the element's definition
-                    $value = (string)$value;
+                    $value = $value;
                     $result = $defs[$attr_key]->validate(
                         $value,
                         $config,
@@ -110,7 +108,7 @@ class HTMLPurifier_AttrValidator {
             } elseif (C\contains_key($d_defs, $attr_key)) {
                 // there is a global definition defined, validate according
                 // to the global definition
-                $value = (string)$value;
+                $value = $value;
                 $result = $d_defs[$attr_key]->validate(
                     $value,
                     $config,
@@ -118,11 +116,11 @@ class HTMLPurifier_AttrValidator {
                 );
             } else {
                 // system never heard of the attribute? DELETE!
-                $result = false;
+                $result = null;
             }
 
             // put the results into effect
-            if (($result === '' && $value !== '') || $result === false || $result === null) {
+            if (($result === '' && $value !== '') ||  $result === null) {
                 // this is a generic error message that should replaced
                 // with more specific ones when possible
                 // if ($e) {

@@ -18,10 +18,10 @@ class HTMLPurifier_AttrTransform_ImgRequired extends HTMLPurifier\HTMLPurifier_A
      * @return array
      */
     public function transform(
-			dict<string, mixed> $attr,
+			dict<string, string> $attr,
 			HTMLPurifier\HTMLPurifier_Config $config,
 			HTMLPurifier\HTMLPurifier_Context $context
-		): dict<string, mixed>
+		): dict<string, string>
 		{
         $src = true;
         if (!C\contains_key($attr, 'src')) {
