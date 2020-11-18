@@ -258,7 +258,17 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
             "target" => new HTML\HTMLPurifier_AttrDef_HTML_FrameTarget(vec["_blank"]),
             "href" => new AttrDef\HTMLPurifier_AttrDef_URI()
         ];
-        $a_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $a_add_attr, vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional(),
+		$a_element = new HTMLPurifier\HTMLPurifier_ElementDef(
+			true,
+			$a_add_attr,
+			vec[],
+			vec[],
+			vec[
+				new HTMLPurifier\AttrTransform\HTMLPurifier_AttrTransform_TargetBlank(),
+				new HTMLPurifier\AttrTransform\HTMLPurifier_AttrTransform_TargetNoopener(),
+				new HTMLPurifier\AttrTransform\HTMLPurifier_AttrTransform_TargetNoreferrer(),
+			],
+			new ChildDef\HTMLPurifier_ChildDef_Optional(),
                     null, '', true, vec[], vec['a'], vec[], '', true);
         $this->info["a"] = $a_element;
 
