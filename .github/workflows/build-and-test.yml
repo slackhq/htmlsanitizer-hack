@@ -52,7 +52,7 @@ jobs:
       - name: Typecheck
         run: hh_client
       - name: Run tests
-        run: .github/workflows/run-tests.sh
+        run: vendor/bin/hacktest tests/
       - name: Run lint
         if: matrix.hhvm != 'nightly'
         run: vendor/bin/hhast-lint ./src

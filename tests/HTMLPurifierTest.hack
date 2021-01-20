@@ -17,7 +17,7 @@ class HTMLPurifierTest extends HackTest {
 		$dirty_html = '<b>Bold';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
-		expect($clean_html)->toEqual('<b>Bold');
+		expect($clean_html)->toEqual('<b>Bold</b>');
 		echo "finished.\n\n";
 	}
 
