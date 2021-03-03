@@ -119,12 +119,19 @@ class HTMLPurifierTest extends HackTest {
 </table>';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
-		expect($clean_html)->toEqual('<table><caption>
+		expect($clean_html)->toEqual('<table>
+  <caption>
 	Cool table
   </caption>
-  <tfoot><tr><th>I can do so much!</th>
-	</tr></tfoot><tbody><tr><td style="font-size:16pt;color:#F00;font-family:sans-serif;text-align:center;">Wow</td>
-  </tr></tbody></table>');
+  <tfoot>
+	<tr>
+	  <th>I can do so much!</th>
+	</tr>
+  </tfoot>
+  <tbody><tr>
+	<td style="font-size:16pt;color:#F00;font-family:sans-serif;text-align:center;">Wow</td>
+  </tr>
+</tbody></table>');
 	}
 
 	public function testDOM(): void {
@@ -425,15 +432,19 @@ class HTMLPurifierTest extends HackTest {
 <p>&nbsp;</p>
 [aside headline="Security" description="" bullets="a sentence" /]';
 		$clean_html = $purifier->purify($dirty_html);
-		$expected_html = '<ul><li>Just a sentence. </li>
+		$expected_html = '<ul>
+<li>Just a sentence. </li>
 <li>Just a sentence.</li>
 <li>Just a sentence.</li>
 <li>Just a sentence.</li>
-</ul><h2>Should I?</h2>
+</ul>
+<h2>Should I?</h2>
 <p><strong>If you’re working with…</strong></p>
-<ul><li>An individual – abc</li>
+<ul>
+<li>An individual – abc</li>
 <li>A team – abc</li>
-</ul><p>p tags.</p>
+</ul>
+<p>p tags.</p>
 <h2>header 2</h2>
 [aside headline="Who are you working with?" description="" bullets="a sentence. " /]
 <p> </p>
