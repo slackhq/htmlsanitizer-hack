@@ -8,8 +8,8 @@ use namespace HTMLPurifier;
 use namespace HTMLPurifier\{Strategy, Token, Lexer};
 
 class HTMLPurifierTest extends HackTest {
-	
-	public function testMissingEndTags() : void {
+
+	public function testMissingEndTags(): void {
 		echo "\nrunning testMissingEndTags()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
@@ -21,7 +21,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "finished.\n\n";
 	}
 
-	public function testMaliciousCodeRemoved() : void {
+	public function testMaliciousCodeRemoved(): void {
 		echo "\ntestMaliciousCodeRemoved()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
@@ -33,7 +33,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "finished.\n\n";
 	}
 
-	public function testMaliciousCodeRemovedWithText() : void {
+	public function testMaliciousCodeRemovedWithText(): void {
 		echo "\ntestMaliciousCodeRemovedWithText()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
@@ -45,7 +45,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "finished.\n\n";
 	}
 
-	public function testIllegalNestingFixed() : void {
+	public function testIllegalNestingFixed(): void {
 		echo "\ntestIllegalNestingFixed()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
@@ -57,7 +57,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "finished.\n\n";
 	}
 
-	public function testDeprecatedTagsConverted() : void {
+	public function testDeprecatedTagsConverted(): void {
 		echo "\ntestDeprecatedTagsConverted()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
@@ -69,7 +69,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "finished.\n\n";
 	}
 
-	public function testCSSValidated() : void {
+	public function testCSSValidated(): void {
 		echo "\ntestCSSValidated()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
@@ -84,7 +84,7 @@ class HTMLPurifierTest extends HackTest {
 	public function testMaintainSuperfluousDivs(): void {
 		echo "\ntestMaintainSuperfluousDivs()...";
 		// porting over first config classes....
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict["h2"=>vec[], "div"=>vec[]]);
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict["h2" => vec[], "div" => vec[]]);
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$dirty_html = '<div class="style1">
 <div class="style2">
@@ -97,7 +97,7 @@ class HTMLPurifierTest extends HackTest {
 		expect($clean_html)->toEqual($dirty_html);
 	}
 
-	public function testRichFormattingPreserved() : void {
+	public function testRichFormattingPreserved(): void {
 		echo "\ntestRichFormattingPreserved()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
@@ -127,7 +127,7 @@ class HTMLPurifierTest extends HackTest {
   </tr></tbody></table>');
 	}
 
-	public function testDOM() : void {
+	public function testDOM(): void {
 		echo "\nrunning testDOM()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$context = new HTMLPurifier\HTMLPurifier_Context();
@@ -135,17 +135,18 @@ class HTMLPurifierTest extends HackTest {
 		$html = "<b>Bold";
 		$lexer = new Lexer\HTMLPurifier_Lexer_DOMLex();
 		$tokens = $lexer->tokenizeHTML($html, $config, $context);
-		
+
 		$expected_tokens = vec[
 			new Token\HTMLPurifier_Token_Start("b", dict[]),
 			new Token\HTMLPurifier_Token_Text("Bold"),
-			new Token\HTMLPurifier_Token_End("b", dict[])];
+			new Token\HTMLPurifier_Token_End("b", dict[]),
+		];
 
 		expect($tokens)->toHaveSameContentAs($expected_tokens);
 		echo "finished.\n";
 	}
 
-	public function testStrategies() : void {
+	public function testStrategies(): void {
 		echo "\nrunning testStrategies()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$context = new HTMLPurifier\HTMLPurifier_Context();
@@ -155,9 +156,11 @@ class HTMLPurifierTest extends HackTest {
 		$fix_nesting = new Strategy\HTMLPurifier_Strategy_FixNesting();
 		$validate_attributes = new Strategy\HTMLPurifier_Strategy_ValidateAttributes();
 
-		$tokens = vec[new Token\HTMLPurifier_Token_Start("b", dict[]),
+		$tokens = vec[
+			new Token\HTMLPurifier_Token_Start("b", dict[]),
 			new Token\HTMLPurifier_Token_Text("Text"),
-			new Token\HTMLPurifier_Token_End("b", dict[])];
+			new Token\HTMLPurifier_Token_End("b", dict[]),
+		];
 
 		$rfe_tokens = $remove_foreign_elements->execute($tokens, $config, $context);
 		$mwf_tokens = $make_well_formed->execute($tokens, $config, $context);
@@ -187,7 +190,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testPolicyAllowListUnCleanWithPolicyDict()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-  		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict["a"=>vec[]]);
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict["a" => vec[]]);
 		$dirty_html = '<b>Hello';
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$clean_html = $purifier->purify($dirty_html);
@@ -223,8 +226,8 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testPolicyAllowListClean()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-  		$config->def->defaults['HTML.Allowed'] = "div[align]";
-  		$dirty_html = '<div align="center" title="hi"><b>Hello</b>';
+		$config->def->defaults['HTML.Allowed'] = "div[align]";
+		$dirty_html = '<div align="center" title="hi"><b>Hello</b>';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<div align="center">Hello</div>');
@@ -236,13 +239,17 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testSanitizeHtmlWithIframeForVideoPolicySet()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-  		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict["iframe"=>vec["title","width","height","src","allowfullscreen"]]);
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict["iframe" => vec["title", "width", "height", "src", "allowfullscreen"]],
+		);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 
 		$dirty_html = '<iframe src="https://www.example.com/watch?v=M84hFmNhTQU" height="364" width="576"></iframe>';
 		$clean_html = $purifier->purify($dirty_html);
-		expect($clean_html)->toEqual('<iframe src="https://www.example.com/watch?v=M84hFmNhTQU" height="364" width="576"></iframe>');
+		expect($clean_html)->toEqual(
+			'<iframe src="https://www.example.com/watch?v=M84hFmNhTQU" height="364" width="576"></iframe>',
+		);
 		echo "finished.\n\n";
 	}
 
@@ -250,7 +257,9 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testSanitizeHtmlWithIframeForSearchProtocolsPolicySet()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-  		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict["iframe"=>vec["title","width","height","src","allowfullscreen"]]);
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict["iframe" => vec["title", "width", "height", "src", "allowfullscreen"]],
+		);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		// Test1 clean iframe with usertesting domain with no protocol
@@ -262,7 +271,9 @@ class HTMLPurifierTest extends HackTest {
 			allowfullscreen=true
 			></iframe>';
 		$clean_html = $purifier->purify($dirty_html);
-		expect($clean_html)->toEqual('<iframe title="Wildlife" width="500" height="400" src="//www.example.com" allowfullscreen="true"></iframe>');
+		expect($clean_html)->toEqual(
+			'<iframe title="Wildlife" width="500" height="400" src="//www.example.com" allowfullscreen="true"></iframe>',
+		);
 
 		$dirty_html = '<iframe
 			title="Wildlife"
@@ -270,9 +281,11 @@ class HTMLPurifierTest extends HackTest {
 			height="400"
 			src="https://www.example.com/"
 			allowfullscreen=true
-			></iframe>';		
+			></iframe>';
 		$clean_html = $purifier->purify($dirty_html);
-		expect($clean_html)->toEqual('<iframe title="Wildlife" width="500" height="400" src="https://www.example.com/" allowfullscreen="true"></iframe>');
+		expect($clean_html)->toEqual(
+			'<iframe title="Wildlife" width="500" height="400" src="https://www.example.com/" allowfullscreen="true"></iframe>',
+		);
 		echo "finished.\n\n";
 	}
 
@@ -286,65 +299,71 @@ class HTMLPurifierTest extends HackTest {
 		$dirty_html = '<a href="http://localhost">foo</a>';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
-		expect($clean_html)->toEqual('<a href="/redirect.php?url=http%3A%2F%2Flocalhost&amp;check=c0efad89696082f5cb925d28636b0f4260f346391c92c70c8e9eba72591c2a73">foo</a>');
+		expect($clean_html)->toEqual(
+			'<a href="/redirect.php?url=http%3A%2F%2Flocalhost&amp;check=c0efad89696082f5cb925d28636b0f4260f346391c92c70c8e9eba72591c2a73">foo</a>',
+		);
 	}
 
-	public function testPercentageHeightWidth() : void {
+	public function testPercentageHeightWidth(): void {
 		echo "\nrunning testPercentageHeightWidth()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 
-		$dirty_html = '<iframe src="https://example.com/videoclip/abc123?autoplay=true&origin=slack" height="100%" width="100%" allow="fullscreen" allowfullscreen="true" frameborder="0"></iframe>';
+		$dirty_html =
+			'<iframe src="https://example.com/videoclip/abc123?autoplay=true&origin=slack" height="100%" width="100%" allow="fullscreen" allowfullscreen="true" frameborder="0"></iframe>';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
-		$expected_html = '<iframe src="https://example.com/videoclip/abc123?autoplay=true&amp;origin=slack" height="100%" width="100%" allowfullscreen="true"></iframe>';
+		$expected_html =
+			'<iframe src="https://example.com/videoclip/abc123?autoplay=true&amp;origin=slack" height="100%" width="100%" allowfullscreen="true"></iframe>';
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
 	}
 
-	public function testImagePolicyWithMissingAltAttribute() : void {
+	public function testImagePolicyWithMissingAltAttribute(): void {
 		echo "\nrunning testImagePolicyWithMissingAltAttribute()...";
 		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
-			'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes']
+			'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
 		]);
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<img loading="lazy" class="alignright" src="https://biz-hq.co/request-unlimited-pto@2x.jpg?w=360">';
 		$clean_html = $purifier->purify($dirty_html);
-		$expected_html = '<img class="alignright" src="https://biz-hq.co/request-unlimited-pto@2x.jpg?w=360" alt="request-unlimited-pto@2x.jpg?w=360">';
+		$expected_html =
+			'<img class="alignright" src="https://biz-hq.co/request-unlimited-pto@2x.jpg?w=360" alt="request-unlimited-pto@2x.jpg?w=360">';
 		// do not remove images without alt attributes, add the basename as alt
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
 	}
 
-	public function testWebappPolicy() : void {
+	public function testWebappPolicy(): void {
 		echo "\nrunning testWebappPolicy()...";
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
-			'b' => vec[],
-			'ul'=> vec[],
-			'li' => vec[],
-			'ol' => vec[],
-			'h2' => vec[],
-			'h4' => vec[],
-			'br' => vec[],
-			'div' => vec[],
-			'strong' => vec[],
-			'del' => vec[],
-			'em' => vec[],
-			'pre' => vec[],
-			'code' => vec[],
-			'table' => vec[],
-			'tbody' => vec[],
-			'td' => vec[],
-			'th' => vec[],
-			'thead' => vec[],
-			'tr' => vec[],
-			'a' => vec['id', 'name', 'href', 'target', 'rel'],
-			'h3' => vec['class'],
-			'p' => vec['class'],
-			'aside' => vec['class'],
-			'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes']
-			]
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict[
+				'b' => vec[],
+				'ul' => vec[],
+				'li' => vec[],
+				'ol' => vec[],
+				'h2' => vec[],
+				'h4' => vec[],
+				'br' => vec[],
+				'div' => vec[],
+				'strong' => vec[],
+				'del' => vec[],
+				'em' => vec[],
+				'pre' => vec[],
+				'code' => vec[],
+				'table' => vec[],
+				'tbody' => vec[],
+				'td' => vec[],
+				'th' => vec[],
+				'thead' => vec[],
+				'tr' => vec[],
+				'a' => vec['id', 'name', 'href', 'target', 'rel'],
+				'h3' => vec['class'],
+				'p' => vec['class'],
+				'aside' => vec['class'],
+				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
+			],
 		);
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
@@ -352,34 +371,35 @@ class HTMLPurifierTest extends HackTest {
 		echo "finished.\n\n";
 	}
 
-	public function testSpecialCharacterValidateUTF8() : void {
+	public function testSpecialCharacterValidateUTF8(): void {
 		echo "\nrunning testSpecialCharacterValidateUTF8()...";
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict[
-			'b' => vec[],
-			'ul'=> vec[],
-			'li' => vec[],
-			'ol' => vec[],
-			'h2' => vec[],
-			'h4' => vec[],
-			'br' => vec[],
-			'div' => vec[],
-			'strong' => vec[],
-			'del' => vec[],
-			'em' => vec[],
-			'pre' => vec[],
-			'code' => vec[],
-			'table' => vec[],
-			'tbody' => vec[],
-			'td' => vec[],
-			'th' => vec[],
-			'thead' => vec[],
-			'tr' => vec[],
-			'a' => vec['id', 'name', 'href', 'target', 'rel'],
-			'h3' => vec['class'],
-			'p' => vec['class'],
-			'aside' => vec['class'],
-			'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes']
-			]
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict[
+				'b' => vec[],
+				'ul' => vec[],
+				'li' => vec[],
+				'ol' => vec[],
+				'h2' => vec[],
+				'h4' => vec[],
+				'br' => vec[],
+				'div' => vec[],
+				'strong' => vec[],
+				'del' => vec[],
+				'em' => vec[],
+				'pre' => vec[],
+				'code' => vec[],
+				'table' => vec[],
+				'tbody' => vec[],
+				'td' => vec[],
+				'th' => vec[],
+				'thead' => vec[],
+				'tr' => vec[],
+				'a' => vec['id', 'name', 'href', 'target', 'rel'],
+				'h3' => vec['class'],
+				'p' => vec['class'],
+				'aside' => vec['class'],
+				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
+			],
 		);
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
@@ -704,9 +724,7 @@ class HTMLPurifierTest extends HackTest {
 
 	public function testDisabledTargetBlankTransform(): void {
 		echo "\nrunning testAtagNoTarget()...";
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(
-			dict['a' => vec['id', 'name', 'href', 'target', 'rel']],
-		);
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict['a' => vec['id', 'name', 'href', 'target', 'rel']]);
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<a href="https://google.com"></a>';
