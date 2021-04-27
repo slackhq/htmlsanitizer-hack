@@ -296,6 +296,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 
         $li_add_attr = dict[
             "type" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["1", "i", "I", "a", "A", "square", "disc", "circle"]),
+            "data-checked" => new AttrDef\HTMLPurifier_AttrDef_Enum(vec["false", "true"]),
             "value" => new AttrDef\HTMLPurifier_AttrDef_Integer(),
         ];
         $li_element = new HTMLPurifier\HTMLPurifier_ElementDef(true, $li_add_attr, vec[], vec[], vec[], new ChildDef\HTMLPurifier_ChildDef_Optional($alt_child_elements),
