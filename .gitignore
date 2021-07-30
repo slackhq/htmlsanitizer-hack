@@ -2,3 +2,4 @@
 www.pid
 vendor/
 .DS_Store
+composer.lock
