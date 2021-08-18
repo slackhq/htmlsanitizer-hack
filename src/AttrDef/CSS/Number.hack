@@ -42,6 +42,7 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier\HTMLPurifier_AttrDef 
                 // FALLTHROUGH
             case '+':
                 $number = Str\slice($number, 1);
+                // FALLTHROUGH
             default: // Do nothing (required in newer hhvm versions)
         }
 
