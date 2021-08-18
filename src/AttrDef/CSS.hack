@@ -31,7 +31,6 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier\HTMLPurifier_AttrDef {
         $definition = TypeAssert\instance_of(Definition\HTMLPurifier_CSSDefinition::class, $config->getCSSDefinition());
         $allow_duplicates = $config->def->defaults["CSS.AllowDuplicates"];
 
-
         // According to the CSS2.1 spec, the places where a
         // non-delimiting semicolon can appear are in strings
         // escape sequences.   So here is some dumb hack to

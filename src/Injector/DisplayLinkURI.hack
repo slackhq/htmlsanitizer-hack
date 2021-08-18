@@ -20,7 +20,6 @@ class HTMLPurifier_Injector_DisplayLinkURI extends HTMLPurifier\HTMLPurifier_Inj
      */
     public dict<string, vec<string>> $needed = dict['a' => vec[]];
 
-
     /**
      * @param HTMLPurifier_Token $token
      */

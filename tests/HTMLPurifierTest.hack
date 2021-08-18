@@ -241,7 +241,6 @@ class HTMLPurifierTest extends HackTest {
 		echo "finished.\n\n";
 	}
 
-
 	public function testSanitizeHtmlWithIframeForVideoPolicySet(): void {
 		echo "\nrunning testSanitizeHtmlWithIframeForVideoPolicySet()...";
 		//porting over first config classes....
@@ -250,7 +249,6 @@ class HTMLPurifierTest extends HackTest {
 			dict["iframe" => vec["title", "width", "height", "src", "allowfullscreen"]],
 		);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
-
 
 		$dirty_html = '<iframe src="https://www.example.com/watch?v=M84hFmNhTQU" height="364" width="576"></iframe>';
 		$clean_html = $purifier->purify($dirty_html);
@@ -536,7 +534,6 @@ class HTMLPurifierTest extends HackTest {
 		expect($clean_html)->toEqual($expected_html);
 		echo "finished.\n\n";
 	}
-
 
 	public function testAtagTargetAttribute(): void {
 		echo "\nrunning testAtagTargetAttribute()...";

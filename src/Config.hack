@@ -28,7 +28,6 @@ class HTMLPurifier_Config {
     public bool $chatty = true;
     private string $lock = '';
 
-
     public function __construct(HTMLPurifier_ConfigSchema $definition, ?HTMLPurifier_PropertyList $parent = null) {
         $parent = $parent ? $parent : $definition->defaultPlist;
         $this->def = $definition;

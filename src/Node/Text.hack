@@ -23,5 +23,4 @@ class HTMLPurifier_Node_Text extends HTMLPurifier\HTMLPurifier_Node {
         return tuple(new Token\HTMLPurifier_Token_Text($this->data, $this->line, $this->col), null);
     }
 
-
 }

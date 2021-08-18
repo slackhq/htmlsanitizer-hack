@@ -16,7 +16,6 @@ class HTMLPurifier_AttrDef_CSS_ListStyle extends HTMLPurifier\HTMLPurifier_AttrD
      */
     protected dict<string, HTMLPurifier\HTMLPurifier_AttrDef> $info = dict[];
 
-
     public function __construct(HTMLPurifier\HTMLPurifier_Config $_config) : void {
         $this->info['list-style-type'] = new AttrDef\HTMLPurifier_AttrDef_Enum(
             vec[

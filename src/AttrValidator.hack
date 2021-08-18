@@ -80,7 +80,6 @@ class HTMLPurifier_AttrValidator {
         // DEFINITION CALL
         $defs = $definition->info[$token->name]->attr;
 
-
         $context->register('CurrentAttr', false);
 
         // iterate through all the attribute keypairs

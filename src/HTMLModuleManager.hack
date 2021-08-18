@@ -71,7 +71,6 @@ class HTMLPurifier_HTMLModuleManager {
     
     public HTMLPurifier_AttrTypes $attrTypes;
 
-
     public function __construct()
     {
         // editable internal objects

@@ -125,7 +125,6 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier\HTMLPurifier_AttrDef {
         $final = ''; // output
         $r = '';
 
-
         for ($i = 0, $size = C\count($bits); $i < $size; $i++) {
             if ($bits[$i] === '') {
                 continue;

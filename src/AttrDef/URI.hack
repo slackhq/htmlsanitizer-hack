@@ -49,7 +49,6 @@ class HTMLPurifier_AttrDef_URI extends HTMLPurifier\HTMLPurifier_AttrDef
 
         $ok = false;
         do {
-
             // generic validation
             $result = $uri->validate($config, $context);
             if (!$result) {

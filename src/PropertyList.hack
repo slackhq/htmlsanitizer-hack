@@ -17,7 +17,6 @@ class HTMLPurifier_PropertyList {
     //cache
     protected keyset<arraykey> $cache = keyset[];
 
-
     public function __construct(?HTMLPurifier_PropertyList $parent = null) {
         $this->parent = $parent;
     }
