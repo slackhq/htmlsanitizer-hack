@@ -99,7 +99,6 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier\HTMLPurifier_Definition {
         }
     }
 
-
     public function filter(inout HTMLPurifier\HTMLPurifier_URI $uri, HTMLPurifier\HTMLPurifier_Config $config, HTMLPurifier\HTMLPurifier_Context $context): bool {
         foreach ($this->filters as $name => $f) {
             $result = $f->filter(inout $uri, $config, $context);
@@ -107,7 +106,6 @@ class HTMLPurifier_URIDefinition extends HTMLPurifier\HTMLPurifier_Definition {
         }
         return true;
     }
-
 
     public function postFilter(inout HTMLPurifier\HTMLPurifier_URI $uri, HTMLPurifier\HTMLPurifier_Config $config, HTMLPurifier\HTMLPurifier_Context $context): bool {
         foreach ($this->postFilters as $name => $f) {

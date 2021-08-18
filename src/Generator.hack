@@ -34,7 +34,6 @@ class HTMLPurifier_Generator {
     //Configuration for the generator
     protected HTMLPurifier_Config $config;
 
-
     public function __construct(HTMLPurifier_Config $config, HTMLPurifier_Context $context) {
         $this->config = $config;
         $this->scriptFix = $config->def->defaults['Output.CommentScriptContents'];

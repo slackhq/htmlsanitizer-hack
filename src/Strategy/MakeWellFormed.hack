@@ -213,7 +213,6 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
                     $this->token = $token;
                 }
 
-
                 // punt!
                 $reprocess = false;
                 continue;

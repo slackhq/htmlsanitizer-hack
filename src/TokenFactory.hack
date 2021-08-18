@@ -1,7 +1,6 @@
 /* Created by Nikita Ashok and Jake Polacek on 08/04/2020 */
 namespace HTMLPurifier;
 
-
 /**
  * Factory for token generation.
  */
@@ -40,6 +39,5 @@ class HTMLPurifier_TokenFactory {
     public function createComment(string $data): Token\HTMLPurifier_Token_Comment {
         return new Token\HTMLPurifier_Token_Comment($data);
     }
-
 
 }

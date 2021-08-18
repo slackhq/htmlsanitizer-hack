@@ -6,7 +6,6 @@ use namespace HTMLPurifier\AttrDef;
 use namespace HH\Lib\{C, Str};
 use namespace Facebook\TypeSpec;
 
-
 /**
  * Validates a font family list according to CSS spec
  */

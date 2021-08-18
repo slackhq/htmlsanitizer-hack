@@ -25,5 +25,4 @@ class HTMLPurifier_EntityParser {
         return '';
     }
 
-
 }

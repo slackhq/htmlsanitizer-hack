@@ -5,7 +5,6 @@ use namespace HTMLPurifier;
 use namespace HH\Lib\{C, Regex, Str};
 use namespace HTMLPurifier\Token;
 
-
 /**
  * Parser that uses Hacklang DOMNode.
  */

@@ -126,7 +126,6 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier\HTMLPurifier_Definition {
         $this->info['border-right-color'] = $this->info['border-top-color'];
         $border_color = $this->info['border-top-color'];
 
-
         $this->info['background'] = new CSS\HTMLPurifier_AttrDef_CSS_Background($config);
 
         $this->info['border-color'] = new CSS\HTMLPurifier_AttrDef_CSS_Multiple($border_color);
@@ -298,7 +297,6 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier\HTMLPurifier_Definition {
                                         );
             $this->info['max-width'] = $this->info['max-height'];
         }
-
 
         $this->info['text-decoration'] = new CSS\HTMLPurifier_AttrDef_CSS_TextDecoration();
 
