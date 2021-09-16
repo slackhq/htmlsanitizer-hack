@@ -1,7 +1,5 @@
 [//]: # (Created by Jake Polacek on 07/31/2020)
 
-[![Build Status](https://travis-ci.org/slackhq/htmlsanitizer-hack.svg?branch=master)](https://travis-ci.org/slackhq/htmlsanitizer-hack)
-
 # Maintainers Guide
 
 This document describes tools, tasks and workflow that one needs to be familiar with in order to effectively maintain
@@ -26,7 +24,7 @@ Aside from using the built-in debugger in VSCode, debugging can be done by runni
 
 To push a new release, follow these steps:
 
-1. Make sure the main branch is up to date with all changes and has been tested, and the Travis build is passing.
+1. Make sure the main branch is up to date with all changes and has been tested, and the CI tests are passing.
 2. Merge a new commit with the following changes:
 - Add a description of all changes since the last release in CHANGELOG.md
 - Add or update the "Latest releases" section in README.md with release highlights
