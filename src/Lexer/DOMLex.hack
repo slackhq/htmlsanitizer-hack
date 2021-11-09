@@ -31,7 +31,6 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 		if ($config->def->defaults['Core.AggressivelyFixLt']) {
 			$__unused_var = null;
 			$char = '[^a-z!\/]';
-			// $comment = re"/<!--(?<comment>.*?)(?<close>-->|\z)/is";
 			$comment = re"/<!--(?<comment>.*?)(?:[^-->$^<!--]+|(?R))*+(?<close>-->|\z)/is";
 			$html = Regex\replace_with(
 				$html,
