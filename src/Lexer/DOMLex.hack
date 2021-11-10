@@ -29,10 +29,10 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 		// attempt to armor stray angled brackets that cannot possibly
 		// form tags and thus are probably being used as emoticons
 		if ($config->def->defaults['Core.AggressivelyFixLt']) {
-			while (Str\contains($html, '<!')) {
+			while (Str\contains($html, '<!--')) {
 				$__unused_var = null;
 				$char = '[^a-z!\/]';
-				$comment = re"/<!--(?<comment>.*?)(?:[^-->$^<!--]+|(?R))*+(?<close>-->|\z)/is";
+				$comment = re"/<!--(?<comment>.*?)(?:[^-->$^<!--$]+|(?R))*+(?<close>-->|\z)/is";
 				$html = Regex\replace_with(
 					$html,
 					$comment,
