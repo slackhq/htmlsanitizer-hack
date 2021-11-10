@@ -29,23 +29,27 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 		// attempt to armor stray angled brackets that cannot possibly
 		// form tags and thus are probably being used as emoticons
 		if ($config->def->defaults['Core.AggressivelyFixLt']) {
-			$__unused_var = null;
-			$char = '[^a-z!\/]';
-			$comment = re"/<!--(?<comment>.*?)(?:[^-->$^<!--]+|(?R))*+(?<close>-->|\z)/is";
-			$html = Regex\replace_with(
-				$html,
-				$comment,
-				$match ==> $this->callbackArmorCommentEntities($match['comment'], $match['close']),
-			);
-			do {
-				$old = $html;
-				$html = \preg_replace("/<($char)/i", '&lt;\\1', $html);
-			} while ($html !== $old);
-			$html = Regex\replace_with(
-				$html,
-				$comment,
-				$match ==> $this->callbackUndoCommentSubst($match['comment'], $match['close']),
-			);
+			while (Str\contains($html, '<!')) {
+				$__unused_var = null;
+				$char = '[^a-z!\/]';
+				$comment = re"/<!--(?<comment>.*?)(?:[^-->$^<!--]+|(?R))*+(?<close>-->|\z)/is";
+				$html = Regex\replace_with(
+					$html,
+					$comment,
+					$match ==> $this->callbackArmorCommentEntities($match['comment'], $match['close']),
+				);
+				do {
+					$old = $html;
+					$html = \preg_replace("/<($char)/i", '&lt;\\1', $html);
+				} while ($html !== $old);
+				$html = Regex\replace_with(
+					$html,
+					$comment,
+					$match ==> $this->callbackUndoCommentSubst($match['comment'], $match['close']),
+				);
+				$html = Regex\replace($html, re"/<![-\s]*&[-\s]*>?/is", '');
+
+			}
 		}
 
 		//preprocess html, essential for UTF-8
