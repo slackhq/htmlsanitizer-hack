@@ -8,45 +8,67 @@ use namespace HTMLPurifier;
 use namespace HTMLPurifier\{Strategy, Token, Lexer};
 
 class CommentRemovalTest extends HackTest {
-	public function testSimplerFancyCommentRemoval(): void {
-		echo "\nrunning testSimplerFancyCommentRemoval()...";
+	public function testValidCommentRemoval(): void {
+		echo "\nrunning testValidCommentRemoval()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$dirty_html1 = '<!-- normal comment -->';
+		$dirty_html2 = '<!-- comment --><b>Hello World!</b>';
+		$dirty_html3 = '<!-- begin --><b>Hello World!</b><!-- end -->';
 
-		$dirty_html1 = '<!-->';
-		$dirty_html2 = '<!--->';
-		$dirty_html3 = '<!-- -->';
 		$clean_html1 = $purifier->purify($dirty_html1);
 		$clean_html2 = $purifier->purify($dirty_html2);
 		$clean_html3 = $purifier->purify($dirty_html3);
 
 		expect($clean_html1)->toEqual('');
-		expect($clean_html2)->toEqual('');
-		expect($clean_html3)->toEqual('');
+		expect($clean_html2)->toEqual('<b>Hello World!</b>');
+		expect($clean_html3)->toEqual('<b>Hello World!</b>');
 	}
 
-	public function testPoCFancyCommentRemoval(): void {
-		echo "\nrunning testPoCFancyCommentRemoval()...";
+	public function testParseErrorCommentRemoval(): void {
+		echo "\nrunning testParseErrorCommentRemoval()...";
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config);
+
+		$dirty_html1 = '<!-->'; // abruptly closed comment
+		$dirty_html2 = '<!--->'; // abruptly closed comment
+		$dirty_html3 = '<!-- incorrectly closed comment --!>';
+		$dirty_html4 = '<! incorrectly opened comment -->';
+
+		$clean_html1 = $purifier->purify($dirty_html1);
+		$clean_html2 = $purifier->purify($dirty_html2);
+		$clean_html3 = $purifier->purify($dirty_html3);
+		$clean_html4 = $purifier->purify($dirty_html4);
+
+		expect($clean_html1)->toEqual('');
+		expect($clean_html2)->toEqual('');
+		expect($clean_html3)->toEqual('');
+		expect($clean_html4)->toEqual('');
+	}
+
+	public function testCure53PoCCommentRemoval(): void {
+		echo "\nrunning testCure53PoCCommentRemoval()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict['a' => vec['id', 'name', 'href', 'target', 'rel']]);
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_poc1 = '<!--><iframe srcdoc="<script>alert(document.domain)</script>">-->x';
 		$dirty_poc2 = '<!---><iframe srcdoc="<script>alert(document.domain)</script>">-->x';
 		$dirty_poc3 = '<!-- --!><iframe srcdoc="<script>alert(document.domain)</script>">-->x';
 		$dirty_poc4 = '<!--><iframe srcdoc="<script>alert(document.domain)</script>"><!---->';
 		$dirty_poc5 = '<!--><iframe srcdoc="<script>alert(document.domain)</script>">--!>';
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+
 		$clean_poc1 = $purifier->purify($dirty_poc1);
 		$clean_poc2 = $purifier->purify($dirty_poc2);
 		$clean_poc3 = $purifier->purify($dirty_poc3);
 		$clean_poc4 = $purifier->purify($dirty_poc4);
 		$clean_poc5 = $purifier->purify($dirty_poc5);
+
 		expect($clean_poc1)->toEqual('x');
 		expect($clean_poc2)->toEqual('x');
 		expect($clean_poc3)->toEqual('x');
 		expect($clean_poc4)->toEqual('');
 		expect($clean_poc5)->toEqual('');
-		echo "finished.\n\n";
 	}
 
 	public function testCure53EmailPurification(): void {
@@ -80,6 +102,7 @@ class CommentRemovalTest extends HackTest {
 				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
 			],
 		);
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_email1 = "<!--><script>
 desktop.downloads.startDownload({
@@ -93,33 +116,31 @@ setTimeout(function(){
 </script>-->x";
 		$dirty_email2 =
 			"<!--><iframe srcdoc='<a target='_top' href='https://files.slack.com/files-pri/[EMAIL1’s_URL_HERE]'>CLICK</a>'>-->x";
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+
 		$clean_email1 = $purifier->purify($dirty_email1);
 		$clean_email2 = $purifier->purify($dirty_email2);
+
 		expect($clean_email1)->toEqual('x');
 		expect($clean_email2)->toEqual('x');
-		echo "finished.\n\n";
 	}
 
-	public function testFancyNestedComments(): void {
+	public function testNestedComments(): void {
 		echo "\nrunning testFancyNestedComments()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
-		$dirty_nested1 = '<!-<!-->->';
-		$dirty_nested2 = '<!-- <!-- Hello --> -->';
-		$dirty_nested3 = '<!--<!-->-->';
-		$dirty_nested4 = '<!-- <!-- Hello --> --><b>Hello World!</b><!-- end -->';
+		$dirty_nested1 = '<!-- <!-- Normally nested comment --> -->';
+		$dirty_nested2 = '<!--<!-->-->'; // Abruptly ended comment nested in normal comment
+		$dirty_nested3 = '<!-<!-->->'; // Doubly abruptly ended nested comment
+		$dirty_nested4 = '<!-- <!-- Nested Comment --> --><b>Hello World!</b><!-- Normal comment -->';
 
 		$clean_nested1 = $purifier->purify($dirty_nested1);
-		expect($clean_nested1)->toEqual('');
-
 		$clean_nested2 = $purifier->purify($dirty_nested2);
-		expect($clean_nested2)->toEqual('');
-
 		$clean_nested3 = $purifier->purify($dirty_nested3);
-		expect($clean_nested3)->toEqual('');
-
 		$clean_nested4 = $purifier->purify($dirty_nested4);
+
+		expect($clean_nested1)->toEqual('');
+		expect($clean_nested2)->toEqual('');
+		expect($clean_nested3)->toEqual('');
 		expect($clean_nested4)->toEqual('<b>Hello World!</b>');
 	}
 
@@ -131,33 +152,35 @@ setTimeout(function(){
 <iframe srcdoc=
 "<script>alert(document.domain)</script>">
 -->x';
-
 		$clean = $purifier->purify($dirty);
 		expect($clean)->toEqual('x');
 	}
 
-	public function testValidCommentRemoval(): void {
-		echo "\nrunning testValidCommentRemoval()...";
-		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
-		$html1 = '<!-- comment --><b>Hello World!</b>';
-		$html2 = '<!-- begin --><b>Hello World!</b><!-- end -->';
-
-		$clean1 = $purifier->purify($html1);
-		expect($clean1)->toEqual('<b>Hello World!</b>');
-
-		$clean2 = $purifier->purify($html2);
-		expect($clean2)->toEqual('<b>Hello World!</b>');
-	}
-
+	/**
+	* These dirty HTML comments were designed to defeat the original non-recursive algorithm. 
+	* The idea being when the original sanitizer stripped the first set of comments it would 
+	* create new, valid comments after those sections were deleted that wouldn’t have been 
+	* caught by the original algorithm because they were invalid until they stripped the first
+	* (and second, and …) set of comments. Now, this tests that they are completely removed,
+	* meaning that the iframe is also removed.
+	*/
 	public function testPartiallyRemovedComments(): void {
 		echo "\nrunning testPartiallyRemovedComments()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
-		$html1 =
+
+		$dirty_html1 = '<!-<!-->-->-><iframe srcdoc="<script>alert(document.domain)</script>">-<!-->-->->';
+		$dirty_html2 =
+			'<!-<!-<!-->-->->-<!-->-->->-><iframe srcdoc="<script>alert(document.domain)</script>">-<!-<!-->-->->-<!-->-->->->';
+		$dirty_html3 =
 			'<!-<!-<!-<!-->-->->-<!-->-->->->-<!-<!-->-->->-<!-->-->->->-><iframe srcdoc="<script>alert(document.domain)</script>">-<!-<!-<!-->-->->-<!-->-->->->-<!-<!-->-->->-<!-->-->->->->';
 
-		$clean = $purifier->purify($html1);
-		expect($clean)->toEqual('');
+		$clean_html1 = $purifier->purify($dirty_html1);
+		$clean_html2 = $purifier->purify($dirty_html2);
+		$clean_html3 = $purifier->purify($dirty_html3);
+
+		expect($clean_html1)->toEqual('');
+		expect($clean_html2)->toEqual('');
+		expect($clean_html3)->toEqual('');
 	}
 }
