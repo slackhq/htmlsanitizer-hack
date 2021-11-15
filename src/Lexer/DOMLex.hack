@@ -30,7 +30,6 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 		// form tags and thus are probably being used as emoticons
 		if ($config->def->defaults['Core.AggressivelyFixLt']) {
 			while (Str\contains($html, '<!--')) {
-				$__unused_var = null;
 				$char = '[^a-z!\/]';
 				$comment = re"/<!--(?<comment>.*?)(?:[^-->$^<!--$]+|(?R))*+(?<close>-->|\z)/is";
 				$html = Regex\replace_with(
@@ -69,9 +68,8 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 		$doc->loadHTML($html, $options);
 		\restore_error_handler();
 		$body = $doc->getElementsByTagName('html')
-			->item(0)
-			-> //<html>
-			getElementsByTagName('body')
+			->item(0) // <html
+			->getElementsByTagName('body')
 			->item(0); //<body> 
 		$div = $body->getElementsByTagName('div')->item(0); //<div>
 
