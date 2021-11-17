@@ -34,8 +34,8 @@ class HTMLPurifier_AttrTransform_ImgRequired extends HTMLPurifier\HTMLPurifier_A
 			if ($src) {
 				$alt = $config->def->defaults['Attr.DefaultImageAlt'];
 				if ($alt === '') {
-					$src_path = new File\Path((string)$attr['src']);
-					$attr['alt'] = $src_path->getBaseName();
+					$src_path = (string)$attr['src'];
+					$attr['alt'] = \basename($src_path);
 				} else {
 					$attr['alt'] = $alt;
 				}
