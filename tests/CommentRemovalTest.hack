@@ -138,10 +138,10 @@ setTimeout(function(){
 		$clean_nested3 = $purifier->purify($dirty_nested3);
 		$clean_nested4 = $purifier->purify($dirty_nested4);
 
-		expect($clean_nested1)->toEqual('');
-		expect($clean_nested2)->toEqual('');
+		expect($clean_nested1)->toEqual(' --&gt;');
+		expect($clean_nested2)->toEqual('--&gt;');
 		expect($clean_nested3)->toEqual('');
-		expect($clean_nested4)->toEqual('<b>Hello World!</b>');
+		expect($clean_nested4)->toEqual(' --&gt;<b>Hello World!</b>');
 	}
 
 	public function testLineBreakComments(): void {
@@ -183,9 +183,9 @@ setTimeout(function(){
 		$clean_html3 = $purifier->purify($dirty_html3);
 		$clean_html4 = $purifier->purify($dirty_html4);
 
-		expect($clean_html1)->toEqual('');
-		expect($clean_html2)->toEqual('');
-		expect($clean_html3)->toEqual('');
-		expect($clean_html4)->toEqual('');
+		expect($clean_html1)->toEqual('--&gt;-&gt;--&gt;');
+		expect($clean_html2)->toEqual('-&gt;--&gt;');
+		expect($clean_html3)->toEqual('-&gt;--&gt;-&gt;--&gt;--&gt;-&gt;');
+		expect($clean_html4)->toEqual('-&gt;--&gt;-&gt;--&gt;--&gt;-&gt;-&gt;--&gt;--&gt;-&gt;--&gt;--&gt;-&gt;-&gt;');
 	}
 }
