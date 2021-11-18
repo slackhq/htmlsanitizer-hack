@@ -169,18 +169,22 @@ setTimeout(function(){
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
 
-		$dirty_html1 = '<!-<!-->-->-><iframe srcdoc="<script>alert(document.domain)</script>">-<!-->-->->';
-		$dirty_html2 =
-			'<!-<!-<!-->-->->-<!-->-->->-><iframe srcdoc="<script>alert(document.domain)</script>">-<!-<!-->-->->-<!-->-->->->';
+		$dirty_html1 =
+			'<!--<!-<!-->-->-><iframe width=100 srcdoc="<script>alert(document.domain)</script>">-<!-->-->->';
+		$dirty_html2 = '<!-<!-->-->-><iframe srcdoc="<script>alert(document.domain)</script>">-<!-->-->->';
 		$dirty_html3 =
+			'<!-<!-<!-->-->->-<!-->-->->-><iframe srcdoc="<script>alert(document.domain)</script>">-<!-<!-->-->->-<!-->-->->->';
+		$dirty_html4 =
 			'<!-<!-<!-<!-->-->->-<!-->-->->->-<!-<!-->-->->-<!-->-->->->-><iframe srcdoc="<script>alert(document.domain)</script>">-<!-<!-<!-->-->->-<!-->-->->->-<!-<!-->-->->-<!-->-->->->->';
 
 		$clean_html1 = $purifier->purify($dirty_html1);
 		$clean_html2 = $purifier->purify($dirty_html2);
 		$clean_html3 = $purifier->purify($dirty_html3);
+		$clean_html4 = $purifier->purify($dirty_html4);
 
 		expect($clean_html1)->toEqual('');
 		expect($clean_html2)->toEqual('');
 		expect($clean_html3)->toEqual('');
+		expect($clean_html4)->toEqual('');
 	}
 }
