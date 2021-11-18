@@ -167,7 +167,8 @@ setTimeout(function(){
 	public function testPartiallyRemovedComments(): void {
 		echo "\nrunning testPartiallyRemovedComments()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict['a' => vec['id', 'name', 'href', 'target', 'rel']]);
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html1 =
 			'<!--<!-<!-->-->-><iframe width=100 srcdoc="<script>alert(document.domain)</script>">-<!-->-->->';
