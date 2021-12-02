@@ -14,34 +14,40 @@ use namespace HH\Lib\Str;
  */
 
 class HTMLPurifier_URIScheme_tel extends HTMLPurifier\HTMLPurifier_URIScheme {
-    /**
-     * @type bool
-     */
-    public bool $browsable = false;
+	/**
+	 * @type bool
+	 */
+	public bool $browsable = false;
 
-    /**
-     * @type bool
-     */
-    public bool $may_omit_host = true;
+	/**
+	 * @type bool
+	 */
+	public bool $may_omit_host = true;
 
-    /**
-     * @param HTMLPurifier_URI $uri
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
-     * @return bool
-     */
-    public function doValidate(inout HTMLPurifier\HTMLPurifier_URI $uri, HTMLPurifier\HTMLPurifier_Config $_config, 
-        HTMLPurifier\HTMLPurifier_Context $_context): bool {
-        $uri->userinfo = '';
-        $uri->host     = '';
-        $uri->port     = 0;
+	/**
+	 * @param HTMLPurifier_URI $uri
+	 * @param HTMLPurifier_Config $config
+	 * @param HTMLPurifier_Context $context
+	 * @return bool
+	 */
+	public function doValidate(
+		inout HTMLPurifier\HTMLPurifier_URI $uri,
+		HTMLPurifier\HTMLPurifier_Config $_config,
+		HTMLPurifier\HTMLPurifier_Context $_context,
+	): bool {
+		$uri->userinfo = '';
+		$uri->host = '';
+		$uri->port = 0;
 
-        // Delete all non-numeric characters, non-x characters
-        // from phone number, EXCEPT for a leading plus sign.
-        $uri->path = \preg_replace('/(?!^\+)[^\dx]/', '',
-                     // Normalize e(x)tension to lower-case
-                     Str\replace($uri->path,'X', 'x'));
+		// Delete all non-numeric characters, non-x characters
+		// from phone number, EXCEPT for a leading plus sign.
+		$uri->path = \preg_replace(
+			'/(?!^\+)[^\dx]/',
+			'',
+			// Normalize e(x)tension to lower-case
+			Str\replace($uri->path, 'X', 'x'),
+		);
 
-        return true;
-    }
+		return true;
+	}
 }

@@ -8,19 +8,25 @@ use namespace HTMLPurifier\DefinitionCache;
  */
 class HTMLPurifier_DefinitionCacheFactory {
 
-    protected dict<string, dict<string, DefinitionCache\HTMLPurifier_DefinitionCache_Serializer>> $caches = dict['Serializer' => dict[]];
+	protected dict<string, dict<string, DefinitionCache\HTMLPurifier_DefinitionCache_Serializer>> $caches =
+		dict['Serializer' => dict[]];
 
-    public function __construct() {
-        # uses create instead of construct
-    }
+	public function __construct() {
+		# uses create instead of construct
+	}
 
-    public static function instance(?HTMLPurifier_DefinitionCacheFactory $prototype = null): HTMLPurifier_DefinitionCacheFactory {
-        return new HTMLPurifier_DefinitionCacheFactory();
-    }
+	public static function instance(
+		?HTMLPurifier_DefinitionCacheFactory $prototype = null,
+	): HTMLPurifier_DefinitionCacheFactory {
+		return new HTMLPurifier_DefinitionCacheFactory();
+	}
 
-    public function create(string $type, HTMLPurifier_Config $config): DefinitionCache\HTMLPurifier_DefinitionCache_Serializer {
-        $method = $config->def->defaults['Cache.DefinitionImpl'];
-        $this->caches[$method][$type] = new DefinitionCache\HTMLPurifier_DefinitionCache_Serializer($type);
-        return $this->caches[$method][$type];
-    }
+	public function create(
+		string $type,
+		HTMLPurifier_Config $config,
+	): DefinitionCache\HTMLPurifier_DefinitionCache_Serializer {
+		$method = $config->def->defaults['Cache.DefinitionImpl'];
+		$this->caches[$method][$type] = new DefinitionCache\HTMLPurifier_DefinitionCache_Serializer($type);
+		return $this->caches[$method][$type];
+	}
 }

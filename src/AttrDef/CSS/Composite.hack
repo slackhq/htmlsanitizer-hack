@@ -14,31 +14,34 @@ use namespace HTMLPurifier;
  */
 class HTMLPurifier_AttrDef_CSS_Composite extends HTMLPurifier\HTMLPurifier_AttrDef {
 
-    /**
-     * List of objects that may process strings.
-     * @type HTMLPurifier_AttrDef[]
-     * @todo Make protected
-     */
-    public vec<HTMLPurifier\HTMLPurifier_AttrDef> $defs;
+	/**
+	 * List of objects that may process strings.
+	 * @type HTMLPurifier_AttrDef[]
+	 * @todo Make protected
+	 */
+	public vec<HTMLPurifier\HTMLPurifier_AttrDef> $defs;
 
-    public function __construct(vec<HTMLPurifier\HTMLPurifier_AttrDef> $defs) : void {
-        $this->defs = $defs;
-    }
+	public function __construct(vec<HTMLPurifier\HTMLPurifier_AttrDef> $defs): void {
+		$this->defs = $defs;
+	}
 
-    /**
-     * @param string $string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
-     * @return bool|string
-     */
-    public function validate(string $string, HTMLPurifier\HTMLPurifier_Config $config, 
-        HTMLPurifier\HTMLPurifier_Context $context) : string {
-        foreach ($this->defs as $i => $def) {
-            $result = $this->defs[$i]->validate($string, $config, $context);
-            if ($result !== '') {
-                return $result;
-            }
-        }
-        return '';
-    }
+	/**
+	 * @param string $string
+	 * @param HTMLPurifier_Config $config
+	 * @param HTMLPurifier_Context $context
+	 * @return bool|string
+	 */
+	public function validate(
+		string $string,
+		HTMLPurifier\HTMLPurifier_Config $config,
+		HTMLPurifier\HTMLPurifier_Context $context,
+	): string {
+		foreach ($this->defs as $i => $def) {
+			$result = $this->defs[$i]->validate($string, $config, $context);
+			if ($result !== '') {
+				return $result;
+			}
+		}
+		return '';
+	}
 }

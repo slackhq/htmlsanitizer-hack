@@ -9,39 +9,41 @@ use namespace HTMLPurifier;
  *       is to overload a returned false with an array.  Thus, it will never
  *       return false.
  */
-class HTMLPurifier_ChildDef_Optional extends HTMLPurifier_ChildDef_Required
-{
-    /**
-     * @type bool
-     */
-    public bool $allow_empty = true;
+class HTMLPurifier_ChildDef_Optional extends HTMLPurifier_ChildDef_Required {
+	/**
+	 * @type bool
+	 */
+	public bool $allow_empty = true;
 
-    /**
-     * @type string
-     */
-    public string $type = 'optional';
+	/**
+	 * @type string
+	 */
+	public string $type = 'optional';
 
-    /**
-     * @param array $children
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
-     * @return array
-     */
-    public function validateChildren(vec<HTMLPurifier\HTMLPurifier_Node> $children, HTMLPurifier\HTMLPurifier_Config $config, HTMLPurifier\HTMLPurifier_Context $context): (bool, vec<HTMLPurifier\HTMLPurifier_Node>)
-    {
-        $result = parent::validateChildren($children, $config, $context);
-        // we assume that $children is not modified
-        if ($result[0] === false) {
-            if ($children is nonnull) {
-                return tuple(true, vec[]);
-            } else if ($this->whitespace) {
-                return tuple(false, $children);
-            } else {
-                return tuple(false, vec[]);
-            }
-        }
-        return $result;
-    }
+	/**
+	 * @param array $children
+	 * @param HTMLPurifier_Config $config
+	 * @param HTMLPurifier_Context $context
+	 * @return array
+	 */
+	public function validateChildren(
+		vec<HTMLPurifier\HTMLPurifier_Node> $children,
+		HTMLPurifier\HTMLPurifier_Config $config,
+		HTMLPurifier\HTMLPurifier_Context $context,
+	): (bool, vec<HTMLPurifier\HTMLPurifier_Node>) {
+		$result = parent::validateChildren($children, $config, $context);
+		// we assume that $children is not modified
+		if ($result[0] === false) {
+			if ($children is nonnull) {
+				return tuple(true, vec[]);
+			} else if ($this->whitespace) {
+				return tuple(false, $children);
+			} else {
+				return tuple(false, vec[]);
+			}
+		}
+		return $result;
+	}
 }
 
 // vim: et sw=4 sts=4

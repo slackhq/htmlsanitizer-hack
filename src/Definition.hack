@@ -6,24 +6,24 @@ use namespace HTMLPurifier\Enums;
 */
 
 abstract class HTMLPurifier_Definition {
-    //Has setup been called yet?
-    public bool $setup = false;
+	//Has setup been called yet?
+	public bool $setup = false;
 
-    //If true, write out the final definition object to the cache.
-    public bool $optimized = false;
+	//If true, write out the final definition object to the cache.
+	public bool $optimized = false;
 
-    //string type, html, css, or uri
-    public ?Enums\DefinitionType $type;
-    public ?HTMLPurifier_Doctype $doctype;
+	//string type, html, css, or uri
+	public ?Enums\DefinitionType $type;
+	public ?HTMLPurifier_Doctype $doctype;
 
-    abstract protected function doSetup(HTMLPurifier_Config $config): void;
+	abstract protected function doSetup(HTMLPurifier_Config $config): void;
 
-    //Setup function that aborts if already setup
-    public function setup(HTMLPurifier_Config $config): void {
-        if ($this->setup) {
-            return;
-        }
-        $this->setup = true;
-        $this->doSetup($config);
-    }
+	//Setup function that aborts if already setup
+	public function setup(HTMLPurifier_Config $config): void {
+		if ($this->setup) {
+			return;
+		}
+		$this->setup = true;
+		$this->doSetup($config);
+	}
 }

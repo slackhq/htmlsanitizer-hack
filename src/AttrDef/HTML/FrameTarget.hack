@@ -10,33 +10,36 @@ use namespace HH\Lib\{C, Str};
  */
 class HTMLPurifier_AttrDef_HTML_FrameTarget extends AttrDef\HTMLPurifier_AttrDef_Enum {
 
-    /**
-     * @type vec
-     */
-    public vec<string> $valid_values = vec[]; // uninitialized value
+	/**
+	 * @type vec
+	 */
+	public vec<string> $valid_values = vec[]; // uninitialized value
 
-    /**
-     * @type bool
-     */
-    protected bool $case_sensitive = false;
+	/**
+	 * @type bool
+	 */
+	protected bool $case_sensitive = false;
 
-    public function __construct(vec<string> $valid_values=vec[], bool $case_sensitive = false)
-    {
-        parent::__construct($valid_values, $case_sensitive);
-    }
+	public function __construct(vec<string> $valid_values = vec[], bool $case_sensitive = false) {
+		parent::__construct($valid_values, $case_sensitive);
+	}
 
-    /**
-     * @param string $string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
-     * @return string
-     */
-    public function validate(string $string, HTMLPurifier\HTMLPurifier_Config $config, HTMLPurifier\HTMLPurifier_Context $context): string {
-        if (C\is_empty($this->valid_values)) {
-            $this->valid_values = $config->def->defaults['Attr.AllowedFrameTargets'];
-        }
-        return parent::validate($string, $config, $context);
-    }
+	/**
+	 * @param string $string
+	 * @param HTMLPurifier_Config $config
+	 * @param HTMLPurifier_Context $context
+	 * @return string
+	 */
+	public function validate(
+		string $string,
+		HTMLPurifier\HTMLPurifier_Config $config,
+		HTMLPurifier\HTMLPurifier_Context $context,
+	): string {
+		if (C\is_empty($this->valid_values)) {
+			$this->valid_values = $config->def->defaults['Attr.AllowedFrameTargets'];
+		}
+		return parent::validate($string, $config, $context);
+	}
 }
 
 // vim: et sw=4 sts=4

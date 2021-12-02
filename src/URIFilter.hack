@@ -27,44 +27,48 @@ namespace HTMLPurifier;
  */
 abstract class HTMLPurifier_URIFilter {
 
-    /**
-     * Unique identifier of filter.
-     * @type string
-     */
-    public string $name;
+	/**
+	 * Unique identifier of filter.
+	 * @type string
+	 */
+	public string $name;
 
-    /**
-     * True if this filter should be run after scheme validation.
-     * @type bool
-     */
-    public bool $post = false;
+	/**
+	 * True if this filter should be run after scheme validation.
+	 * @type bool
+	 */
+	public bool $post = false;
 
-    /**
-     * True if this filter should always be loaded.
-     * This permits a filter to be named Foo without the corresponding
-     * %URI.Foo directive existing.
-     * @type bool
-     */
-    public bool $always_load = false;
+	/**
+	 * True if this filter should always be loaded.
+	 * This permits a filter to be named Foo without the corresponding
+	 * %URI.Foo directive existing.
+	 * @type bool
+	 */
+	public bool $always_load = false;
 
-    /**
-     * Performs initialization for the filter.  If the filter returns
-     * false, this means that it shouldn't be considered active.
-     * @param HTMLPurifier_Config $config
-     * @return bool
-     */
-    public function prepare(HTMLPurifier_Config $_config): bool {
-        return true;
-    }
+	/**
+	 * Performs initialization for the filter.  If the filter returns
+	 * false, this means that it shouldn't be considered active.
+	 * @param HTMLPurifier_Config $config
+	 * @return bool
+	 */
+	public function prepare(HTMLPurifier_Config $_config): bool {
+		return true;
+	}
 
-    /**
-     * Filter a URI object
-     * @param HTMLPurifier_URI $uri Reference to URI object variable
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
-     * @return bool Whether or not to continue processing: false indicates
-     *         URL is no good, true indicates continue processing. Note that
-     *         all changes are committed directly on the URI object
-     */
-    abstract public function filter(inout HTMLPurifier_URI $uri, HTMLPurifier_Config $config, HTMLPurifier_Context $context): bool;
+	/**
+	 * Filter a URI object
+	 * @param HTMLPurifier_URI $uri Reference to URI object variable
+	 * @param HTMLPurifier_Config $config
+	 * @param HTMLPurifier_Context $context
+	 * @return bool Whether or not to continue processing: false indicates
+	 *         URL is no good, true indicates continue processing. Note that
+	 *         all changes are committed directly on the URI object
+	 */
+	abstract public function filter(
+		inout HTMLPurifier_URI $uri,
+		HTMLPurifier_Config $config,
+		HTMLPurifier_Context $context,
+	): bool;
 }
