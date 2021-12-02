@@ -132,7 +132,6 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier\HTMLPurifier_Strateg
 		$firstStackVal = $this->stackVal($top_node, $parent_def->descendants_are_inline, $parent_def->excludes, 0);
 		$stack->push($firstStackVal);
 
-
 		while (!$stack->isEmpty()) {
 			$stackItem = $stack->pop();
 			$node = $stackItem['top_node'];

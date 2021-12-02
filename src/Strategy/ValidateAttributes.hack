@@ -27,7 +27,6 @@ class HTMLPurifier_Strategy_ValidateAttributes extends HTMLPurifier\HTMLPurifier
 		$context->register('CurrentToken', $token);
 
 		foreach ($tokens as $_key => $token) {
-
 			// Had to add this in here because PHP was automatically updating with the ref in register 
 			$context->register('CurrentToken', $token);
 			// only process tokens that have attributes,

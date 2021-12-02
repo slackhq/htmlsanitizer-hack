@@ -49,7 +49,6 @@ class HTMLPurifier_AttrValidator {
 		// DEFINITION CALL
 		$d_defs = $definition->info_global_attr;
 
-
 		// don't update token until the very end, to ensure an atomic update
 		$attr = $token->attr;
 		// $spec = TypeSpec\dict(

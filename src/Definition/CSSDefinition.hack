@@ -170,7 +170,6 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 			],
 		);
 
-
 		$this->info['margin-right'] = new CSS\HTMLPurifier_AttrDef_CSS_Composite(
 			vec[
 				new CSS\HTMLPurifier_AttrDef_CSS_Length(),
