@@ -2,7 +2,7 @@
 namespace HTMLPurifier\Enums;
 
 enum DefinitionType: string {
-    HTML = 'html';
-    CSS = 'css';
-    URI = 'uri';
+	HTML = 'html';
+	CSS = 'css';
+	URI = 'uri';
 }

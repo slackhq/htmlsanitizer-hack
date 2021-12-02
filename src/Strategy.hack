@@ -11,8 +11,12 @@ namespace HTMLPurifier;
 
 abstract class HTMLPurifier_Strategy {
 
-    /**
-     * Executes the strategy on the tokens.
-     */
-    abstract public function execute(vec<HTMLPurifier_Token> $tokens, HTMLPurifier_Config $config, HTMLPurifier_Context $context): vec<HTMLPurifier_Token>;
+	/**
+	 * Executes the strategy on the tokens.
+	 */
+	abstract public function execute(
+		vec<HTMLPurifier_Token> $tokens,
+		HTMLPurifier_Config $config,
+		HTMLPurifier_Context $context,
+	): vec<HTMLPurifier_Token>;
 }

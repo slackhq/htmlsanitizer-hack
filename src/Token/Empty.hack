@@ -7,10 +7,9 @@ use namespace HTMLPurifier\{Node, Token};
  * Empty token class.
  */
 class HTMLPurifier_Token_Empty extends HTMLPurifier_Token_Tag {
-    public function toNode(): Node\HTMLPurifier_Node_Element {
-        $n = parent::toNode();
-        $n->empty = true;
-        return $n;
-    }
+	public function toNode(): Node\HTMLPurifier_Node_Element {
+		$n = parent::toNode();
+		$n->empty = true;
+		return $n;
+	}
 }
-

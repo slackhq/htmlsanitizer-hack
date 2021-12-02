@@ -13,64 +13,63 @@ use namespace HH\Shapes;
  */
 class HTMLPurifier_AttrDef_HTML_LinkTypes extends HTMLPurifier\HTMLPurifier_AttrDef {
 
-    /**
-     * Name config attribute to pull.
-     * @type string
-     */
-    protected string $name = '';
+	/**
+	 * Name config attribute to pull.
+	 * @type string
+	 */
+	protected string $name = '';
 
-    /**
-     * @param string $name
-     */
-    public function __construct(string $name)
-    {
-        $configLookup = dict[
-            'rel' => 'AllowedRel',
-            'rev' => 'AllowedRev'
-        ];
-        if (!C\contains_key($configLookup, $name)) {
-            \trigger_error(
-                'Unrecognized attribute name for link ' .
-                'relationship.',
-                \E_USER_ERROR
-            );
-            return;
-        }
-        $this->name = $configLookup[$name];
-    }
+	/**
+	 * @param string $name
+	 */
+	public function __construct(string $name) {
+		$configLookup = dict[
+			'rel' => 'AllowedRel',
+			'rev' => 'AllowedRev',
+		];
+		if (!C\contains_key($configLookup, $name)) {
+			\trigger_error('Unrecognized attribute name for link '.'relationship.', \E_USER_ERROR);
+			return;
+		}
+		$this->name = $configLookup[$name];
+	}
 
-    /**
-     * @param string $string
-     * @param HTMLPurifier_Config $config
-     * @param HTMLPurifier_Context $context
-     * @return string
-     */
-    public function validate(string $string, HTMLPurifier\HTMLPurifier_Config $config, HTMLPurifier\HTMLPurifier_Context $context): string {
-        $allowed = Shapes::toArray($config->def->defaults)['Attr.' . $this->name];
-        if (!($allowed is dict<_, _>)) {
-            throw new \Exception('Allowed should be a dict');
-        }
-        if (C\is_empty($allowed)) {
-            return '';
-        }
+	/**
+	 * @param string $string
+	 * @param HTMLPurifier_Config $config
+	 * @param HTMLPurifier_Context $context
+	 * @return string
+	 */
+	public function validate(
+		string $string,
+		HTMLPurifier\HTMLPurifier_Config $config,
+		HTMLPurifier\HTMLPurifier_Context $context,
+	): string {
+		$allowed = Shapes::toArray($config->def->defaults)['Attr.'.$this->name];
+		if (!($allowed is dict<_, _>)) {
+			throw new \Exception('Allowed should be a dict');
+		}
+		if (C\is_empty($allowed)) {
+			return '';
+		}
 
-        $string = $this->parseCDATA($string);
-        $parts = Str\split($string, ' ');
+		$string = $this->parseCDATA($string);
+		$parts = Str\split($string, ' ');
 
-        // lookup to prevent duplicates
-        $ret_lookup = dict[];
-        foreach ($parts as $part) {
-            $part = Str\lowercase(Str\trim($part));
-            if (!C\contains_key($allowed, $part)) {
-                continue;
-            }
-            $ret_lookup[$part] = true;
-        }
+		// lookup to prevent duplicates
+		$ret_lookup = dict[];
+		foreach ($parts as $part) {
+			$part = Str\lowercase(Str\trim($part));
+			if (!C\contains_key($allowed, $part)) {
+				continue;
+			}
+			$ret_lookup[$part] = true;
+		}
 
-        if (C\is_empty($ret_lookup)) {
-            return '';
-        }
-        $string = Str\join(Vec\keys($ret_lookup), ' ');
-        return $string;
-    }
+		if (C\is_empty($ret_lookup)) {
+			return '';
+		}
+		$string = Str\join(Vec\keys($ret_lookup), ' ');
+		return $string;
+	}
 }

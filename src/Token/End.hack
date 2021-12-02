@@ -8,11 +8,11 @@ use namespace HTMLPurifier\Node;
  */
 class HTMLPurifier_Token_End extends HTMLPurifier_Token_Tag {
 
-    public ?HTMLPurifier\HTMLPurifier_Token $start;
+	public ?HTMLPurifier\HTMLPurifier_Token $start;
 
-    <<__Override>>
-    public function toNode(): Node\HTMLPurifier_Node_Element {
-        throw new \Exception("HTMLPurifier_Token_End->toNode not supported");
-        //unsure why the original code does this
-    }
+	<<__Override>>
+	public function toNode(): Node\HTMLPurifier_Node_Element {
+		throw new \Exception("HTMLPurifier_Token_End->toNode not supported");
+		//unsure why the original code does this
+	}
 }

@@ -16,43 +16,46 @@ use namespace HH\Lib\{C, Str};
  *       shorthand declaration.  Thus, this class does not allow inherit.
  */
 class HTMLPurifier_AttrDef_CSS_Multiple extends HTMLPurifier\HTMLPurifier_AttrDef {
-    /**
-     * Instance of component definition to defer validation to.
-     */
-    public HTMLPurifier\HTMLPurifier_AttrDef $single;
+	/**
+	 * Instance of component definition to defer validation to.
+	 */
+	public HTMLPurifier\HTMLPurifier_AttrDef $single;
 
-    /**
-     * Max number of values allowed.
-     */
-    public int $max;
+	/**
+	 * Max number of values allowed.
+	 */
+	public int $max;
 
-    public function __construct(HTMLPurifier\HTMLPurifier_AttrDef $single, int $max = 4) : void {
-        $this->single = $single;
-        $this->max = $max;
-    }
+	public function __construct(HTMLPurifier\HTMLPurifier_AttrDef $single, int $max = 4): void {
+		$this->single = $single;
+		$this->max = $max;
+	}
 
-    public function validate(string $string, HTMLPurifier\HTMLPurifier_Config $config,
-        HTMLPurifier\HTMLPurifier_Context $context) : string {
-        $string = $this->mungeRgb($this->parseCDATA($string));
-        if ($string === '') {
-            return '';
-        }
-        $parts = Str\split($string, ' '); // parseCDATA replaced \r, \t and \n
-        $length = C\count($parts);
-        $final = '';
-        for ($i = 0, $num = 0; $i < $length && $num < $this->max; $i++) {
-            if (\ctype_space($parts[$i])) {
-                continue;
-            }
-            $result = $this->single->validate($parts[$i], $config, $context);
-            if ($result !== '') {
-                $final .= $result . ' ';
-                $num++;
-            }
-        }
-        if ($final === '') {
-            return '';
-        }
-        return Str\trim_right($final);
-    }
+	public function validate(
+		string $string,
+		HTMLPurifier\HTMLPurifier_Config $config,
+		HTMLPurifier\HTMLPurifier_Context $context,
+	): string {
+		$string = $this->mungeRgb($this->parseCDATA($string));
+		if ($string === '') {
+			return '';
+		}
+		$parts = Str\split($string, ' '); // parseCDATA replaced \r, \t and \n
+		$length = C\count($parts);
+		$final = '';
+		for ($i = 0, $num = 0; $i < $length && $num < $this->max; $i++) {
+			if (\ctype_space($parts[$i])) {
+				continue;
+			}
+			$result = $this->single->validate($parts[$i], $config, $context);
+			if ($result !== '') {
+				$final .= $result.' ';
+				$num++;
+			}
+		}
+		if ($final === '') {
+			return '';
+		}
+		return Str\trim_right($final);
+	}
 }

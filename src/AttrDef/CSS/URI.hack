@@ -16,58 +16,61 @@ use namespace HH\Lib\Str;
  */
 class HTMLPurifier_AttrDef_CSS_URI extends AttrDef\HTMLPurifier_AttrDef_URI {
 
-    public function __construct() : void {
-        parent::__construct(true); // always embedded
-    }
+	public function __construct(): void {
+		parent::__construct(true); // always embedded
+	}
 
-    public function validate(string $uri_string, HTMLPurifier\HTMLPurifier_Config $config,
-        HTMLPurifier\HTMLPurifier_Context $context) : string {
-        // parse the URI out of the string and then pass it onto
-        // the parent object
+	public function validate(
+		string $uri_string,
+		HTMLPurifier\HTMLPurifier_Config $config,
+		HTMLPurifier\HTMLPurifier_Context $context,
+	): string {
+		// parse the URI out of the string and then pass it onto
+		// the parent object
 
-        $uri_string = $this->parseCDATA($uri_string);
-        if (Str\search($uri_string, 'url(') !== 0) {
-            return '';
-        }
-        $uri_string = Str\slice($uri_string, 4);
-        if (Str\length($uri_string) === 0) {
-            return '';
-        }
-        $new_length = Str\length($uri_string) - 1;
-        if ($uri_string[$new_length] != ')') {
-            return '';
-        }
-        $uri_string_substr = Str\slice($uri_string, 0, $new_length);
-        $uri = Str\trim($uri_string_substr);
+		$uri_string = $this->parseCDATA($uri_string);
+		if (Str\search($uri_string, 'url(') !== 0) {
+			return '';
+		}
+		$uri_string = Str\slice($uri_string, 4);
+		if (Str\length($uri_string) === 0) {
+			return '';
+		}
+		$new_length = Str\length($uri_string) - 1;
+		if ($uri_string[$new_length] != ')') {
+			return '';
+		}
+		$uri_string_substr = Str\slice($uri_string, 0, $new_length);
+		$uri = Str\trim($uri_string_substr);
 
-        if (!Str\is_empty($uri) && ($uri[0] == "'" || $uri[0] == '"')) {
-            $quote = $uri[0];
-            $new_length = Str\length($uri) - 1;
-            if ($uri[$new_length] !== $quote) {
-                return '';
-            }
-            $uri = Str\slice($uri, 1, $new_length - 1);
-        }
+		if (!Str\is_empty($uri) && ($uri[0] == "'" || $uri[0] == '"')) {
+			$quote = $uri[0];
+			$new_length = Str\length($uri) - 1;
+			if ($uri[$new_length] !== $quote) {
+				return '';
+			}
+			$uri = Str\slice($uri, 1, $new_length - 1);
+		}
 
-        $uri = $this->expandCSSEscape($uri);
+		$uri = $this->expandCSSEscape($uri);
 
-        $result = parent::validate($uri, $config, $context);
+		$result = parent::validate($uri, $config, $context);
 
-        if ($result === '') {
-            return '';
-        }
+		if ($result === '') {
+			return '';
+		}
 
-        // extra sanity check; should have been done by URI
-        $result = Str\replace_every($result, dict['"' => "", "\\" => "", "\n" => "", "\x0c" => "", "\r" => ""]);
+		// extra sanity check; should have been done by URI
+		$result = Str\replace_every($result, dict['"' => "", "\\" => "", "\n" => "", "\x0c" => "", "\r" => ""]);
 
-        // suspicious characters are ()'; we're going to percent encode
-        // them for safety.
-        $result = Str\replace_every($result, dict['(' => '%28', ')' => '%29', "'" => '%27']);
+		// suspicious characters are ()'; we're going to percent encode
+		// them for safety.
+		$result = Str\replace_every($result, dict['(' => '%28', ')' => '%29', "'" => '%27']);
 
-        // there's an extra bug where ampersands lose their escaping on
-        // an innerHTML cycle, so a very unlucky query parameter could
-        // then change the meaning of the URL.  Unfortunately, there's
-        // not much we can do about that...
-        return "url(\"$result\")";
-    }
+		// there's an extra bug where ampersands lose their escaping on
+		// an innerHTML cycle, so a very unlucky query parameter could
+		// then change the meaning of the URL.  Unfortunately, there's
+		// not much we can do about that...
+		return "url(\"$result\")";
+	}
 }
