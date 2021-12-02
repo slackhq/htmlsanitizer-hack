@@ -155,7 +155,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 				$new_data = Str\trim($data);
 				if (Str\slice($new_data, 0, 4) === '<!--') {
 					$data = Str\slice($new_data, 4);
-					if (Str\slice($data, -3) === '-->') {
+					if (Str\length($data) >= 3 && Str\slice($data, -3) === '-->') {
 						$data = Str\slice($data, 0, -3);
 					}
 				}
