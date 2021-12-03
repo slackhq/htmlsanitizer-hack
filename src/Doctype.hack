@@ -28,7 +28,7 @@ class HTMLPurifier_Doctype {
 	// // System DTD identifier
 	// public ?string $dtdSystem;
 
-	# Constructor Paramter Promotion
+	// Constructor Paramter Promotion
 	public function __construct(
 		public string $name = '',
 		public bool $xml = true,

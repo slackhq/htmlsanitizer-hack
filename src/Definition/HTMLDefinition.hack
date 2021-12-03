@@ -576,6 +576,9 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 			"rel" => new HTML\HTMLPurifier_AttrDef_HTML_LinkTypes("rel"),
 			"target" => new HTML\HTMLPurifier_AttrDef_HTML_FrameTarget(vec["_blank"]),
 			"href" => new AttrDef\HTMLPurifier_AttrDef_URI(),
+			"data-clog-click" => new AttrDef\HTML\HTMLPurifier_AttrDef_HTML_Bool(),
+			"data-clog-ui-element" => new AttrDef\HTMLPurifier_AttrDef_Text(),
+			"data-clog-ui-step" => new AttrDef\HTMLPurifier_AttrDef_Text(),
 		];
 		$a_element = new HTMLPurifier\HTMLPurifier_ElementDef(
 			true,

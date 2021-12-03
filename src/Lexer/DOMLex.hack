@@ -147,7 +147,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 			}
 			return false;
 		} else if ($node->nodeType === \XML_CDATA_SECTION_NODE) {
-			# undo libxml's special treatment of <script> and <style> tags
+			// undo libxml's special treatment of <script> and <style> tags
 			$last = C\lastx($tokens);
 			//php version uses node->data, Hack doesn't have data field
 			$data = $node->nodeValue;

@@ -70,7 +70,7 @@ class HTMLPurifier_ContentSets {
 	//         $this->info[$key] = implode(' | ', array_keys($lookup));
 	//     }
 	//     $this->keys   = array_keys($this->info);
-	//     $this->values = array_values($this->info);
+	//     $this->values = varray($this->info);
 	// }
 
 	// /**

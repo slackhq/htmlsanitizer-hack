@@ -6,7 +6,7 @@ namespace HTMLPurifier;
  */
 class HTMLPurifier_EntityParser {
 	public function __construct() {
-		# code...
+		// code...
 	}
 
 	public function substituteSpecialEntities(string $_string): string {

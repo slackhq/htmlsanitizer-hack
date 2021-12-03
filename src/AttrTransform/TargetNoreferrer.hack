@@ -24,7 +24,7 @@ class HTMLPurifier_AttrTransform_TargetNoreferrer extends HTMLPurifier\HTMLPurif
 		HTMLPurifier\HTMLPurifier_Context $context,
 	): dict<string, string> {
 		if (!$config->def->defaults['HTML.TargetNoreferrer']) {
-			# This transform is turned off in the configuration
+			// This transform is turned off in the configuration
 			return $attr;
 		}
 		if (C\contains_key($attr, 'rel')) {

@@ -24,7 +24,7 @@ class HTMLPurifier_AttrTransform_TargetNoopener extends HTMLPurifier\HTMLPurifie
 		HTMLPurifier\HTMLPurifier_Context $context,
 	): dict<string, string> {
 		if (!$config->def->defaults['HTML.TargetNoopener']) {
-			# This transform is turned off in the configuration
+			// This transform is turned off in the configuration
 			return $attr;
 		}
 		if (C\contains_key($attr, 'rel')) {
