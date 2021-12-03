@@ -70,7 +70,7 @@ class HTMLPurifier_DefinitionCache_Serializer {
 	public function checkDefType(HTMLPurifier\HTMLPurifier_Definition $def): bool {
 		if ($def->type !== $this->type) {
 			// trigger_error("Cannot use definition of type {$def->type} in cache for {$this->type}");
-			echo "Cannot use definition of type {$def->type} in cache for {$this->type}";
+			echo "Cannot use definition of type ".(string)$def->type." in cache for {$this->type}";
 			return false;
 		}
 		return true;

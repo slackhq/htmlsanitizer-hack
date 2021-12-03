@@ -576,6 +576,9 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 			"rel" => new HTML\HTMLPurifier_AttrDef_HTML_LinkTypes("rel"),
 			"target" => new HTML\HTMLPurifier_AttrDef_HTML_FrameTarget(vec["_blank"]),
 			"href" => new AttrDef\HTMLPurifier_AttrDef_URI(),
+			"data-clog-click" => new AttrDef\HTML\HTMLPurifier_AttrDef_HTML_Bool(),
+			"data-clog-ui-element" => new AttrDef\HTMLPurifier_AttrDef_Text(),
+			"data-clog-ui-step" => new AttrDef\HTMLPurifier_AttrDef_Text(),
 		];
 		$a_element = new HTMLPurifier\HTMLPurifier_ElementDef(
 			true,
@@ -1820,6 +1823,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 
 	}
 
+
 	// RAW CUSTOMIZATION STUFF --------------------------------------------
 
 	/**
@@ -1874,12 +1878,14 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 
 	private ?HTMLPurifier\HTMLPurifier_HTMLModule $_anonModule = null;
 
+
 	/**
 	 * @param HTMLPurifier_Config $config
 	 */
 	protected function doSetup(HTMLPurifier\HTMLPurifier_Config $config): void {
 		$this->setupConfigStuff($config);
 	}
+
 
 	/**
 	 * Sets up stuff based on config. We need a better way of doing this.
@@ -1896,6 +1902,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 		} else {
 			throw new \Error('Cannot use non-block element as block wrapper', \E_USER_ERROR);
 		}
+
 
 		// support template text
 		$support =
@@ -2022,6 +2029,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 				}
 			}
 		}
+
 
 		// setup injectors -----------------------------------------------------
 		foreach ($this->info_injector as $i => $injector) {

@@ -12,7 +12,7 @@ class HTMLPurifier_DefinitionCacheFactory {
 		dict['Serializer' => dict[]];
 
 	public function __construct() {
-		# uses create instead of construct
+		// uses create instead of construct
 	}
 
 	public static function instance(

@@ -171,7 +171,7 @@ class HTMLPurifier_URI {
 				if ($c is nonnull && $this->path is nonnull) {
 					$seg_nc_encode = $segment_nc_encoder->encode(Str\slice($this->path, 0, $c));
 					$seg_encode = $this->path is nonnull ? $segments_encoder->encode(Str\slice($this->path, $c)) : null;
-					$this->path = $seg_nc_encode.$seg_encode;
+					$this->path = $seg_nc_encode.(string)$seg_encode;
 				} else {
 					if ($this->path is nonnull) $this->path = $segment_nc_encoder->encode($this->path);
 				}
@@ -226,7 +226,7 @@ class HTMLPurifier_URI {
 			$result .= $this->scheme.':';
 		}
 		if ($authority !== '') {
-			$result .= '//'.$authority;
+			$result .= '//'.(string)$authority;
 		}
 		$result .= $this->path;
 		if ($this->query !== '') {

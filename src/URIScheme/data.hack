@@ -130,7 +130,7 @@ class HTMLPurifier_URIScheme_data extends HTMLPurifier\HTMLPurifier_URIScheme {
 		$uri->port = 0;
 		$uri->fragment = '';
 		$uri->query = '';
-		$uri->path = "$content_type;base64,".\base64_encode($raw_data);
+		$uri->path = (string)$content_type.";base64," . \base64_encode($raw_data);
 		return true;
 	}
 
