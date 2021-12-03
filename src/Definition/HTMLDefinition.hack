@@ -1823,7 +1823,6 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 
 	}
 
-
 	// RAW CUSTOMIZATION STUFF --------------------------------------------
 
 	/**
@@ -1878,14 +1877,12 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 
 	private ?HTMLPurifier\HTMLPurifier_HTMLModule $_anonModule = null;
 
-
 	/**
 	 * @param HTMLPurifier_Config $config
 	 */
 	protected function doSetup(HTMLPurifier\HTMLPurifier_Config $config): void {
 		$this->setupConfigStuff($config);
 	}
-
 
 	/**
 	 * Sets up stuff based on config. We need a better way of doing this.
@@ -1902,7 +1899,6 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 		} else {
 			throw new \Error('Cannot use non-block element as block wrapper', \E_USER_ERROR);
 		}
-
 
 		// support template text
 		$support =
@@ -2029,7 +2025,6 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 				}
 			}
 		}
-
 
 		// setup injectors -----------------------------------------------------
 		foreach ($this->info_injector as $i => $injector) {
