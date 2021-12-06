@@ -252,7 +252,7 @@ class HTMLPurifier_URI {
 	 * @return bool
 	 */
 	public function isLocal(HTMLPurifier_Config $config, HTMLPurifier_Context $_context): bool {
-		if ($this->host === null) {
+		if ($this->host is null) {
 			return true;
 		}
 		$uri_def = TypeAssert\instance_of(Definition\HTMLPurifier_URIDefinition::class, $config->getURIDefinition());

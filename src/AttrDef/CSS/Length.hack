@@ -24,8 +24,8 @@ class HTMLPurifier_AttrDef_CSS_Length extends HTMLPurifier\HTMLPurifier_AttrDef 
 	 * @param HTMLPurifier_Length|string $max Maximum length, or null for no bound. String is also acceptable.
 	 */
 	public function __construct(?string $min = null, ?string $max = null): void {
-		$this->min = $min !== null ? HTMLPurifier\HTMLPurifier_Length::make($min) : null;
-		$this->max = $max !== null ? HTMLPurifier\HTMLPurifier_Length::make($max) : null;
+		$this->min = $min is nonnull ? HTMLPurifier\HTMLPurifier_Length::make($min) : null;
+		$this->max = $max is nonnull ? HTMLPurifier\HTMLPurifier_Length::make($max) : null;
 	}
 
 	/**

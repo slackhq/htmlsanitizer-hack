@@ -115,7 +115,7 @@ class HTMLPurifier_AttrValidator {
 			}
 
 			// put the results into effect
-			if (($result === '' && $value !== '') || $result === null) {
+			if (($result === '' && $value !== '') || $result is null) {
 				// this is a generic error message that should replaced
 				// with more specific ones when possible
 				// if ($e) {

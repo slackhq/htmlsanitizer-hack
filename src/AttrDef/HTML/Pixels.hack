@@ -62,7 +62,7 @@ class HTMLPurifier_AttrDef_HTML_Pixels extends HTMLPurifier\HTMLPurifier_AttrDef
 		// crash operating systems, see <http://ha.ckers.org/imagecrash.html>
 		// WARNING, above link WILL crash you if you're using Windows
 
-		if ($this->max !== null && $int > $this->max) {
+		if ($this->max is nonnull && $int > $this->max) {
 			return (string)$this->max;
 		}
 		return (string)$int;

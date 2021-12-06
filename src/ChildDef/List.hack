@@ -84,7 +84,7 @@ class HTMLPurifier_ChildDef_List extends HTMLPurifier\HTMLPurifier_ChildDef {
 				// to handle non-list elements; non-list elements should
 				// not be appended to an existing li; only li created
 				// for non-list. This distinction is not currently made.
-				if ($current_li === null) {
+				if ($current_li is null) {
 					$current_li = new Node\HTMLPurifier_Node_Element('li');
 					$result[] = $current_li;
 					$current_li->children[] = $node;

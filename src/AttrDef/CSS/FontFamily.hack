@@ -97,7 +97,7 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier\HTMLPurifier_Attr
 
 			// $font is a pure representation of the font name
 
-			if ($allowed_fonts !== null && !C\contains_key($allowed_fonts, $font)) {
+			if ($allowed_fonts is nonnull && !C\contains_key($allowed_fonts, $font)) {
 				continue;
 			}
 

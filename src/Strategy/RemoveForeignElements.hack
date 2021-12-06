@@ -180,7 +180,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
 					if (
 						$trusted ||
 						C\contains($comment_lookup, Str\trim($token->data)) ||
-						($comment_regexp !== null && \preg_match($comment_regexp, Str\trim($token->data)))
+						($comment_regexp is nonnull && \preg_match($comment_regexp, Str\trim($token->data)))
 					) {
 						// OK good
 						if ($e) {

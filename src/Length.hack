@@ -120,7 +120,7 @@ class HTMLPurifier_Length {
 	 * Returns true if this length unit is valid.
 	 */
 	public function isValid(HTMLPurifier_Config $config, HTMLPurifier_Context $context): bool {
-		if ($this->isValid === null) {
+		if ($this->isValid is null) {
 			$this->isValid = $this->validate($config, $context);
 		}
 		return $this->isValid;

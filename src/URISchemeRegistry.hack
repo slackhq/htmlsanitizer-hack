@@ -20,9 +20,9 @@ class HTMLPurifier_URISchemeRegistry {
 	 */
 	public static function instance(?HTMLPurifier_URISchemeRegistry $prototype = null): HTMLPurifier_URISchemeRegistry {
 		$instance = null;
-		if ($prototype !== null) {
+		if ($prototype is nonnull) {
 			$instance = $prototype;
-		} elseif ($instance === null || $prototype == true) {
+		} elseif ($instance is null || $prototype == true) {
 			$instance = new HTMLPurifier_URISchemeRegistry();
 		}
 		return $instance;
