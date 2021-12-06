@@ -41,7 +41,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
 		$trusted = $config->def->defaults['HTML.Trusted'];
 		$comment_lookup = $config->def->defaults['HTML.AllowedComments'];
 		$comment_regexp = $config->def->defaults['HTML.AllowedCommentsRegexp'];
-		$check_comments = $comment_lookup !== vec<string>[] || $comment_regexp != null;
+		$check_comments = $comment_lookup !== vec<string>[] || $comment_regexp is nonnull;
 
 		$remove_script_contents = $config->def->defaults['Core.RemoveScriptContents'];
 		$hidden_elements = $config->def->defaults['Core.HiddenElements'];
