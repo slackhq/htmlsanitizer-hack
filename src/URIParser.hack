@@ -51,7 +51,7 @@ class HTMLPurifier_URIParser {
 		$fragment = (8 < C\count($matches)) ? $matches[9] : '';
 
 		// further parse authority
-		if ($authority !== null) {
+		if ($authority is nonnull) {
 			$r_authority = "/^((.+?)@)?(\[[^\]]+\]|[^:]*)(:(\d*))?/";
 			$matches = vec[];
 			\preg_match_with_matches($r_authority, $authority, inout $matches);

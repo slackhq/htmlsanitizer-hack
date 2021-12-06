@@ -67,7 +67,7 @@ class HTMLPurifier_URIFilter_SafeIframe extends HTMLPurifier\HTMLPurifier_URIFil
 			return true;
 		}
 		// check if we actually have some allowlists enabled
-		if ($this->regexp === null) {
+		if ($this->regexp is null) {
 			return false;
 		}
 		// actually check the allowlists

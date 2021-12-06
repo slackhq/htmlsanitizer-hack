@@ -448,7 +448,7 @@ class HTMLPurifier_ConfigSchema {
 	public function instance(?HTMLPurifier_ConfigSchema $prototype = null): HTMLPurifier_ConfigSchema {
 		if ($prototype) {
 			$this->singleton = $prototype;
-		} else if ($this->singleton === null) {
+		} else if ($this->singleton is null) {
 			$this->singleton = HTMLPurifier_ConfigSchema::makeFromSerial();
 		}
 		return $this->singleton;

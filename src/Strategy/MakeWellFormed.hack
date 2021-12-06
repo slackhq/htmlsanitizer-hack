@@ -105,7 +105,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
 		unset($injectors['Custom']); // special case
 		foreach ($injectors as $injector => $b) {
 			// XXX: Fix with a legitimate lookup table of enabled filters
-			if (Str\search($injector, '.') !== null) {
+			if (Str\search($injector, '.') is nonnull) {
 				continue;
 			}
 			if (!$b) {
@@ -235,7 +235,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
 							// See Note [Injector skips]
 							continue;
 						}
-						if ($token->rewind !== null && $token->rewind !== $i) {
+						if ($token->rewind is nonnull && $token->rewind !== $i) {
 							continue;
 						}
 						$r = $token;
@@ -317,7 +317,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
 						// See Note [Injector skips]
 						continue;
 					}
-					if ($token->rewind !== null && $token->rewind !== $i) {
+					if ($token->rewind is nonnull && $token->rewind !== $i) {
 						continue;
 					}
 					$r = $token;
@@ -392,7 +392,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
 						// See Note [Injector skips]
 						continue;
 					}
-					if ($token->rewind !== null && $token->rewind !== $i) {
+					if ($token->rewind is nonnull && $token->rewind !== $i) {
 						continue;
 					}
 					$r = $token;

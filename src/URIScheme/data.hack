@@ -59,12 +59,12 @@ class HTMLPurifier_URIScheme_data extends HTMLPurifier\HTMLPurifier_URIScheme {
 				if (Str\slice($cur, 0, 8) == 'charset=') {
 					// doesn't match if there are arbitrary spaces, but
 					// whatever dude
-					if ($charset !== null) {
+					if ($charset is nonnull) {
 						continue;
 					} // garbage
 					$charset = Str\slice($cur, 8); // not used
 				} else {
-					if ($content_type !== null) {
+					if ($content_type is nonnull) {
 						continue;
 					} // garbage
 					$content_type = $cur;
@@ -73,10 +73,10 @@ class HTMLPurifier_URIScheme_data extends HTMLPurifier\HTMLPurifier_URIScheme {
 		} else {
 			$data = $result[0];
 		}
-		if ($content_type !== null && !C\contains_key($this->allowed_types, $content_type)) {
+		if ($content_type is nonnull && !C\contains_key($this->allowed_types, $content_type)) {
 			return false;
 		}
-		if ($charset !== null) {
+		if ($charset is nonnull) {
 			// error; we don't allow plaintext stuff
 			$charset = null;
 		}
@@ -130,7 +130,7 @@ class HTMLPurifier_URIScheme_data extends HTMLPurifier\HTMLPurifier_URIScheme {
 		$uri->port = 0;
 		$uri->fragment = '';
 		$uri->query = '';
-		$uri->path = (string)$content_type.";base64," . \base64_encode($raw_data);
+		$uri->path = (string)$content_type.";base64,".\base64_encode($raw_data);
 		return true;
 	}
 

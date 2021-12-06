@@ -489,7 +489,7 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 		// setup allowed elements
 		$support = "(for information on implementing this, see the "."support forums) ";
 		$allowed_properties = $config->def->defaults['CSS.AllowedProperties'];
-		if ($allowed_properties !== null) {
+		if ($allowed_properties is nonnull) {
 			foreach ($this->info as $name => $d) {
 				if (C\contains_key($allowed_properties, $name) && !$allowed_properties[$name]) {
 					unset($this->info[$name]);
@@ -504,7 +504,7 @@ class HTMLPurifier_CSSDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 		}
 
 		$forbidden_properties = $config->def->defaults['CSS.ForbiddenProperties'];
-		if ($forbidden_properties !== null) {
+		if ($forbidden_properties is nonnull) {
 			foreach ($this->info as $name => $d) {
 				if (C\contains_key($forbidden_properties, $name)) {
 					unset($this->info[$name]);

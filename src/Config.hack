@@ -201,7 +201,7 @@ class HTMLPurifier_Config {
 				if ($def->setup && !$optimized) {
 					throw new \Exception("Cannot retrieve raw definition after it has already been setup");
 				}
-				if ($def->optimized === null) {
+				if ($def->optimized is null) {
 					throw new \Exception("Optimization status of definition is unknown");
 
 				}

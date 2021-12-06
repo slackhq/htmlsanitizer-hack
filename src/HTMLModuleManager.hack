@@ -403,7 +403,7 @@ class HTMLPurifier_HTMLModuleManager {
 
 		// setup global state variables
 		$def = null;
-		if ($trusted === null) {
+		if ($trusted is null) {
 			$trusted = $this->trusted;
 		}
 

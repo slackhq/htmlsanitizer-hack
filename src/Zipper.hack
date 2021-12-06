@@ -51,7 +51,7 @@ class HTMLPurifier_Zipper<T> {
 	 */
 	public function toArray(?T $t = null): vec<T> {
 		$a = $this->front;
-		if ($t !== null) $a[] = $t;
+		if ($t is nonnull) $a[] = $t;
 		for ($i = C\count($this->back) - 1; $i >= 0; $i--) {
 			$a[] = $this->back[$i];
 		}
@@ -65,7 +65,7 @@ class HTMLPurifier_Zipper<T> {
 	 * exist in Hack
 	 */
 	public function next(?T $t): ?T {
-		if ($t !== null) {
+		if ($t is nonnull) {
 			$this->front[] = $t;
 		}
 		$ret = C\last($this->back);
@@ -92,7 +92,7 @@ class HTMLPurifier_Zipper<T> {
 	 * @return Original contents of new hole.
 	 */
 	public function prev(?T $t): ?T {
-		if ($t !== null) {
+		if ($t is nonnull) {
 			$this->back[] = $t;
 		}
 		$ret = C\last($this->front);
@@ -127,14 +127,14 @@ class HTMLPurifier_Zipper<T> {
 	* Insert element before hole.
 	*/
 	public function insertBefore(T $t): void {
-		if ($t !== NULL) $this->front[] = $t;
+		if ($t is nonnull) $this->front[] = $t;
 	}
 
 	/**
 	* Insert element after hole.
 	*/
 	public function insertAfter(T $t): void {
-		if ($t !== NULL) $this->back[] = $t;
+		if ($t is nonnull) $this->back[] = $t;
 	}
 
 	/**
@@ -167,7 +167,7 @@ class HTMLPurifier_Zipper<T> {
 		}
 		// insert
 		for ($i = C\count($replacement) - 1; $i >= 0; $i--) {
-			if ($r !== null) $this->insertAfter($r);
+			if ($r is nonnull) $this->insertAfter($r);
 			$r = $replacement[$i];
 		}
 		return tuple($old, $r);

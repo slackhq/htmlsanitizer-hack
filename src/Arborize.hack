@@ -71,7 +71,7 @@ class HTMLPurifier_Arborize {
 				if ($level > 0) {
 					$tokens[] = $start;
 				}
-				if ($end !== NULL) {
+				if ($end is nonnull) {
 					if (C\contains_key($closingTokens, $level)) {
 						$closingTokens[$level]->push($end);
 					} else {

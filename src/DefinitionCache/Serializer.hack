@@ -274,7 +274,7 @@ class HTMLPurifier_DefinitionCache_Serializer {
 		if ($result !== false) {
 			// set permissions of the new file (no execute)
 			$chmod = $config->def->defaults['Cache.SerializerPermissions'];
-			if ($chmod !== null) {
+			if ($chmod is nonnull) {
 				// \chmod($file, $chmod & 0666);
 			}
 		}
@@ -287,7 +287,7 @@ class HTMLPurifier_DefinitionCache_Serializer {
 	private function _prepareDir(HTMLPurifier\HTMLPurifier_Config $config): bool {
 		$directory = $this->generateDirectoryPath($config);
 		$chmod = $config->def->defaults['Cache.SerializerPermissions'];
-		if ($chmod === null) {
+		if ($chmod is null) {
 			if (!\mkdir($directory) && !\is_dir($directory)) {
 				// trigger_error(
 				//     'Could not create directory ' . $directory . '',
@@ -343,7 +343,7 @@ class HTMLPurifier_DefinitionCache_Serializer {
 			// );
 			return false;
 		}
-		if (\function_exists('posix_getuid') && $chmod !== null) {
+		if (\function_exists('posix_getuid') && $chmod is nonnull) {
 			// POSIX system, we can give more specific advice
 			if (\fileowner($dir) === \posix_getuid()) {
 				// we can chmod it ourselves

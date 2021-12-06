@@ -341,7 +341,7 @@ class HTMLPurifier_Encoder {
 	public static function iconvAvailable(): bool {
 		// statics are not permitted in Hack. Making a class with a single static is the work around
 		// I beleive this to be what Scott was referring to in #help-hacklang
-		if (StaticIconv::$iconv_bool === null) {
+		if (StaticIconv::$iconv_bool is null) {
 			StaticIconv::$iconv_bool = \function_exists('iconv') &&
 				self::testIconvTruncateBug() != self::ICONV_UNUSABLE;
 		}
@@ -360,7 +360,7 @@ class HTMLPurifier_Encoder {
 		if ($encoding === 'utf-8') {
 			return $str;
 		}
-		if (StaticIconv::$iconv_bool === null) {
+		if (StaticIconv::$iconv_bool is null) {
 			StaticIconv::$iconv_bool = self::iconvAvailable();
 		}
 		if (StaticIconv::$iconv_bool && !$config->def->defaults['Test.ForceNoIconv']) {
@@ -408,7 +408,7 @@ class HTMLPurifier_Encoder {
 		if ($encoding === 'utf-8') {
 			return $str;
 		}
-		if (StaticIconv::$iconv_bool === null) {
+		if (StaticIconv::$iconv_bool is null) {
 			StaticIconv::$iconv_bool = self::iconvAvailable();
 		}
 		if (StaticIconv::$iconv_bool && !$config->def->defaults['Test.ForceNoIconv']) {
@@ -496,7 +496,7 @@ class HTMLPurifier_Encoder {
 	 * paying attention to the error code, iconv becomes unusable.
 	 */
 	public static function testIconvTruncateBug(): int {
-		if (StaticCode::$code === null) {
+		if (StaticCode::$code is null) {
 			// better not use iconv, otherwise infinite loop!
 			$unsafe_iconv = self::unsafeIconv('utf-8', 'ascii//IGNORE', "\xCE\xB1".Str\repeat('a', 9000));
 			$count = Str\length($unsafe_iconv);

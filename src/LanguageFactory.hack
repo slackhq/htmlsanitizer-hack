@@ -58,9 +58,9 @@ class HTMLPurifier_LanguageFactory {
 	*/
 	public static function instance(?HTMLPurifier_LanguageFactory $prototype = null): HTMLPurifier_LanguageFactory {
 		$instance = null;
-		if ($prototype !== null) {
+		if ($prototype is nonnull) {
 			$instance = $prototype;
-		} else if ($instance === null || $prototype == true) {
+		} else if ($instance is null || $prototype == true) {
 			$instance = new HTMLPurifier_LanguageFactory();
 		}
 		return $instance;

@@ -345,7 +345,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier\HTMLPurifier_Inje
 		$current = TypeAssert\matches<HTMLPurifier\HTMLPurifier_Token>($this->currentToken);
 		while ($this->forwardUntilEndToken(inout $i, inout $current, inout $nesting)) {
 			$result = $this->_checkNeedsP($current);
-			if ($result !== null) {
+			if ($result is nonnull) {
 				$ok = $result;
 				break;
 			}
