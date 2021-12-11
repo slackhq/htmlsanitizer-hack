@@ -1921,7 +1921,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 			}
 		}
 
-		if ($allowed_elements is dict<_, _> && !C\is_empty($allowed_elements)) {
+		if ($allowed_elements is dict<_, _>) {
 			foreach ($this->info as $name => $d) {
 				if (!C\contains_key($allowed_elements, $name)) {
 					unset($this->info[$name]);
