@@ -33,35 +33,27 @@ class HTMLPurifierTest extends HackTest {
 				HTMLPurifier\html_tags_t::TR,
 			],
 		);
-		$policy->addAllowedTagWithAttributes(HTMLPurifier\html_tags_t::A, keyset[
-			HTMLPurifier\html_attributes_t::ID,
-			HTMLPurifier\html_attributes_t::NAME,
-			HTMLPurifier\html_attributes_t::HREF,
-			HTMLPurifier\html_attributes_t::TARGET,
-			HTMLPurifier\html_attributes_t::REL,
-		]);
-		$policy->addAllowedTagWithAttributes(
-			HTMLPurifier\html_tags_t::H3,
-			keyset[HTMLPurifier\html_attributes_t::CLASSES],
-		);
-		$policy->addAllowedTagWithAttributes(
-			HTMLPurifier\html_tags_t::P,
-			keyset[HTMLPurifier\html_attributes_t::CLASSES],
-		);
-		$policy->addAllowedTagWithAttributes(
-			HTMLPurifier\html_tags_t::ASIDE,
-			keyset[HTMLPurifier\html_attributes_t::CLASSES],
-		);
-		$policy->addAllowedTagWithAttributes(
-			HTMLPurifier\html_tags_t::IMG,
-			keyset[
-				HTMLPurifier\html_attributes_t::SRC,
-				HTMLPurifier\html_attributes_t::ALT,
-				HTMLPurifier\html_attributes_t::CLASSES,
-				HTMLPurifier\html_attributes_t::WIDTH,
-				HTMLPurifier\html_attributes_t::HEIGHT,
-				HTMLPurifier\html_attributes_t::SRCSET,
-				HTMLPurifier\html_attributes_t::SIZES,
+		$policy->addAllowedTagsWithAttributes(
+			dict[
+				HTMLPurifier\html_tags_t::A => keyset[
+					HTMLPurifier\html_attributes_t::ID,
+					HTMLPurifier\html_attributes_t::NAME,
+					HTMLPurifier\html_attributes_t::HREF,
+					HTMLPurifier\html_attributes_t::TARGET,
+					HTMLPurifier\html_attributes_t::REL,
+				],
+				HTMLPurifier\html_tags_t::H3 => keyset[HTMLPurifier\html_attributes_t::CLASSES],
+				HTMLPurifier\html_tags_t::P => keyset[HTMLPurifier\html_attributes_t::CLASSES],
+				HTMLPurifier\html_tags_t::ASIDE => keyset[HTMLPurifier\html_attributes_t::CLASSES],
+				HTMLPurifier\html_tags_t::IMG => keyset[
+					HTMLPurifier\html_attributes_t::SRC,
+					HTMLPurifier\html_attributes_t::ALT,
+					HTMLPurifier\html_attributes_t::CLASSES,
+					HTMLPurifier\html_attributes_t::WIDTH,
+					HTMLPurifier\html_attributes_t::HEIGHT,
+					HTMLPurifier\html_attributes_t::SRCSET,
+					HTMLPurifier\html_attributes_t::SIZES,
+				],
 			],
 		);
 
