@@ -11,7 +11,8 @@ class CommentRemovalTest extends HackTest {
 	public function testValidCommentRemoval(): void {
 		echo "\nrunning testValidCommentRemoval()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$dirty_html1 = '<!-- normal comment -->';
 		$dirty_html2 = '<!-- comment --><b>Hello World!</b>';
 		$dirty_html3 = '<!-- begin --><b>Hello World!</b><!-- end -->';
@@ -28,7 +29,8 @@ class CommentRemovalTest extends HackTest {
 	public function testParseErrorCommentRemoval(): void {
 		echo "\nrunning testParseErrorCommentRemoval()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 
 		$dirty_html1 = '<!-->'; // abruptly closed comment
 		$dirty_html2 = '<!--->'; // abruptly closed comment
@@ -49,8 +51,18 @@ class CommentRemovalTest extends HackTest {
 	public function testCure53PoCCommentRemoval(): void {
 		echo "\nrunning testCure53PoCCommentRemoval()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict['a' => vec['id', 'name', 'href', 'target', 'rel']]);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy->addAllowedTagWithAttributes(
+			HTMLPurifier\html_tags_t::A,
+			keyset[
+				HTMLPurifier\html_attributes_t::ID,
+				HTMLPurifier\html_attributes_t::NAME,
+				HTMLPurifier\html_attributes_t::HREF,
+				HTMLPurifier\html_attributes_t::TARGET,
+				HTMLPurifier\html_attributes_t::REL,
+			],
+		);
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 
 		$dirty_poc1 = '<!--><iframe srcdoc="<script>alert(document.domain)</script>">-->x';
 		$dirty_poc2 = '<!---><iframe srcdoc="<script>alert(document.domain)</script>">-->x';
@@ -74,35 +86,62 @@ class CommentRemovalTest extends HackTest {
 	public function testCure53EmailPurification(): void {
 		echo "\nrunning testCure53EmailPurification()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(
-			dict[
-				'b' => vec[],
-				'ul' => vec[],
-				'li' => vec[],
-				'ol' => vec[],
-				'h2' => vec[],
-				'h4' => vec[],
-				'br' => vec[],
-				'div' => vec[],
-				'strong' => vec[],
-				'del' => vec[],
-				'em' => vec[],
-				'pre' => vec[],
-				'code' => vec[],
-				'table' => vec[],
-				'tbody' => vec[],
-				'td' => vec[],
-				'th' => vec[],
-				'thead' => vec[],
-				'tr' => vec[],
-				'a' => vec['id', 'name', 'href', 'target', 'rel'],
-				'h3' => vec['class'],
-				'p' => vec['class'],
-				'aside' => vec['class'],
-				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$policy->addAllowedTags(
+			keyset[
+				HTMLPurifier\html_tags_t::B,
+				HTMLPurifier\html_tags_t::UL,
+				HTMLPurifier\html_tags_t::LI,
+				HTMLPurifier\html_tags_t::OL,
+				HTMLPurifier\html_tags_t::H2,
+				HTMLPurifier\html_tags_t::H4,
+				HTMLPurifier\html_tags_t::BR,
+				HTMLPurifier\html_tags_t::DIV,
+				HTMLPurifier\html_tags_t::STRONG,
+				HTMLPurifier\html_tags_t::DEL,
+				HTMLPurifier\html_tags_t::EM,
+				HTMLPurifier\html_tags_t::PRE,
+				HTMLPurifier\html_tags_t::CODE,
+				HTMLPurifier\html_tags_t::TABLE,
+				HTMLPurifier\html_tags_t::TBODY,
+				HTMLPurifier\html_tags_t::TD,
+				HTMLPurifier\html_tags_t::TH,
+				HTMLPurifier\html_tags_t::THEAD,
+				HTMLPurifier\html_tags_t::TR,
 			],
 		);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$policy->addAllowedTagWithAttributes(HTMLPurifier\html_tags_t::A, keyset[
+			HTMLPurifier\html_attributes_t::ID,
+			HTMLPurifier\html_attributes_t::NAME,
+			HTMLPurifier\html_attributes_t::HREF,
+			HTMLPurifier\html_attributes_t::TARGET,
+			HTMLPurifier\html_attributes_t::REL,
+		]);
+		$policy->addAllowedTagWithAttributes(
+			HTMLPurifier\html_tags_t::H3,
+			keyset[HTMLPurifier\html_attributes_t::CLASSES],
+		);
+		$policy->addAllowedTagWithAttributes(
+			HTMLPurifier\html_tags_t::P,
+			keyset[HTMLPurifier\html_attributes_t::CLASSES],
+		);
+		$policy->addAllowedTagWithAttributes(
+			HTMLPurifier\html_tags_t::ASIDE,
+			keyset[HTMLPurifier\html_attributes_t::CLASSES],
+		);
+		$policy->addAllowedTagWithAttributes(
+			HTMLPurifier\html_tags_t::IMG,
+			keyset[
+				HTMLPurifier\html_attributes_t::SRC,
+				HTMLPurifier\html_attributes_t::ALT,
+				HTMLPurifier\html_attributes_t::CLASSES,
+				HTMLPurifier\html_attributes_t::WIDTH,
+				HTMLPurifier\html_attributes_t::HEIGHT,
+				HTMLPurifier\html_attributes_t::SRCSET,
+				HTMLPurifier\html_attributes_t::SIZES,
+			],
+		);
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 
 		$dirty_email1 = "<!--><script>
 desktop.downloads.startDownload({
@@ -127,7 +166,8 @@ setTimeout(function(){
 	public function testNestedComments(): void {
 		echo "\nrunning testFancyNestedComments()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$dirty_nested1 = '<!-- <!-- Normally nested comment --> -->';
 		$dirty_nested2 = '<!--<!-->-->'; // Abruptly ended comment nested in normal comment
 		$dirty_nested3 = '<!-<!-->->'; // Doubly abruptly ended nested comment
@@ -147,7 +187,8 @@ setTimeout(function(){
 	public function testLineBreakComments(): void {
 		echo "\nrunning testLineBreakComments()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$dirty = '<!-->
 <iframe srcdoc=
 "<script>alert(document.domain)</script>">

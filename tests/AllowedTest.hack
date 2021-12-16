@@ -12,9 +12,8 @@ class AllowedTest extends HackTest {
 		echo "\ntestDefaultAllowed()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$config->def->defaults['HTML.AllowedElements'] = dict[];
-
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$dirty_html = '<h1>Title</h1><a href="slack.com">Go to Slack</a>';
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('TitleGo to Slack');
@@ -25,8 +24,8 @@ class AllowedTest extends HackTest {
 		echo "\ntestStripTagsNotInDefaultPolicy()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$dirty_html = '<a>test</a>';
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('test');
@@ -37,9 +36,12 @@ class AllowedTest extends HackTest {
 		echo "\ntestCustomTagsWithAttributes()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$config->def->defaults['HTML.Allowed'] = 'img[src|alt]';
-
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy->addAllowedTagWithAttributes(
+			HTMLPurifier\html_tags_t::IMG,
+			keyset[HTMLPurifier\html_attributes_t::SRC, HTMLPurifier\html_attributes_t::ALT],
+		);
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$dirty_html = '<img src="https://test.com" alt="test" onerror=alert(1); />hello<script>alert(1);</script>';
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<img src="https://test.com" alt="test">helloalert(1);');

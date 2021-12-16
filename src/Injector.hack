@@ -2,6 +2,7 @@
 
 namespace HTMLPurifier;
 use namespace HTMLPurifier\Definition;
+use HH;
 use namespace HH\Lib\C;
 use namespace Facebook\TypeAssert;
 
@@ -112,31 +113,18 @@ abstract class HTMLPurifier_Injector {
 	 */
 	public function checkNeeded(HTMLPurifier_Config $config): string {
 		$def = TypeAssert\matches<Definition\HTMLPurifier_HTMLDefinition>($config->getHTMLDefinition());
-		$i = 0;
-		$index = 0;
 		foreach ($this->needed as $element => $attributes) {
-			if ($i is int) {
-				$i = $element;
+			if (!HH\idx($def->info, $element)) {
+				return $element;
 			}
-			if ($i is string && !C\contains_key($def->info, $i)) {
-				return $i;
-			}
-			if (!($element is vec<_>)) {
-				$index++;
-				$i = $index;
+			if (!($attributes is vec<_>)) {
 				continue;
 			}
 			foreach ($attributes as $name) {
-				if (
-					$element is string &&
-					C\contains_key($def->info, $element) &&
-					!C\contains_key($def->info[$element]->attr, $name)
-				) {
+				if (!HH\idx($def->info[$element]->attr, $name)) {
 					return "$element.$name";
 				}
 			}
-			$index++;
-			$i = $index;
 		}
 		return '';
 	}

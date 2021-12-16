@@ -8,7 +8,8 @@ class InjectorTest extends HackTest {
 	private function assertAutoParagraphResult(string $name, string $dirty, string $expected): void {
 		echo "\nrunning test$name()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$config->def->defaults["AutoFormat.AutoParagraph"] = true;
 		$clean_html = $purifier->purify($dirty);
 		expect($clean_html)->toEqual($expected);
@@ -18,7 +19,9 @@ class InjectorTest extends HackTest {
 	private function assertDisplayURIResult(string $name, string $dirty, string $expected): void {
 		echo "\nrunning test$name()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy->addAllowedTag(HTMLPurifier\html_tags_t::A);
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$config->def->defaults["AutoFormat.DisplayLinkURI"] = true;
 		$clean_html = $purifier->purify($dirty);
 		expect($clean_html)->toEqual($expected);
@@ -28,7 +31,8 @@ class InjectorTest extends HackTest {
 	private function assertRemoveEmptyResult(string $name, string $dirty, string $expected): void {
 		echo "\nrunning test$name()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$config->def->defaults["AutoFormat.RemoveEmpty"] = true;
 		$clean_html = $purifier->purify($dirty);
 		expect($clean_html)->toEqual($expected);
@@ -38,7 +42,12 @@ class InjectorTest extends HackTest {
 	private function assertPurifierLinkifyResult(string $name, string $dirty, string $expected): void {
 		echo "\nrunning test$name()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy->addAllowedTags(keyset[HTMLPurifier\html_tags_t::DIV, HTMLPurifier\html_tags_t::SPAN]);
+		$policy->addAllowedTagWithAttributes(HTMLPurifier\html_tags_t::A, keyset[
+			HTMLPurifier\html_attributes_t::HREF,
+		]);
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$config->def->defaults["AutoFormat.PurifierLinkify"] = true;
 		$config->def->defaults["AutoFormat.PurifierLinkify.DocURL"] = '#%s';
 		$clean_html = $purifier->purify($dirty);
@@ -49,7 +58,12 @@ class InjectorTest extends HackTest {
 	private function assertLinkifyResult(string $name, string $dirty, string $expected): void {
 		echo "\nrunning test$name()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy->addAllowedTag(HTMLPurifier\html_tags_t::SPAN);
+		$policy->addAllowedTagWithAttributes(HTMLPurifier\html_tags_t::A, keyset[
+			HTMLPurifier\html_attributes_t::HREF,
+		]);
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$config->def->defaults["AutoFormat.Linkify"] = true;
 		$clean_html = $purifier->purify($dirty);
 		expect($clean_html)->toEqual($expected);
@@ -59,8 +73,19 @@ class InjectorTest extends HackTest {
 	private function assertRemoveSpansWithoutAttributesResult(string $name, string $dirty, string $expected): void {
 		echo "\nrunning test$name()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
-		$config->def->defaults['HTML.Allowed'] = 'span[class],div,p,strong,em';
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy->addAllowedTags(keyset[
+			HTMLPurifier\html_tags_t::DIV,
+			HTMLPurifier\html_tags_t::P,
+			HTMLPurifier\html_tags_t::STRONG,
+			HTMLPurifier\html_tags_t::EM,
+		]);
+		$policy->addAllowedTagWithAttributes(
+			HTMLPurifier\html_tags_t::SPAN,
+			keyset[HTMLPurifier\html_attributes_t::CLASSES],
+		);
+		// $config->def->defaults['HTML.Allowed'] = 'span[class],div,p,strong,em';
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$config->def->defaults["AutoFormat.RemoveSpansWithoutAttributes"] = true;
 		$clean_html = $purifier->purify($dirty);
 		expect($clean_html)->toEqual($expected);
@@ -70,7 +95,8 @@ class InjectorTest extends HackTest {
 	private function assertSafeObjectResult(string $name, string $dirty, string $expected): void {
 		echo "\nrunning test$name()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$config->def->defaults["AutoFormat.Custom"] = vec[new Injector\HTMLPurifier_Injector_SafeObject()];
 		$config->def->defaults["HTML.Trusted"] = true;
 		$clean_html = $purifier->purify($dirty);

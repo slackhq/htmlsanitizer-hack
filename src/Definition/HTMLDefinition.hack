@@ -1916,7 +1916,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 			C\is_empty($allowed_attributes)
 		) {
 			$allowed = (string)$config->def->defaults['HTML.Allowed'];
-			if ($allowed !== '') {
+			if ($allowed is string && $allowed !== '') {
 				list($allowed_elements, $allowed_attributes) = $this->parseTinyMCEAllowedList($allowed);
 			}
 		}

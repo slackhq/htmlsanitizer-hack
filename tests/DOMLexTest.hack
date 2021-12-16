@@ -16,9 +16,9 @@ class DOMLexTest extends HackTest {
 		echo "\nrunning testOutOfBounds()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-
+		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$dirty_html = '<style><!--';
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('');
 		echo "finished.\n\n";
