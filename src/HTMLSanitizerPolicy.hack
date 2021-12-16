@@ -79,14 +79,14 @@ enum html_tags_t: string {
 	SUB = "sub";
 	SUP = "sup";
 	TIME = "time";
-	/* HHAST_FIXME[EnumMemberNaming] */ tt = "tt";
+	TT = "tt";
 	U = "u";
 	VAR = "var";
-	/* HHAST_FIXME[EnumMemberNaming] */ wbr = "wbr";
+	WBR = "wbr";
 
 	//Image and multimedia
 	AREA = "area";
-	/* HHAST_FIXME[EnumMemberNaming] */ audio = "audio";
+	AUDIO = "audio";
 	IMG = "img";
 	MAP = "map";
 	TRACK = "track";
