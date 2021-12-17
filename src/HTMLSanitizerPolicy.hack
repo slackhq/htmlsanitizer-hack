@@ -1,313 +1,7 @@
 namespace HTMLPurifier;
 use namespace HH\Lib\C;
-
-enum html_tags_t: string {
-
-	//Main root
-	HTML = "html";
-
-	//Document metadata
-	BASE = "base";
-	HEAD = "head";
-	LINK = "link";
-	META = "meta";
-	STYLE = "style";
-	TITLE = "title";
-
-	//Sectioning root
-	BODY = "body";
-
-	//Content sectioningSection
-	ADDRESS = "address";
-	ARTICLE = "article";
-	ASIDE = "aside";
-	FOOTER = "footer";
-	HEADER = "header";
-	H1 = "h1";
-	H2 = "h2";
-	H3 = "h3";
-	H4 = "h4";
-	H5 = "h5";
-	H6 = "h6";
-	HGROUP = "hgroup";
-	MAIN = "main";
-	NAV = "nav";
-	SECTION = "section";
-
-	//Text content
-	BLOCKQUOTE = "blockquote";
-	DD = "dd";
-	DIR = "dir";
-	DIV = "div";
-	DL = "dl";
-	DT = "dt";
-	FIGCAPTION = "figcaption";
-	FIGURE = "figure";
-	HR = "hr";
-	LI = "li";
-	OL = "ol";
-	P = "p";
-	PRE = "pre";
-	UL = "ul";
-
-	//Inline text semantics
-	A = "a";
-	ABBR = "abbr";
-	B = "b";
-	BDI = "bdi";
-	BDO = "bdo";
-	BR = "br";
-	CITE = "cite";
-	CODE = "code";
-	DATA = "data";
-	DFN = "dfn";
-	EM = "em";
-	I = "i";
-	KBD = "kbd";
-	MARK = "mark";
-	Q = "q";
-	RB = "rb";
-	RP = "rp";
-	RT = "rt";
-	RTC = "rtc";
-	RUBY = "ruby";
-	S = "s";
-	SAMP = "samp";
-	SMALL = "small";
-	SPAN = "span";
-	STRONG = "strong";
-	SUB = "sub";
-	SUP = "sup";
-	TIME = "time";
-	TT = "tt";
-	U = "u";
-	VAR = "var";
-	WBR = "wbr";
-
-	//Image and multimedia
-	AREA = "area";
-	AUDIO = "audio";
-	IMG = "img";
-	MAP = "map";
-	TRACK = "track";
-	VIDEO = "video";
-
-	//Embedded content
-	APPLET = "applet";
-	EMBED = "embed";
-	IFRAME = "iframe";
-	NOEMBED = "noembed";
-	OBJECT = "object";
-	PARAM = "param";
-	PICTURE = "picture";
-	SOURCE = "source";
-
-	//Scripting
-	CANVAS = "canvas";
-	NOSCRIPT = "noscript";
-	SCRIPT = "script";
-
-	//Demarcating edits
-	DEL = "del";
-	INS = "ins";
-
-	//Table content
-	CAPTION = "caption";
-	COL = "col";
-	COLGROUP = "colgroup";
-	TABLE = "table";
-	TBODY = "tbody";
-	TD = "td";
-	TFOOT = "tfoot";
-	TH = "th";
-	THEAD = "thead";
-	TR = "tr";
-
-	//Forms
-	BUTTON = "button";
-	DATALIST = "datalist";
-	FIELDSET = "fieldset";
-	FORM = "form";
-	INPUT = "input";
-	LABEL = "label";
-	LEGEND = "legend";
-	METER = "meter";
-	OPTGROUP = "optgroup";
-	OPTION = "option";
-	OUTPUT = "output";
-	PROGRESS = "progress";
-	SELECT = "select";
-	TEXTAREA = "textarea";
-
-	//Interactive elements
-	DETAILS = "details";
-	DIALOG = "dialog";
-	MENU = "menu";
-	MENUITEM = "menuitem";
-	SUMMARY = "summary";
-
-	//Web Components
-	CONTENT = "content";
-	ELEMENT = "element";
-	SHADOW = "shadow";
-	SLOT = "slot";
-	TEMPLATE = "template";
-
-	//Obsolete and deprecated elements
-	ACRONYM = "acronym";
-	BASEFONT = "basefont";
-	BGSOUND = "bgsound";
-	BIG = "big";
-	BLINK = "blink";
-	CENTER = "center";
-	COMMAND = "command";
-	FONT = "font";
-	FRAME = "frame";
-	FRAMESET = "frameset";
-	IMAGE = "image";
-	ISINDEX = "isindex";
-	KEYGEN = "keygen";
-	LISTING = "listing";
-	MARQUEE = "marquee";
-	MULTICOL = "multicol";
-	NEXTID = "nextid";
-	NOBR = "nobr";
-	NOFRAMES = "noframes";
-	PLAINTEXT = "plaintext";
-	SPACER = "spacer";
-	STRIKE = "strike";
-	XMP = "xmp";
-}
-
-enum html_attributes_t: string {
-	ACCEPT = "accept";
-	ACCEPTCHARSET = "accept-charset";
-	ACCESSKEY = "accesskey";
-	ACTION = "action";
-	ALIGN = "align";
-	ALLOW = "allow";
-	ALLOWFULLSCREEN = 'allowfullscreen';
-	ALT = "alt";
-	ASYNC = "async";
-	AUTOCAPITALIZE = "autocapitalize";
-	AUTOCOMPLETE = "autocomplete";
-	AUTOFOCUS = "autofocus";
-	AUTOPLAY = "autoplay";
-	BGCOLOR = "bgcolor";
-	BORDER = "border";
-	BUFFERED = "buffered";
-	CHALLENGE = "challenge";
-	CHARSET = "charset";
-	CHECKED = "checked";
-	CITE = "cite";
-	CLASSES = "class"; // cannot be named "CLASS"
-	CODE = "code";
-	CODEBASE = "codebase";
-	COLOR = "color";
-	COLS = "cols";
-	COLSPAN = "colspan";
-	CONTENT = "content";
-	CONTENTEDITABLE = "contenteditable";
-	CONTEXTMENU = "contextmenu";
-	CONTROLS = "controls";
-	COORDS = "coords";
-	CROSSORIGIN = "crossorigin";
-	CSP = "csp";
-	DATA = "data";
-	DATETIME = "datetime";
-	DECODING = "decoding";
-	DEFAULT = "default";
-	DEFER = "defer";
-	DIR = "dir";
-	DIRNAME = "dirname";
-	DISABLED = "disabled";
-	DOWNLOAD = "download";
-	DRAGGABLE = "draggable";
-	DROPZONE = "dropzone";
-	ENCTYPE = "enctype";
-	FOR = "for";
-	FORM = "form";
-	FORMACTION = "formaction";
-	HEADERS = "headers";
-	HEIGHT = "height";
-	HIDDEN = "hidden";
-	HIGH = "high";
-	HREF = "href";
-	HREFLANG = "hreflang";
-	HTTPEQUIV = "http-equiv";
-	ICON = "icon";
-	ID = "id";
-	IMPORTANCE = "importance";
-	INTEGRITY = "integrity";
-	ISMAP = "ismap";
-	ITEMPROP = "itemprop";
-	KEYTYPE = "keytype";
-	KIND = "kind";
-	LABEL = "label";
-	LANG = "lang";
-	LANGUAGE = "language";
-	LAZYLOAD = "lazyload";
-	LIST = "list";
-	LOOP = "loop";
-	LOW = "low";
-	MANIFEST = "manifest";
-	MAX = "max";
-	MAXLENGTH = "maxlength";
-	MINLENGTH = "minlength";
-	MEDIA = "media";
-	METHOD = "method";
-	MIN = "min";
-	MULTIPLE = "multiple";
-	MUTED = "muted";
-	NAME = "name";
-	NOVALIDATE = "novalidate";
-	OPEN = "open";
-	OPTIMUM = "optimum";
-	PATTERN = "pattern";
-	PING = "ping";
-	PLACEHOLDER = "placeholder";
-	POSTER = "poster";
-	PRELOAD = "preload";
-	RADIOGROUP = "radiogroup";
-	READONLY = "readonly";
-	REFERRERPOLICY = "referrerpolicy";
-	REL = "rel";
-	REQUIRED = "required";
-	REVERSED = "reversed";
-	ROWS = "rows";
-	ROWSPAN = "rowspan";
-	SANDBOX = "sandbox";
-	SCOPE = "scope";
-	SCOPED = "scoped";
-	SELECTED = "selected";
-	SHAPE = "shape";
-	SIZE = "size";
-	SIZES = "sizes";
-	SLOT = "slot";
-	SPAN = "span";
-	SPELLCHECK = "spellcheck";
-	SRC = "src";
-	SRCDOC = "srcdoc";
-	SRCLANG = "srclang";
-	SRCSET = "srcset";
-	START = "start";
-	STEP = "step";
-	STYLE = "style";
-	SUMMARY = "summary";
-	TABINDEX = "tabindex";
-	TARGET = "target";
-	TITLE = "title";
-	TRANSLATE = "translate";
-	TYPE = "type";
-	USEMAP = "usemap";
-	VALUE = "value";
-	WIDTH = "width";
-	WRAP = "wrap";
-	DATA_CHECKED = "data-checked";
-	DATA_CLOG_CLICK = "data-clog-click";
-	DATA_CLOG_UI_ELEMENT = "data-clog-ui-element";
-	DATA_CLOG_UI_STEP = "data-clog-ui-step";
-}
+// use namespace HTMLPurifier\Enums;
+use type HTMLPurifier\Enums\{HtmlTags, HtmlAttributes};
 
 type html_input_t = shape(
 	'dirty_html' => string,
@@ -318,10 +12,10 @@ type html_input_t = shape(
 * Default policy constant. This is the list of default allowed tags and
 * attributes when calling `HTMLSanitizerPolicy::fromEmpty()`
  */
-const dict<html_tags_t, keyset<html_attributes_t>> HTML_SANITIZER_DEFAULT_POLICY = dict[
-	html_tags_t::P => keyset[],
-	html_tags_t::B => keyset[],
-	html_tags_t::I => keyset[],
+const dict<HtmlTags, keyset<HtmlAttributes>> HTML_SANITIZER_DEFAULT_POLICY = dict[
+	HtmlTags::P => keyset[],
+	HtmlTags::B => keyset[],
+	HtmlTags::I => keyset[],
 ];
 
 final class HTMLSanitizerException extends \Exception {}
@@ -332,7 +26,7 @@ final class HTMLSanitizerException extends \Exception {}
 
 final class HTMLSanitizerPolicy {
 
-	private dict<html_tags_t, keyset<html_attributes_t>> $html_purifier_policy = dict[];
+	private dict<HtmlTags, keyset<HtmlAttributes>> $html_purifier_policy = dict[];
 
 	/**
 	 * Construct policy class from set of predefined policy allowlist
@@ -340,7 +34,7 @@ final class HTMLSanitizerPolicy {
 	 * @param html_purifier_policy_from_t $policyFrom select from predefined policy
 	 * @return HTMLSanitizerPolicy the current HTMLSanitizerPolicy object
 	 */
-	public function __construct(dict<html_tags_t, keyset<html_attributes_t>> $policy) {
+	public function __construct(dict<HtmlTags, keyset<HtmlAttributes>> $policy) {
 		foreach ($policy as $allowed_tag => $allowed_attributes) {
 			$this->addAllowedTagWithAttributes($allowed_tag, $allowed_attributes);
 		}
@@ -369,10 +63,10 @@ final class HTMLSanitizerPolicy {
 	 * Add a single allowed tag to the allowlist. This only allows the tag with
 	 * any default safe attributes that the library sets.
 	 *
-	 * @param html_tags_t $tag
+	 * @param HtmlTags $tag
 	 * @return HTMLSanitizerPolicy the current HTMLSanitizerPolicy object
 	 */
-	public function addAllowedTag(html_tags_t $allowed_tag): HTMLSanitizerPolicy {
+	public function addAllowedTag(HtmlTags $allowed_tag): HTMLSanitizerPolicy {
 		// Skip if we already have the same tag in the policy
 		if (!C\contains_key($this->html_purifier_policy, $allowed_tag)) {
 			$this->html_purifier_policy[$allowed_tag] = keyset[];
@@ -386,10 +80,10 @@ final class HTMLSanitizerPolicy {
 	 * Add multiple allowed tags to the allowlist. This only allows the tags with
 	 * any default safe attributes that the library sets.
 	 *
-	 * @param keyset<html_tags_t> $allowed_tags
+	 * @param keyset<HtmlTags> $allowed_tags
 	 * @return HTMLSanitizerPolicy the current HTMLSanitizerPolicy object
 	 */
-	public function addAllowedTags(keyset<html_tags_t> $allowed_tags): HTMLSanitizerPolicy {
+	public function addAllowedTags(keyset<HtmlTags> $allowed_tags): HTMLSanitizerPolicy {
 		foreach ($allowed_tags as $allowed_tag) {
 			$this->addAllowedTag($allowed_tag);
 		}
@@ -399,12 +93,12 @@ final class HTMLSanitizerPolicy {
 	/**
 	 * Add a tag with allowed attributes to the allowlist
 	 *
-	 * @param keyset<html_tags_t> $allowed_tags
+	 * @param keyset<HtmlTags> $allowed_tags
 	 * @return HTMLSanitizerPolicy the current HTMLSanitizerPolicy object
 	 */
 	public function addAllowedTagWithAttributes(
-		html_tags_t $tag,
-		keyset<html_attributes_t> $attributes,
+		HtmlTags $tag,
+		keyset<HtmlAttributes> $attributes,
 	): HTMLSanitizerPolicy {
 		$this->addAllowedTag($tag);
 		foreach ($attributes as $attribute) {
@@ -414,7 +108,7 @@ final class HTMLSanitizerPolicy {
 	}
 
 	public function addAllowedTagsWithAttributes(
-		dict<html_tags_t, keyset<html_attributes_t>> $allowed_tags,
+		dict<HtmlTags, keyset<HtmlAttributes>> $allowed_tags,
 	): HTMLSanitizerPolicy {
 		foreach ($allowed_tags as $tag => $attributes) {
 			$this->addAllowedTagWithAttributes($tag, $attributes);

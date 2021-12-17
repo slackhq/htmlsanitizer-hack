@@ -2,7 +2,7 @@
 use function Facebook\FBExpect\expect;
 use type Facebook\HackTest\HackTest;
 use namespace HTMLPurifier;
-use namespace HTMLPurifier\{Strategy, Token, Lexer, Injector};
+use namespace HTMLPurifier\{Strategy, Token, Lexer, Injector, Enums};
 
 class InjectorTest extends HackTest {
 	private function assertAutoParagraphResult(string $name, string $dirty, string $expected): void {
@@ -20,7 +20,7 @@ class InjectorTest extends HackTest {
 		echo "\nrunning test$name()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
-		$policy->addAllowedTag(HTMLPurifier\html_tags_t::A);
+		$policy->addAllowedTag(Enums\HtmlTags::A);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$config->def->defaults["AutoFormat.DisplayLinkURI"] = true;
 		$clean_html = $purifier->purify($dirty);
@@ -43,9 +43,9 @@ class InjectorTest extends HackTest {
 		echo "\nrunning test$name()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
-		$policy->addAllowedTags(keyset[HTMLPurifier\html_tags_t::DIV, HTMLPurifier\html_tags_t::SPAN]);
-		$policy->addAllowedTagWithAttributes(HTMLPurifier\html_tags_t::A, keyset[
-			HTMLPurifier\html_attributes_t::HREF,
+		$policy->addAllowedTags(keyset[Enums\HtmlTags::DIV, Enums\HtmlTags::SPAN]);
+		$policy->addAllowedTagWithAttributes(Enums\HtmlTags::A, keyset[
+			Enums\HtmlAttributes::HREF,
 		]);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$config->def->defaults["AutoFormat.PurifierLinkify"] = true;
@@ -59,9 +59,9 @@ class InjectorTest extends HackTest {
 		echo "\nrunning test$name()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
-		$policy->addAllowedTag(HTMLPurifier\html_tags_t::SPAN);
-		$policy->addAllowedTagWithAttributes(HTMLPurifier\html_tags_t::A, keyset[
-			HTMLPurifier\html_attributes_t::HREF,
+		$policy->addAllowedTag(Enums\HtmlTags::SPAN);
+		$policy->addAllowedTagWithAttributes(Enums\HtmlTags::A, keyset[
+			Enums\HtmlAttributes::HREF,
 		]);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$config->def->defaults["AutoFormat.Linkify"] = true;
@@ -75,15 +75,12 @@ class InjectorTest extends HackTest {
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
 		$policy->addAllowedTags(keyset[
-			HTMLPurifier\html_tags_t::DIV,
-			HTMLPurifier\html_tags_t::P,
-			HTMLPurifier\html_tags_t::STRONG,
-			HTMLPurifier\html_tags_t::EM,
+			Enums\HtmlTags::DIV,
+			Enums\HtmlTags::P,
+			Enums\HtmlTags::STRONG,
+			Enums\HtmlTags::EM,
 		]);
-		$policy->addAllowedTagWithAttributes(
-			HTMLPurifier\html_tags_t::SPAN,
-			keyset[HTMLPurifier\html_attributes_t::CLASSES],
-		);
+		$policy->addAllowedTagWithAttributes(Enums\HtmlTags::SPAN, keyset[Enums\HtmlAttributes::CLASSES]);
 		// $config->def->defaults['HTML.Allowed'] = 'span[class],div,p,strong,em';
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$config->def->defaults["AutoFormat.RemoveSpansWithoutAttributes"] = true;

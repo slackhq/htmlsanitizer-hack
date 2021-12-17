@@ -5,7 +5,7 @@ namespace HTMLPurifier\_Private\Tests;
 use function Facebook\FBExpect\expect;
 use type Facebook\HackTest\HackTest;
 use namespace HTMLPurifier;
-use namespace HTMLPurifier\{Strategy, Token, Lexer};
+use namespace HTMLPurifier\{Strategy, Token, Lexer, Enums};
 
 class CommentRemovalTest extends HackTest {
 	public function testValidCommentRemoval(): void {
@@ -53,13 +53,13 @@ class CommentRemovalTest extends HackTest {
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
 		$policy->addAllowedTagWithAttributes(
-			HTMLPurifier\html_tags_t::A,
+			Enums\HtmlTags::A,
 			keyset[
-				HTMLPurifier\html_attributes_t::ID,
-				HTMLPurifier\html_attributes_t::NAME,
-				HTMLPurifier\html_attributes_t::HREF,
-				HTMLPurifier\html_attributes_t::TARGET,
-				HTMLPurifier\html_attributes_t::REL,
+				Enums\HtmlAttributes::ID,
+				Enums\HtmlAttributes::NAME,
+				Enums\HtmlAttributes::HREF,
+				Enums\HtmlAttributes::TARGET,
+				Enums\HtmlAttributes::REL,
 			],
 		);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
@@ -89,46 +89,46 @@ class CommentRemovalTest extends HackTest {
 		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
 		$policy->addAllowedTags(
 			keyset[
-				HTMLPurifier\html_tags_t::B,
-				HTMLPurifier\html_tags_t::UL,
-				HTMLPurifier\html_tags_t::LI,
-				HTMLPurifier\html_tags_t::OL,
-				HTMLPurifier\html_tags_t::H2,
-				HTMLPurifier\html_tags_t::H4,
-				HTMLPurifier\html_tags_t::BR,
-				HTMLPurifier\html_tags_t::DIV,
-				HTMLPurifier\html_tags_t::STRONG,
-				HTMLPurifier\html_tags_t::DEL,
-				HTMLPurifier\html_tags_t::EM,
-				HTMLPurifier\html_tags_t::PRE,
-				HTMLPurifier\html_tags_t::CODE,
-				HTMLPurifier\html_tags_t::TABLE,
-				HTMLPurifier\html_tags_t::TBODY,
-				HTMLPurifier\html_tags_t::TD,
-				HTMLPurifier\html_tags_t::TH,
-				HTMLPurifier\html_tags_t::THEAD,
-				HTMLPurifier\html_tags_t::TR,
+				Enums\HtmlTags::B,
+				Enums\HtmlTags::UL,
+				Enums\HtmlTags::LI,
+				Enums\HtmlTags::OL,
+				Enums\HtmlTags::H2,
+				Enums\HtmlTags::H4,
+				Enums\HtmlTags::BR,
+				Enums\HtmlTags::DIV,
+				Enums\HtmlTags::STRONG,
+				Enums\HtmlTags::DEL,
+				Enums\HtmlTags::EM,
+				Enums\HtmlTags::PRE,
+				Enums\HtmlTags::CODE,
+				Enums\HtmlTags::TABLE,
+				Enums\HtmlTags::TBODY,
+				Enums\HtmlTags::TD,
+				Enums\HtmlTags::TH,
+				Enums\HtmlTags::THEAD,
+				Enums\HtmlTags::TR,
 			],
 		);
 		$policy->addAllowedTagsWithAttributes(dict[
-			HTMLPurifier\html_tags_t::A => keyset[
-				HTMLPurifier\html_attributes_t::ID,
-				HTMLPurifier\html_attributes_t::NAME,
-				HTMLPurifier\html_attributes_t::HREF,
-				HTMLPurifier\html_attributes_t::TARGET,
-				HTMLPurifier\html_attributes_t::REL,
+			Enums\HtmlTags::A => keyset[
+				Enums\HtmlAttributes::ID,
+				Enums\HtmlAttributes::NAME,
+				Enums\HtmlAttributes::HREF,
+				Enums\HtmlAttributes::TARGET,
+				Enums\HtmlAttributes::REL,
 			],
-			HTMLPurifier\html_tags_t::H3 => keyset[HTMLPurifier\html_attributes_t::CLASSES],
-			HTMLPurifier\html_tags_t::P => keyset[HTMLPurifier\html_attributes_t::CLASSES],
-			HTMLPurifier\html_tags_t::ASIDE => keyset[HTMLPurifier\html_attributes_t::CLASSES],
-			HTMLPurifier\html_tags_t::IMG => keyset[
-				HTMLPurifier\html_attributes_t::SRC,
-				HTMLPurifier\html_attributes_t::ALT,
-				HTMLPurifier\html_attributes_t::CLASSES,
-				HTMLPurifier\html_attributes_t::WIDTH,
-				HTMLPurifier\html_attributes_t::HEIGHT,
-				HTMLPurifier\html_attributes_t::SRCSET,
-				HTMLPurifier\html_attributes_t::SIZES,
+			Enums\HtmlTags::H3 => keyset[Enums\HtmlAttributes::CLASSES],
+			Enums\HtmlTags::P => keyset[Enums\HtmlAttributes::CLASSES],
+			Enums\HtmlTags::ASIDE => keyset[Enums\HtmlAttributes::CLASSES],
+			Enums\HtmlTags::IMG => keyset[
+				Enums\HtmlAttributes::SRC,
+				Enums\HtmlAttributes::ALT,
+				Enums\HtmlAttributes::CLASSES,
+				Enums\HtmlAttributes::WIDTH,
+				Enums\HtmlAttributes::HEIGHT,
+				Enums\HtmlAttributes::SRCSET,
+				Enums\HtmlAttributes::SIZES,
 			],
 		]);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());

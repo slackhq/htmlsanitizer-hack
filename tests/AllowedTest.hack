@@ -5,7 +5,7 @@ namespace HTMLPurifier\_Private\Tests;
 use function Facebook\FBExpect\expect;
 use type Facebook\HackTest\HackTest;
 use namespace HTMLPurifier;
-use namespace HTMLPurifier\{Strategy, Token, Lexer};
+use namespace HTMLPurifier\{Strategy, Token, Lexer, Enums};
 
 class AllowedTest extends HackTest {
 	public function testEmptyAllowedList(): void {
@@ -38,8 +38,8 @@ class AllowedTest extends HackTest {
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
 		$policy->addAllowedTagWithAttributes(
-			HTMLPurifier\html_tags_t::IMG,
-			keyset[HTMLPurifier\html_attributes_t::SRC, HTMLPurifier\html_attributes_t::ALT],
+			Enums\HtmlTags::IMG,
+			keyset[Enums\HtmlAttributes::SRC, Enums\HtmlAttributes::ALT],
 		);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
 		$dirty_html = '<img src="https://test.com" alt="test" onerror=alert(1); />hello<script>alert(1);</script>';
