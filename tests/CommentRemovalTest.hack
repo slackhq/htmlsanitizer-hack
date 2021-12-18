@@ -11,8 +11,8 @@ class CommentRemovalTest extends HackTest {
 	public function testValidCommentRemoval(): void {
 		echo "\nrunning testValidCommentRemoval()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html1 = '<!-- normal comment -->';
 		$dirty_html2 = '<!-- comment --><b>Hello World!</b>';
 		$dirty_html3 = '<!-- begin --><b>Hello World!</b><!-- end -->';
@@ -29,8 +29,8 @@ class CommentRemovalTest extends HackTest {
 	public function testParseErrorCommentRemoval(): void {
 		echo "\nrunning testParseErrorCommentRemoval()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html1 = '<!-->'; // abruptly closed comment
 		$dirty_html2 = '<!--->'; // abruptly closed comment
@@ -51,7 +51,7 @@ class CommentRemovalTest extends HackTest {
 	public function testCure53PoCCommentRemoval(): void {
 		echo "\nrunning testCure53PoCCommentRemoval()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		$policy->addAllowedTagWithAttributes(
 			Enums\HtmlTags::A,
 			keyset[
@@ -62,7 +62,7 @@ class CommentRemovalTest extends HackTest {
 				Enums\HtmlAttributes::REL,
 			],
 		);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_poc1 = '<!--><iframe srcdoc="<script>alert(document.domain)</script>">-->x';
 		$dirty_poc2 = '<!---><iframe srcdoc="<script>alert(document.domain)</script>">-->x';
@@ -86,7 +86,7 @@ class CommentRemovalTest extends HackTest {
 	public function testCure53EmailPurification(): void {
 		echo "\nrunning testCure53EmailPurification()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
 		$policy->addAllowedTags(
 			keyset[
 				Enums\HtmlTags::B,
@@ -131,7 +131,7 @@ class CommentRemovalTest extends HackTest {
 				Enums\HtmlAttributes::SIZES,
 			],
 		]);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_email1 = "<!--><script>
 desktop.downloads.startDownload({
@@ -156,8 +156,8 @@ setTimeout(function(){
 	public function testNestedComments(): void {
 		echo "\nrunning testFancyNestedComments()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_nested1 = '<!-- <!-- Normally nested comment --> -->';
 		$dirty_nested2 = '<!--<!-->-->'; // Abruptly ended comment nested in normal comment
 		$dirty_nested3 = '<!-<!-->->'; // Doubly abruptly ended nested comment
@@ -177,8 +177,8 @@ setTimeout(function(){
 	public function testLineBreakComments(): void {
 		echo "\nrunning testLineBreakComments()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty = '<!-->
 <iframe srcdoc=
 "<script>alert(document.domain)</script>">
@@ -198,7 +198,17 @@ setTimeout(function(){
 	public function testPartiallyRemovedComments(): void {
 		echo "\nrunning testPartiallyRemovedComments()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict['a' => vec['id', 'name', 'href', 'target', 'rel']]);
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict[
+				Enums\HtmlTags::A => keyset[
+					Enums\HtmlAttributes::ID,
+					Enums\HtmlAttributes::NAME,
+					Enums\HtmlAttributes::HREF,
+					Enums\HtmlAttributes::TARGET,
+					Enums\HtmlAttributes::REL,
+				],
+			],
+		);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html1 =

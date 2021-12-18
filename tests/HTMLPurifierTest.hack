@@ -8,8 +8,8 @@ use namespace HTMLPurifier;
 use namespace HTMLPurifier\{Strategy, Token, Lexer, Enums};
 
 class HTMLPurifierTest extends HackTest {
-	private function standardPolicy(): HTMLPurifier\HTMLSanitizerPolicy {
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+	private function standardPolicy(): HTMLPurifier\HTMLPurifier_Policy {
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
 		$policy->addAllowedTags(
 			keyset[
 				Enums\HtmlTags::B,
@@ -64,8 +64,8 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testMissingEndTags()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<b>Bold';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
@@ -78,8 +78,8 @@ class HTMLPurifierTest extends HackTest {
 		echo "\ntestMaliciousCodeRemoved()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<img src="javascript:evil();" onload="evil();" />';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
@@ -92,8 +92,8 @@ class HTMLPurifierTest extends HackTest {
 		echo "\ntestMaliciousCodeRemovedWithText()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<img src="javascript:evil();" onload="evil();" />hello';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
@@ -106,9 +106,9 @@ class HTMLPurifierTest extends HackTest {
 		echo "\ntestIllegalNestingFixed()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		$policy->addAllowedTags(keyset[Enums\HtmlTags::DEL, Enums\HtmlTags::DIV]);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<b>Inline <del>context <div>No block allowed</div></del></b>';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
@@ -121,9 +121,9 @@ class HTMLPurifierTest extends HackTest {
 		echo "\ntestDeprecatedTagsConverted()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		$policy->addAllowedTag(Enums\HtmlTags::CENTER);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<center>Centered</center>';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
@@ -136,9 +136,9 @@ class HTMLPurifierTest extends HackTest {
 		echo "\ntestCSSValidated()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		$policy->addAllowedTag(Enums\HtmlTags::SPAN);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<span style="color:#COW;float:around;text-decoration:blink;">Text</span>';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
@@ -151,9 +151,9 @@ class HTMLPurifierTest extends HackTest {
 		echo "\ntestMaintainSuperfluousDivs()...";
 		// porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		$policy->addAllowedTags(keyset[Enums\HtmlTags::H2, Enums\HtmlTags::DIV]);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<div class="style1">
 <div class="style2">
 <h2>text</h2>
@@ -168,7 +168,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\ntestRichFormattingPreserved()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		$policy->addAllowedTags(keyset[
 			Enums\HtmlTags::CAPTION,
 			Enums\HtmlTags::TFOOT,
@@ -178,7 +178,7 @@ class HTMLPurifierTest extends HackTest {
 			Enums\HtmlTags::TABLE,
 		]);
 		$policy->addAllowedTagWithAttributes(Enums\HtmlTags::TD, keyset[Enums\HtmlAttributes::STYLE]);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<table>
   <caption>
@@ -214,9 +214,9 @@ class HTMLPurifierTest extends HackTest {
 	public function testDOM(): void {
 		echo "\nrunning testDOM()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		// This is weird, but based off of how we define config in HTMLPurifier constructor
-		$config = $policy->constructPolicy() |> $$->configPolicy($config);
+		$config = $policy |> $$->configPolicy($config);
 		$context = new HTMLPurifier\HTMLPurifier_Context();
 
 		$html = "<b>Bold";
@@ -236,9 +236,9 @@ class HTMLPurifierTest extends HackTest {
 	public function testStrategies(): void {
 		echo "\nrunning testStrategies()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		// This is weird, but based off of how we define config in HTMLPurifier constructor
-		$config = $policy->constructPolicy() |> $$->configPolicy($config);
+		$config = $policy |> $$->configPolicy($config);
 		$context = new HTMLPurifier\HTMLPurifier_Context();
 
 		$remove_foreign_elements = new Strategy\HTMLPurifier_Strategy_RemoveForeignElements();
@@ -268,9 +268,9 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testPolicyAllowListUnClean()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
 		$policy->addAllowedTag(Enums\HtmlTags::A);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<b>Hello';
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('Hello');
@@ -281,9 +281,9 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testPolicyAllowListUnCleanWithPolicyDict()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
 		$policy->addAllowedTag(Enums\HtmlTags::A);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<b>Hello';
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('Hello');
@@ -294,9 +294,9 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testPolicyAllowListClean()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
 		$policy->addAllowedTag(Enums\HtmlTags::B);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<b>Hello';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
@@ -308,9 +308,9 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testPolicyAllowListWithAttributesRemoveExtra...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
 		$policy->addAllowedTagWithAttributes(Enums\HtmlTags::DIV, keyset[Enums\HtmlAttributes::ALIGN]);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<div align="center" title="hi">Hello';
 		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
@@ -322,9 +322,9 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testPolicyAllowListClean()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
 		$policy->addAllowedTagWithAttributes(Enums\HtmlTags::DIV, keyset[Enums\HtmlAttributes::ALIGN]);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<div align="center" title="hi"><b>Hello</b>';
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<div align="center">Hello</div>');
@@ -335,7 +335,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testSanitizeHtmlWithIframeForVideoPolicySet()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
 		$policy->addAllowedTagWithAttributes(
 			Enums\HtmlTags::IFRAME,
 			keyset[
@@ -346,7 +346,7 @@ class HTMLPurifierTest extends HackTest {
 				Enums\HtmlAttributes::ALLOWFULLSCREEN,
 			],
 		);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<iframe src="https://www.example.com/watch?v=M84hFmNhTQU" height="364" width="576"></iframe>';
 		$clean_html = $purifier->purify($dirty_html);
@@ -360,7 +360,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testSanitizeHtmlWithIframeForSearchProtocolsPolicySet()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
 		$policy->addAllowedTagWithAttributes(
 			Enums\HtmlTags::IFRAME,
 			keyset[
@@ -371,7 +371,7 @@ class HTMLPurifierTest extends HackTest {
 				Enums\HtmlAttributes::ALLOWFULLSCREEN,
 			],
 		);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		// Test1 clean iframe with usertesting domain with no protocol
 		$dirty_html = '<iframe
@@ -404,9 +404,9 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testMunge()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		$policy->addAllowedTagWithAttributes(Enums\HtmlTags::A, keyset[Enums\HtmlAttributes::HREF]);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$config->def->defaults["URI.Munge"] = "/redirect.php?url=%s&check=%t";
 		$config->def->defaults["URI.MungeSecretKey"] = "foo";
 		// print($config);
@@ -421,14 +421,14 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testPercentageHeightWidth()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		$policy->addAllowedTagWithAttributes(Enums\HtmlTags::IFRAME, keyset[
 			Enums\HtmlAttributes::SRC,
 			Enums\HtmlAttributes::HEIGHT,
 			Enums\HtmlAttributes::WIDTH,
 			Enums\HtmlAttributes::ALLOWFULLSCREEN,
 		]);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html =
 			'<iframe src="https://example.com/videoclip/abc123?autoplay=true&origin=slack" height="100%" width="100%" allow="fullscreen" allowfullscreen="true" frameborder="0"></iframe>';
@@ -442,7 +442,7 @@ class HTMLPurifierTest extends HackTest {
 	public function testImagePolicyWithMissingAltAttribute(): void {
 		echo "\nrunning testImagePolicyWithMissingAltAttribute()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
 		$policy->addAllowedTagWithAttributes(
 			Enums\HtmlTags::IMG,
 			keyset[
@@ -455,7 +455,7 @@ class HTMLPurifierTest extends HackTest {
 				Enums\HtmlAttributes::SIZES,
 			],
 		);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html =
 			'<img loading="lazy" class="alignright" src="https://biz-hq.co/request-unlimited-pto@2x.jpg?w=360">';
 		$clean_html = $purifier->purify($dirty_html);
@@ -470,7 +470,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testWebappPolicy()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = $this->standardPolicy();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		expect(true)->toNotBeNull();
 		echo "finished.\n\n";
 	}
@@ -479,7 +479,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testSpecialCharacterValidateUTF8()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = $this->standardPolicy();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<ul>
 <li>Just a sentence. </li>
 <li>Just a sentence.</li>
@@ -531,7 +531,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testWebappPolicy()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = $this->standardPolicy();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html =
 			'<h3><img loading="lazy" class="alignnone size-full wp-image-1466" src="https://a1b.cloudfront.net/test/6/at-test-user-test%402x.png" alt="how to use the &quot;at&quot; html sanitizer" width="1024" height="579" />How it works</h3>';
 		$clean_html = $purifier->purify($dirty_html);
@@ -545,7 +545,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testRel()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = $this->standardPolicy();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<p><a rel="ab" name="bobcat"></a></p>';
 		$clean_html = $purifier->purify($dirty_html);
 		$expected_html = '<p><a name="bobcat"></a></p>';
@@ -557,7 +557,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testAtagTargetAttribute()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = $this->standardPolicy();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<p><a name="bobcat" target="_blank"></a></p>';
 		$clean_html = $purifier->purify($dirty_html);
 		$expected_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
@@ -569,7 +569,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testAtagNoChange()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = $this->standardPolicy();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
 		$clean_html = $purifier->purify($dirty_html);
 		$expected_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
@@ -581,7 +581,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testAtagStripAdd()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = $this->standardPolicy();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<p><a name="bobcat" target="_blank" rel="ab" target="_blank"></a></p>';
 		$clean_html = $purifier->purify($dirty_html);
 		$expected_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
@@ -593,7 +593,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testAtagStripLeave()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = $this->standardPolicy();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<p><a name="bobcat" target="_blank" rel="ab noopener noreferrer"></a></p>';
 		$clean_html = $purifier->purify($dirty_html);
 		$expected_html = '<p><a name="bobcat" target="_blank" rel="noopener noreferrer"></a></p>';
@@ -605,7 +605,7 @@ class HTMLPurifierTest extends HackTest {
 		echo "\nrunning testAtagNoTarget()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = $this->standardPolicy();
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<p><a name="bobcat" rel="noopener noreferrer"></a></p>';
 		$clean_html = $purifier->purify($dirty_html);
 		$expected_html = '<p><a name="bobcat" rel="noopener noreferrer"></a></p>';
@@ -615,9 +615,8 @@ class HTMLPurifierTest extends HackTest {
 
 	public function testDisabledTargetBlankTransform(): void {
 		echo "\nrunning testAtagNoTarget()...";
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict['a' => vec['id', 'name', 'href', 'target', 'rel']]);
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = HTMLPurifier\HTMLSanitizerPolicy::fromEmpty();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
 		$policy->addAllowedTagWithAttributes(
 			Enums\HtmlTags::A,
 			keyset[
@@ -628,7 +627,7 @@ class HTMLPurifierTest extends HackTest {
 				Enums\HtmlAttributes::REL,
 			],
 		);
-		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy->constructPolicy());
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<a href="https://google.com"></a>';
 		$clean_html = $purifier->purify($dirty_html);
 		$expected_html = '<a href="https://google.com"></a>';
