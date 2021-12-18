@@ -21,6 +21,8 @@ const dict<HtmlTags, keyset<HtmlAttributes>> HTML_SANITIZER_DEFAULT_POLICY = dic
 	HtmlTags::I => keyset[],
 ];
 
+final class HTMLSanitizerException extends \Exception {}
+
 class HTMLPurifier_Policy {
 	// public dict<string, vec<string>> $allowed_tags_attributes = dict[];
 
@@ -69,7 +71,7 @@ class HTMLPurifier_Policy {
 		if (!C\contains_key($this->html_purifier_policy, $allowed_tag)) {
 			$this->html_purifier_policy[$allowed_tag] = keyset[];
 		} else {
-			throw new HTMLSanitizerException("html tag \"$allowed_tag\" already exist in the policy");
+			throw new HTMLSanitizerException("html tag \"(string)$allowed_tag\" already exist in the policy");
 		}
 		return $this;
 	}
