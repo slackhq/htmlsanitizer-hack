@@ -15,7 +15,7 @@
             "name": "HHVM: Run Script",
             "type": "hhvm",
             "request": "launch",
-            "script": "src/index.hack",
+            "script": "src/main.hack",
             "hhvmArgs": [
                 "-v",
                 "Eval.JitEnableRenameFunction=true",

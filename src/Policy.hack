@@ -3,7 +3,6 @@
 
 namespace HTMLPurifier;
 use namespace HH\Lib\{C, Str};
-
 use type HTMLPurifier\Enums\{HtmlTags, HtmlAttributes};
 
 type html_input_t = shape(
@@ -13,7 +12,7 @@ type html_input_t = shape(
 
 /*
 * Default policy constant. This is the list of default allowed tags and
-* attributes when calling `HTMLPurifier_Policy::fromEmpty()`
+* attributes when calling `HTMLPurifier_Policy::fromDefault()`
  */
 const dict<HtmlTags, keyset<HtmlAttributes>> HTML_SANITIZER_DEFAULT_POLICY = dict[
 	HtmlTags::P => keyset[],
@@ -24,7 +23,6 @@ const dict<HtmlTags, keyset<HtmlAttributes>> HTML_SANITIZER_DEFAULT_POLICY = dic
 final class HTMLSanitizerException extends \Exception {}
 
 class HTMLPurifier_Policy {
-	// public dict<string, vec<string>> $allowed_tags_attributes = dict[];
 
 	private dict<HtmlTags, keyset<HtmlAttributes>> $html_purifier_policy = dict[];
 

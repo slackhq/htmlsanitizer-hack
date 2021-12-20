@@ -68,7 +68,6 @@ class HTMLPurifierTest extends HackTest {
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<b>Bold';
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<b>Bold</b>');
 		echo "finished.\n\n";
@@ -82,7 +81,6 @@ class HTMLPurifierTest extends HackTest {
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<img src="javascript:evil();" onload="evil();" />';
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('');
 		echo "finished.\n\n";
@@ -96,7 +94,6 @@ class HTMLPurifierTest extends HackTest {
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<img src="javascript:evil();" onload="evil();" />hello';
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('hello');
 		echo "finished.\n\n";
@@ -111,7 +108,6 @@ class HTMLPurifierTest extends HackTest {
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<b>Inline <del>context <div>No block allowed</div></del></b>';
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<b>Inline <del>context No block allowed</del></b>');
 		echo "finished.\n\n";
@@ -126,7 +122,6 @@ class HTMLPurifierTest extends HackTest {
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<center>Centered</center>';
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<center>Centered</center>');
 		echo "finished.\n\n";
@@ -141,7 +136,6 @@ class HTMLPurifierTest extends HackTest {
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html = '<span style="color:#COW;float:around;text-decoration:blink;">Text</span>';
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<span>Text</span>');
 		echo "finished.\n\n";
@@ -216,7 +210,7 @@ class HTMLPurifierTest extends HackTest {
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		// This is weird, but based off of how we define config in HTMLPurifier constructor
-		$config = $policy |> $$->configPolicy($config);
+		$config = $policy->configPolicy($config);
 		$context = new HTMLPurifier\HTMLPurifier_Context();
 
 		$html = "<b>Bold";
@@ -228,7 +222,7 @@ class HTMLPurifierTest extends HackTest {
 			new Token\HTMLPurifier_Token_Text("Bold"),
 			new Token\HTMLPurifier_Token_End("b", dict[]),
 		];
-		\var_dump($tokens);
+
 		expect($tokens)->toHaveSameContentAs($expected_tokens);
 		echo "finished.\n";
 	}
@@ -238,7 +232,7 @@ class HTMLPurifierTest extends HackTest {
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
 		// This is weird, but based off of how we define config in HTMLPurifier constructor
-		$config = $policy |> $$->configPolicy($config);
+		$config = $policy->configPolicy($config);
 		$context = new HTMLPurifier\HTMLPurifier_Context();
 
 		$remove_foreign_elements = new Strategy\HTMLPurifier_Strategy_RemoveForeignElements();
@@ -298,7 +292,6 @@ class HTMLPurifierTest extends HackTest {
 		$policy->addAllowedTag(Enums\HtmlTags::B);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<b>Hello';
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<b>Hello</b>');
 		echo "finished.\n\n";
@@ -312,7 +305,6 @@ class HTMLPurifierTest extends HackTest {
 		$policy->addAllowedTagWithAttributes(Enums\HtmlTags::DIV, keyset[Enums\HtmlAttributes::ALIGN]);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html = '<div align="center" title="hi">Hello';
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
 		$clean_html = $purifier->purify($dirty_html);
 		expect($clean_html)->toEqual('<div align="center">Hello</div>');
 		echo "finished.\n\n";
