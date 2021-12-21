@@ -1820,7 +1820,6 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 			"fieldset" => true,
 		];
 		$this->info_content_sets['Block'] = $block_info;
-
 	}
 
 	// RAW CUSTOMIZATION STUFF --------------------------------------------
@@ -1916,12 +1915,12 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 			C\is_empty($allowed_attributes)
 		) {
 			$allowed = (string)$config->def->defaults['HTML.Allowed'];
-			if ($allowed !== '') {
+			if ($allowed is string && $allowed !== '') {
 				list($allowed_elements, $allowed_attributes) = $this->parseTinyMCEAllowedList($allowed);
 			}
 		}
 
-		if ($allowed_elements is dict<_, _> && !C\is_empty($allowed_elements)) {
+		if ($allowed_elements is dict<_, _>) {
 			foreach ($this->info as $name => $d) {
 				if (!C\contains_key($allowed_elements, $name)) {
 					unset($this->info[$name]);

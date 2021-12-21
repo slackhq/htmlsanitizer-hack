@@ -112,31 +112,15 @@ abstract class HTMLPurifier_Injector {
 	 */
 	public function checkNeeded(HTMLPurifier_Config $config): string {
 		$def = TypeAssert\matches<Definition\HTMLPurifier_HTMLDefinition>($config->getHTMLDefinition());
-		$i = 0;
-		$index = 0;
 		foreach ($this->needed as $element => $attributes) {
-			if ($i is int) {
-				$i = $element;
-			}
-			if ($i is string && !C\contains_key($def->info, $i)) {
-				return $i;
-			}
-			if (!($element is vec<_>)) {
-				$index++;
-				$i = $index;
-				continue;
+			if (!C\contains_key($def->info, $element)) {
+				return $element;
 			}
 			foreach ($attributes as $name) {
-				if (
-					$element is string &&
-					C\contains_key($def->info, $element) &&
-					!C\contains_key($def->info[$element]->attr, $name)
-				) {
+				if (!C\contains_key($def->info[$element]->attr, $name)) {
 					return "$element.$name";
 				}
 			}
-			$index++;
-			$i = $index;
 		}
 		return '';
 	}

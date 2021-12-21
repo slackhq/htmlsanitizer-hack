@@ -5,13 +5,14 @@ namespace HTMLPurifier\_Private\Tests;
 use function Facebook\FBExpect\expect;
 use type Facebook\HackTest\HackTest;
 use namespace HTMLPurifier;
-use namespace HTMLPurifier\{Strategy, Token, Lexer};
+use namespace HTMLPurifier\{Strategy, Token, Lexer, Enums};
 
 class CommentRemovalTest extends HackTest {
 	public function testValidCommentRemoval(): void {
 		echo "\nrunning testValidCommentRemoval()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_html1 = '<!-- normal comment -->';
 		$dirty_html2 = '<!-- comment --><b>Hello World!</b>';
 		$dirty_html3 = '<!-- begin --><b>Hello World!</b><!-- end -->';
@@ -28,7 +29,8 @@ class CommentRemovalTest extends HackTest {
 	public function testParseErrorCommentRemoval(): void {
 		echo "\nrunning testParseErrorCommentRemoval()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html1 = '<!-->'; // abruptly closed comment
 		$dirty_html2 = '<!--->'; // abruptly closed comment
@@ -49,7 +51,17 @@ class CommentRemovalTest extends HackTest {
 	public function testCure53PoCCommentRemoval(): void {
 		echo "\nrunning testCure53PoCCommentRemoval()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict['a' => vec['id', 'name', 'href', 'target', 'rel']]);
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$policy->addAllowedTagWithAttributes(
+			Enums\HtmlTags::A,
+			keyset[
+				Enums\HtmlAttributes::ID,
+				Enums\HtmlAttributes::NAME,
+				Enums\HtmlAttributes::HREF,
+				Enums\HtmlAttributes::TARGET,
+				Enums\HtmlAttributes::REL,
+			],
+		);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_poc1 = '<!--><iframe srcdoc="<script>alert(document.domain)</script>">-->x';
@@ -74,34 +86,51 @@ class CommentRemovalTest extends HackTest {
 	public function testCure53EmailPurification(): void {
 		echo "\nrunning testCure53EmailPurification()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(
-			dict[
-				'b' => vec[],
-				'ul' => vec[],
-				'li' => vec[],
-				'ol' => vec[],
-				'h2' => vec[],
-				'h4' => vec[],
-				'br' => vec[],
-				'div' => vec[],
-				'strong' => vec[],
-				'del' => vec[],
-				'em' => vec[],
-				'pre' => vec[],
-				'code' => vec[],
-				'table' => vec[],
-				'tbody' => vec[],
-				'td' => vec[],
-				'th' => vec[],
-				'thead' => vec[],
-				'tr' => vec[],
-				'a' => vec['id', 'name', 'href', 'target', 'rel'],
-				'h3' => vec['class'],
-				'p' => vec['class'],
-				'aside' => vec['class'],
-				'img' => vec['src', 'alt', 'class', 'width', 'height', 'srcset', 'sizes'],
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
+		$policy->addAllowedTags(
+			keyset[
+				Enums\HtmlTags::B,
+				Enums\HtmlTags::UL,
+				Enums\HtmlTags::LI,
+				Enums\HtmlTags::OL,
+				Enums\HtmlTags::H2,
+				Enums\HtmlTags::H4,
+				Enums\HtmlTags::BR,
+				Enums\HtmlTags::DIV,
+				Enums\HtmlTags::STRONG,
+				Enums\HtmlTags::DEL,
+				Enums\HtmlTags::EM,
+				Enums\HtmlTags::PRE,
+				Enums\HtmlTags::CODE,
+				Enums\HtmlTags::TABLE,
+				Enums\HtmlTags::TBODY,
+				Enums\HtmlTags::TD,
+				Enums\HtmlTags::TH,
+				Enums\HtmlTags::THEAD,
+				Enums\HtmlTags::TR,
 			],
 		);
+		$policy->addAllowedTagsWithAttributes(dict[
+			Enums\HtmlTags::A => keyset[
+				Enums\HtmlAttributes::ID,
+				Enums\HtmlAttributes::NAME,
+				Enums\HtmlAttributes::HREF,
+				Enums\HtmlAttributes::TARGET,
+				Enums\HtmlAttributes::REL,
+			],
+			Enums\HtmlTags::H3 => keyset[Enums\HtmlAttributes::CLASSES],
+			Enums\HtmlTags::P => keyset[Enums\HtmlAttributes::CLASSES],
+			Enums\HtmlTags::ASIDE => keyset[Enums\HtmlAttributes::CLASSES],
+			Enums\HtmlTags::IMG => keyset[
+				Enums\HtmlAttributes::SRC,
+				Enums\HtmlAttributes::ALT,
+				Enums\HtmlAttributes::CLASSES,
+				Enums\HtmlAttributes::WIDTH,
+				Enums\HtmlAttributes::HEIGHT,
+				Enums\HtmlAttributes::SRCSET,
+				Enums\HtmlAttributes::SIZES,
+			],
+		]);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_email1 = "<!--><script>
@@ -127,7 +156,8 @@ setTimeout(function(){
 	public function testNestedComments(): void {
 		echo "\nrunning testFancyNestedComments()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty_nested1 = '<!-- <!-- Normally nested comment --> -->';
 		$dirty_nested2 = '<!--<!-->-->'; // Abruptly ended comment nested in normal comment
 		$dirty_nested3 = '<!-<!-->->'; // Doubly abruptly ended nested comment
@@ -147,7 +177,8 @@ setTimeout(function(){
 	public function testLineBreakComments(): void {
 		echo "\nrunning testLineBreakComments()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier\HTMLPurifier($config);
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault();
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 		$dirty = '<!-->
 <iframe srcdoc=
 "<script>alert(document.domain)</script>">
@@ -167,7 +198,17 @@ setTimeout(function(){
 	public function testPartiallyRemovedComments(): void {
 		echo "\nrunning testPartiallyRemovedComments()...";
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-		$policy = new HTMLPurifier\HTMLPurifier_Policy(dict['a' => vec['id', 'name', 'href', 'target', 'rel']]);
+		$policy = new HTMLPurifier\HTMLPurifier_Policy(
+			dict[
+				Enums\HtmlTags::A => keyset[
+					Enums\HtmlAttributes::ID,
+					Enums\HtmlAttributes::NAME,
+					Enums\HtmlAttributes::HREF,
+					Enums\HtmlAttributes::TARGET,
+					Enums\HtmlAttributes::REL,
+				],
+			],
+		);
 		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 
 		$dirty_html1 =
