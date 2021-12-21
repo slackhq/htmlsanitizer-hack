@@ -1820,7 +1820,6 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier\HTMLPurifier_Definition {
 			"fieldset" => true,
 		];
 		$this->info_content_sets['Block'] = $block_info;
-
 	}
 
 	// RAW CUSTOMIZATION STUFF --------------------------------------------

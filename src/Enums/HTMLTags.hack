@@ -1,21 +1,85 @@
 namespace HTMLPurifier\Enums;
 
+/**
+ * The HtmlTags enums are meant to be added to policies when a developer
+ * would like to allow the corresponding tag to remain in HTML.
+ *
+ * For example, if a developer has an empty policy, and adds HtmlTags::B
+ * via one of the addTag functions defined in src/Policy.hack, their 
+ * policy will then permit the presence of <b> tags in the clean HTML.
+ *
+ * Please note that this list of HTML Tags is incomplete. In order for a
+ * tag to be used, it must also be defined in the HTMLDefinition info 
+ * property (found in src/Definition/HTMLDefinition). The following tags
+ * have been dropped from HtmlTags as attempting to add them to a policy
+ * would result in a thrown error:
+ * 		HtmlTags::HTML,
+ * 		HtmlTags::BASE,
+ * 		HtmlTags::HEAD,
+ * 		HtmlTags::LINK,
+ * 		HtmlTags::META,
+ * 		HtmlTags::STYLE,
+ * 		HtmlTags::TITLE,
+ * 		HtmlTags::BODY,
+ * 		HtmlTags::FIGURE,
+ * 		HtmlTags::DATA,
+ * 		HtmlTags::RB,
+ * 		HtmlTags::RP,
+ * 		HtmlTags::RT,
+ * 		HtmlTags::RTC,
+ * 		HtmlTags::RUBY,
+ * 		HtmlTags::TIME,
+ * 		HtmlTags::AREA,
+ * 		HtmlTags::MAP,
+ * 		HtmlTags::VIDEO,
+ * 		HtmlTags::APPLET,
+ * 		HtmlTags::EMBED,
+ * 		HtmlTags::NOEMBED,
+ * 		HtmlTags::OBJECT,
+ * 		HtmlTags::PARAM,
+ * 		HtmlTags::CANVAS,
+ * 		HtmlTags::NOSCRIPT,
+ * 		HtmlTags::SCRIPT,
+ * 		HtmlTags::BUTTON,
+ * 		HtmlTags::DATALIST,
+ * 		HtmlTags::FIELDSET,
+ * 		HtmlTags::FORM,
+ * 		HtmlTags::INPUT,
+ * 		HtmlTags::LABEL,
+ * 		HtmlTags::LEGEND,
+ * 		HtmlTags::METER,
+ * 		HtmlTags::OPTGROUP,
+ * 		HtmlTags::OPTION,
+ * 		HtmlTags::OUTPUT,
+ * 		HtmlTags::SELECT,
+ * 		HtmlTags::TEXTAREA,
+ * 		HtmlTags::DETAILS,
+ * 		HtmlTags::MENUITEM,
+ * 		HtmlTags::CONTENT,
+ * 		HtmlTags::ELEMENT,
+ * 		HtmlTags::SHADOW,
+ * 		HtmlTags::SLOT,
+ * 		HtmlTags::TEMPLATE,
+ * 		HtmlTags::BGSOUND,
+ * 		HtmlTags::BLINK,
+ * 		HtmlTags::COMMAND,
+ * 		HtmlTags::FRAME,
+ * 		HtmlTags::FRAMESET,
+ * 		HtmlTags::IMAGE,
+ * 		HtmlTags::ISINDEX,
+ * 		HtmlTags::KEYGEN,
+ * 		HtmlTags::LISTING,
+ * 		HtmlTags::MARQUEE,
+ * 		HtmlTags::MULTICOL,
+ * 		HtmlTags::NEXTID,
+ * 		HtmlTags::NOBR,
+ * 		HtmlTags::NOFRAMES,
+ * 		HtmlTags::PLAINTEXT,
+ * 		HtmlTags::SPACER,
+ * 		HtmlTags::XMP,
+ */
+
 enum HtmlTags: string {
-
-	//Main root
-	HTML = "html";
-
-	//Document metadata
-	BASE = "base";
-	HEAD = "head";
-	LINK = "link";
-	META = "meta";
-	STYLE = "style";
-	TITLE = "title";
-
-	//Sectioning root
-	BODY = "body";
-
 	//Content sectioningSection
 	ADDRESS = "address";
 	ARTICLE = "article";
@@ -41,7 +105,6 @@ enum HtmlTags: string {
 	DL = "dl";
 	DT = "dt";
 	FIGCAPTION = "figcaption";
-	FIGURE = "figure";
 	HR = "hr";
 	LI = "li";
 	OL = "ol";
@@ -58,18 +121,12 @@ enum HtmlTags: string {
 	BR = "br";
 	CITE = "cite";
 	CODE = "code";
-	DATA = "data";
 	DFN = "dfn";
 	EM = "em";
 	I = "i";
 	KBD = "kbd";
 	MARK = "mark";
 	Q = "q";
-	RB = "rb";
-	RP = "rp";
-	RT = "rt";
-	RTC = "rtc";
-	RUBY = "ruby";
 	S = "s";
 	SAMP = "samp";
 	SMALL = "small";
@@ -77,34 +134,20 @@ enum HtmlTags: string {
 	STRONG = "strong";
 	SUB = "sub";
 	SUP = "sup";
-	TIME = "time";
 	TT = "tt";
 	U = "u";
 	VAR = "var";
 	WBR = "wbr";
 
 	//Image and multimedia
-	AREA = "area";
 	AUDIO = "audio";
 	IMG = "img";
-	MAP = "map";
 	TRACK = "track";
-	VIDEO = "video";
 
 	//Embedded content
-	APPLET = "applet";
-	EMBED = "embed";
 	IFRAME = "iframe";
-	NOEMBED = "noembed";
-	OBJECT = "object";
-	PARAM = "param";
 	PICTURE = "picture";
 	SOURCE = "source";
-
-	//Scripting
-	CANVAS = "canvas";
-	NOSCRIPT = "noscript";
-	SCRIPT = "script";
 
 	//Demarcating edits
 	DEL = "del";
@@ -124,56 +167,19 @@ enum HtmlTags: string {
 
 	//Forms
 	BUTTON = "button";
-	DATALIST = "datalist";
-	FIELDSET = "fieldset";
-	FORM = "form";
-	INPUT = "input";
-	LABEL = "label";
-	LEGEND = "legend";
-	METER = "meter";
-	OPTGROUP = "optgroup";
-	OPTION = "option";
-	OUTPUT = "output";
 	PROGRESS = "progress";
-	SELECT = "select";
 	TEXTAREA = "textarea";
 
 	//Interactive elements
-	DETAILS = "details";
 	DIALOG = "dialog";
 	MENU = "menu";
-	MENUITEM = "menuitem";
 	SUMMARY = "summary";
-
-	//Web Components
-	CONTENT = "content";
-	ELEMENT = "element";
-	SHADOW = "shadow";
-	SLOT = "slot";
-	TEMPLATE = "template";
 
 	//Obsolete and deprecated elements
 	ACRONYM = "acronym";
 	BASEFONT = "basefont";
-	BGSOUND = "bgsound";
 	BIG = "big";
-	BLINK = "blink";
 	CENTER = "center";
-	COMMAND = "command";
 	FONT = "font";
-	FRAME = "frame";
-	FRAMESET = "frameset";
-	IMAGE = "image";
-	ISINDEX = "isindex";
-	KEYGEN = "keygen";
-	LISTING = "listing";
-	MARQUEE = "marquee";
-	MULTICOL = "multicol";
-	NEXTID = "nextid";
-	NOBR = "nobr";
-	NOFRAMES = "noframes";
-	PLAINTEXT = "plaintext";
-	SPACER = "spacer";
 	STRIKE = "strike";
-	XMP = "xmp";
 }
