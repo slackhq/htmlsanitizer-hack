@@ -2,8 +2,8 @@
 namespace HTMLPurifier\Lexer;
 
 use namespace HTMLPurifier;
-use namespace HH\Lib\{C, Regex, Str};
-use namespace HTMLPurifier\Token;
+use namespace HH\Lib\{C, Regex, Str, Vec};
+use namespace HTMLPurifier\{Enums, Token};
 
 /**
  * Parser that uses Hacklang DOMNode.
@@ -95,13 +95,15 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 			while (!$nodes[$level]->isEmpty()) {
 				$node = $nodes[$level]->dequeue();
 				$collect = $level > 0 ? true : false;
-				$needEndingTag = $this->createStartNode($node, inout $tokens, $collect, $config);
+				$needEndingTag = $this->createStartNode(inout $node, inout $tokens, $collect, $config);
 				if ($needEndingTag) {
 					$nodesAtlevel = new \SplStack();
 					$closingNodes[$level] = $nodesAtlevel;
 					$nodesAtlevel->push($node);
 				}
-				if ($node->childNodes && $node->childNodes->length) {
+				if (
+					$node->childNodes && $node->childNodes->length && $this->getTagName($node->parentNode) !== 'iframe'
+				) {
 					$level += 1;
 					$nodes[$level] = new \SplQueue();
 					foreach ($node->childNodes as $childNode) {
@@ -135,7 +137,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 	* start and close are collected, set to false at first recursion because we are dealing with the implicit DIV tag
 	*/
 	protected function createStartNode(
-		\DOMNode $node,
+		inout \DOMNode $node,
 		inout vec<HTMLPurifier\HTMLPurifier_Token> $tokens,
 		bool $collect,
 		HTMLPurifier\HTMLPurifier_Config $config,
@@ -185,6 +187,17 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 		} else {
 			if ($collect) {
 				$tokens[] = $this->factory->createStart($tag_name, $attr);
+				if ($this->getTagName($node) === 'iframe') {
+					$doc = new \DOMDocument();
+					$children = vec($node->childNodes);
+					foreach ($children as $childNode) {
+						$tagName = $this->getTagName($childNode);
+						$doc->appendChild($doc->importNode($childNode, true));
+						$node->removeChild($childNode);
+					}
+					$text = $doc->saveHTML();
+					$tokens[] = $this->factory->createText($text);
+				}
 			}
 			return true;
 		}
