@@ -22,14 +22,13 @@ class HandleIframeAsTextTest extends HackTest {
 		expect($clean_html)->toEqual(
 			'<iframe src="https://example.org" title="iframe Example 1" width="400" height="300">
 	&lt;b&gt;&lt;/b&gt;
-
 </iframe>',
 		);
 		echo "finished.\n\n";
 	}
 
 	public function testSingleNestedElementWithData(): void {
-		echo "\ntestSingleNestedElement()...";
+		echo "\ntestSingleNestedElementWithData()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault()
@@ -42,14 +41,13 @@ class HandleIframeAsTextTest extends HackTest {
 		expect($clean_html)->toEqual(
 			'<iframe src="https://example.org" title="iframe Example 1" width="400" height="300">
 	&lt;script&gt;alert(1);&lt;/script&gt;
-
 </iframe>',
 		);
 		echo "finished.\n\n";
 	}
 
 	public function testMultipleNestedElementWithData(): void {
-		echo "\ntestSingleNestedElement()...";
+		echo "\ntestMultipleNestedElementWithData()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault()
@@ -66,14 +64,13 @@ class HandleIframeAsTextTest extends HackTest {
 	&lt;script&gt;alert(1);&lt;/script&gt;
 	&lt;script&gt;alert(2);&lt;/script&gt;
 	&lt;script&gt;alert(3);&lt;/script&gt;
-
 </iframe>',
 		);
 		echo "finished.\n\n";
 	}
 
 	public function testSingleDoublyNestedElement(): void {
-		echo "\ntestSingleNestedElement()...";
+		echo "\ntestSingleDoublyNestedElement()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault()
@@ -86,14 +83,13 @@ class HandleIframeAsTextTest extends HackTest {
 		expect($clean_html)->toEqual(
 			'<iframe src="https://example.org" title="iframe Example 1" width="400" height="300">
 	&lt;b&gt;&lt;i&gt;hello world&lt;/i&gt;&lt;/b&gt;
-
 </iframe>',
 		);
 		echo "finished.\n\n";
 	}
 
 	public function testMultipleDoublyNestedElement(): void {
-		echo "\ntestSingleNestedElement()...";
+		echo "\ntestMultipleDoublyNestedElement()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault()
@@ -108,14 +104,13 @@ class HandleIframeAsTextTest extends HackTest {
 			'<iframe src="https://example.org" title="iframe Example 1" width="400" height="300">
 	&lt;b&gt;&lt;i&gt;hello world1&lt;/i&gt;&lt;/b&gt;
 	&lt;b&gt;&lt;i&gt;hello world2&lt;/i&gt;&lt;/b&gt;
-
 </iframe>',
 		);
 		echo "finished.\n\n";
 	}
 
 	public function testDoublyNestedElement(): void {
-		echo "\ntestSingleNestedElement()...";
+		echo "\ntestDoublyNestedElement()...";
 		//porting over first config classes....
 		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
 		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault()
@@ -128,7 +123,6 @@ class HandleIframeAsTextTest extends HackTest {
 		expect($clean_html)->toEqual(
 			'<iframe src="https://example.org" title="iframe Example 1" width="400" height="300">
 	&lt;p&gt;&lt;i&gt;hello&lt;/i&gt; &lt;b&gt;world&lt;/b&gt;&lt;/p&gt;
-
 </iframe>',
 		);
 		echo "finished.\n\n";

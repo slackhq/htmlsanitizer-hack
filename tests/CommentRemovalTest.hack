@@ -224,9 +224,18 @@ setTimeout(function(){
 		$clean_html3 = $purifier->purify($dirty_html3);
 		$clean_html4 = $purifier->purify($dirty_html4);
 
-		expect($clean_html1)->toEqual('--&gt;-&gt;--&gt;');
-		expect($clean_html2)->toEqual('-&gt;--&gt;');
-		expect($clean_html3)->toEqual('-&gt;--&gt;-&gt;--&gt;--&gt;-&gt;');
-		expect($clean_html4)->toEqual('-&gt;--&gt;-&gt;--&gt;--&gt;-&gt;-&gt;--&gt;--&gt;-&gt;--&gt;--&gt;-&gt;-&gt;');
+		// expect($clean_html1)->toEqual('--&gt;-&gt;--&gt;');
+		expect($clean_html1)->toEqual("--&gt;-&gt;-&lt;!--&amp;--&gt;-&amp;gt;\n");
+
+		// expect($clean_html2)->toEqual('-&gt;--&gt;');
+		expect($clean_html2)->toEqual("-&gt;-&lt;!--&amp;--&gt;-&amp;gt;\n");
+
+		// expect($clean_html3)->toEqual('-&gt;--&gt;-&gt;--&gt;--&gt;-&gt;');
+		expect($clean_html3)->toEqual("-&gt;--&gt;-&gt;--&amp;gt;-&lt;!--&amp;--&gt;-&amp;gt;-&amp;gt;\n");
+
+		// expect($clean_html4)->toEqual('-&gt;--&gt;-&gt;--&gt;--&gt;-&gt;-&gt;--&gt;--&gt;-&gt;--&gt;--&gt;-&gt;-&gt;');
+		expect($clean_html4)->toEqual(
+			"-&gt;--&gt;-&gt;--&gt;--&gt;-&gt;-&gt;--&amp;gt;-&lt;!--&amp;--&gt;-&amp;gt;-&amp;gt;--&amp;gt;-&lt;!--&amp;--&gt;-&amp;gt;-&amp;gt;-&amp;gt;\n",
+		);
 	}
 }

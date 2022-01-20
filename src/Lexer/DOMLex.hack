@@ -191,11 +191,12 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 					$doc = new \DOMDocument();
 					$children = vec($node->childNodes);
 					foreach ($children as $childNode) {
-						$tagName = $this->getTagName($childNode);
 						$doc->appendChild($doc->importNode($childNode, true));
 						$node->removeChild($childNode);
 					}
-					$text = $doc->saveHTML();
+
+					// Convert the innerHTML to a string, replace trailing "\r\n\r\n" with just "\n"
+					$text = Str\trim_right($doc->saveHTML())."\n";
 					$tokens[] = $this->factory->createText($text);
 				}
 			}

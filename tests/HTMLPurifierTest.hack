@@ -2,6 +2,8 @@
 
 namespace HTMLPurifier\_Private\Tests;
 
+use namespace HH;
+use namespace HH\Lib\{C, Vec};
 use function Facebook\FBExpect\expect;
 use type Facebook\HackTest\HackTest;
 use namespace HTMLPurifier;
@@ -58,6 +60,21 @@ class HTMLPurifierTest extends HackTest {
 		);
 
 		return $policy;
+	}
+
+	private function compareTokenVecContents(
+		vec<HTMLPurifier\HTMLPurifier_Token> $vec1,
+		vec<HTMLPurifier\HTMLPurifier_Token> $vec2,
+	): bool {
+		$vec1_len = C\count($vec1);
+		$vec2_len = C\count($vec2);
+		if ($vec1_len !== $vec2_len) return false;
+
+		for ($i = 0; $i < $vec1_len; $i++) {
+			if (HH\idx($vec1, $i) !== HH\idx($vec2, $i)) return false;
+		}
+
+		return true;
 	}
 
 	public function testMissingEndTags(): void {
@@ -223,7 +240,7 @@ class HTMLPurifierTest extends HackTest {
 			new Token\HTMLPurifier_Token_End("b", dict[]),
 		];
 
-		expect($tokens)->toHaveSameContentAs($expected_tokens);
+		expect($tokens)->toBePHPEqual($expected_tokens);
 		echo "finished.\n";
 	}
 
@@ -251,10 +268,10 @@ class HTMLPurifierTest extends HackTest {
 		$fn_tokens = $fix_nesting->execute($tokens, $config, $context);
 		$va_tokens = $validate_attributes->execute($tokens, $config, $context);
 
-		expect($rfe_tokens)->toHaveSameContentAs($tokens);
-		expect($mwf_tokens)->toHaveSameContentAs($tokens);
-		expect($fn_tokens)->toHaveSameContentAs($tokens);
-		expect($va_tokens)->toHaveSameContentAs($tokens);
+		expect($rfe_tokens)->toEqual($tokens);
+		expect($mwf_tokens)->toEqual($tokens);
+		expect($fn_tokens)->toBePHPEqual($tokens);
+		expect($va_tokens)->toEqual($tokens);
 		echo "finished.\n";
 	}
 
