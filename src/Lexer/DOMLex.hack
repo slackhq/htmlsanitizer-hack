@@ -185,6 +185,13 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 		} else {
 			if ($collect) {
 				$tokens[] = $this->factory->createStart($tag_name, $attr);
+
+				/* If the node is an iframe, we don't want to sanitize the child nodes.
+				* The child nodes should be handled like text.
+				* This block adds the children (and their children and data) to a DOMDocument
+				* in order to convert the children to a string that can be converted into
+				* a HTMLPurifier_Token_Text 
+				*/
 				if ($this->getTagName($node) === 'iframe') {
 					$doc = new \DOMDocument();
 					$children = vec($node->childNodes);
@@ -193,7 +200,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 						$node->removeChild($childNode);
 					}
 
-					// Convert the innerHTML to a string, replace trailing "\r\n\r\n" with just "\n"
+					// Convert the innerHTML to a string and replace trailing "\r\n\r\n" with just "\n"
 					$text = Str\trim_right($doc->saveHTML())."\n";
 					$tokens[] = $this->factory->createText($text);
 				}

@@ -1,4 +1,4 @@
-/* Created by Nikita Ashok and Jake Polacek on 08/04/2020 */
+/* Created by Jake Polacek on 01/20/2022 */
 
 namespace HTMLPurifier\_Private\Tests;
 

@@ -2,8 +2,6 @@
 
 namespace HTMLPurifier\_Private\Tests;
 
-use namespace HH;
-use namespace HH\Lib\{C, Vec};
 use function Facebook\FBExpect\expect;
 use type Facebook\HackTest\HackTest;
 use namespace HTMLPurifier;
@@ -60,21 +58,6 @@ class HTMLPurifierTest extends HackTest {
 		);
 
 		return $policy;
-	}
-
-	private function compareTokenVecContents(
-		vec<HTMLPurifier\HTMLPurifier_Token> $vec1,
-		vec<HTMLPurifier\HTMLPurifier_Token> $vec2,
-	): bool {
-		$vec1_len = C\count($vec1);
-		$vec2_len = C\count($vec2);
-		if ($vec1_len !== $vec2_len) return false;
-
-		for ($i = 0; $i < $vec1_len; $i++) {
-			if (HH\idx($vec1, $i) !== HH\idx($vec2, $i)) return false;
-		}
-
-		return true;
 	}
 
 	public function testMissingEndTags(): void {
