@@ -2,8 +2,8 @@
 namespace HTMLPurifier\Lexer;
 
 use namespace HTMLPurifier;
-use namespace HH\Lib\{C, Regex, Str, Vec};
-use namespace HTMLPurifier\{Enums, Token};
+use namespace HH\Lib\{C, Regex, Str};
+use namespace HTMLPurifier\Token;
 
 /**
  * Parser that uses Hacklang DOMNode.
@@ -101,9 +101,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 					$closingNodes[$level] = $nodesAtlevel;
 					$nodesAtlevel->push($node);
 				}
-				if (
-					$node->childNodes && $node->childNodes->length && $this->getTagName($node->parentNode) !== 'iframe'
-				) {
+				if ($node->childNodes && $node->childNodes->length) {
 					$level += 1;
 					$nodes[$level] = new \SplQueue();
 					foreach ($node->childNodes as $childNode) {
