@@ -8,6 +8,7 @@ use namespace HTMLPurifier;
  * Adds target="blank" to all outbound links.  This transform is
  * only attached if Attr.TargetBlank is TRUE.  This works regardless
  * of whether or not Attr.AllowedFrameTargets
+ * updated comment :b
  */
 class HTMLPurifier_AttrTransform_TargetBlank extends HTMLPurifier\HTMLPurifier_AttrTransform {
 	/**
