@@ -4,7 +4,7 @@
 	"require": {
 		"hhvm/hhast": "^4.53.4",
 		"facebook/fbexpect": "^2.7.4",
-		"hhvm/hhvm-autoload": "=3.3.0",
+		"hhvm/hhvm-autoload": "^2.0|^3.0",
 		"hhvm/hacktest": "^2.1.0",
 		"hhvm/hsl": "^4.41.0",
 		"hhvm/hsl-experimental": "^4.50.0",
@@ -17,10 +17,5 @@
 		"post-update-cmd": [
 			"find vendor -type d -name tests -or -name docs -or -name .git | xargs -n1 rm -rf"
 		]
-	},
-	"config": {
-		"allow-plugins": {
-			"hhvm/hhvm-autoload": true
-		}
 	}
 }
