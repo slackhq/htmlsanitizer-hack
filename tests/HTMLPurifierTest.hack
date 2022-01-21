@@ -223,7 +223,7 @@ class HTMLPurifierTest extends HackTest {
 			new Token\HTMLPurifier_Token_End("b", dict[]),
 		];
 
-		expect($tokens)->toHaveSameContentAs($expected_tokens);
+		expect($tokens)->toBePHPEqual($expected_tokens);
 		echo "finished.\n";
 	}
 
@@ -251,10 +251,10 @@ class HTMLPurifierTest extends HackTest {
 		$fn_tokens = $fix_nesting->execute($tokens, $config, $context);
 		$va_tokens = $validate_attributes->execute($tokens, $config, $context);
 
-		expect($rfe_tokens)->toHaveSameContentAs($tokens);
-		expect($mwf_tokens)->toHaveSameContentAs($tokens);
-		expect($fn_tokens)->toHaveSameContentAs($tokens);
-		expect($va_tokens)->toHaveSameContentAs($tokens);
+		expect($rfe_tokens)->toBePHPEqual($tokens);
+		expect($mwf_tokens)->toBePHPEqual($tokens);
+		expect($fn_tokens)->toBePHPEqual($tokens);
+		expect($va_tokens)->toBePHPEqual($tokens);
 		echo "finished.\n";
 	}
 
