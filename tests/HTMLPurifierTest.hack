@@ -251,10 +251,10 @@ class HTMLPurifierTest extends HackTest {
 		$fn_tokens = $fix_nesting->execute($tokens, $config, $context);
 		$va_tokens = $validate_attributes->execute($tokens, $config, $context);
 
-		expect($rfe_tokens)->toEqual($tokens);
-		expect($mwf_tokens)->toEqual($tokens);
+		expect($rfe_tokens)->toBePHPEqual($tokens);
+		expect($mwf_tokens)->toBePHPEqual($tokens);
 		expect($fn_tokens)->toBePHPEqual($tokens);
-		expect($va_tokens)->toEqual($tokens);
+		expect($va_tokens)->toBePHPEqual($tokens);
 		echo "finished.\n";
 	}
 
