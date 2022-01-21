@@ -20,7 +20,7 @@
 	},
 	"config": {
 		"allow-plugins": {
-			"hhvm/hhvm-autoload": false
+			"hhvm/hhvm-autoload": true
 		}
 	}
 }
