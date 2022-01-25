@@ -3,3 +3,5 @@ www.pid
 vendor/
 .DS_Store
 composer.lock
+composer.phar
+src/main.hack
