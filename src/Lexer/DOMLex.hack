@@ -200,8 +200,8 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 						$node->removeChild($childNode);
 					}
 
-					// Convert the innerHTML to a string and replace trailing "\r\n\r\n" with just "\n"
-					$text = Str\trim_right($doc->saveHTML())."\n";
+					// Trim the one "\n" that is added when saving
+					$text = $doc->saveHTML() |> Str\slice($$, 0, Str\length($$) - 1);
 					$tokens[] = $this->factory->createText($text);
 				}
 			}

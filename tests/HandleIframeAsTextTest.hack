@@ -127,4 +127,39 @@ class HandleIframeAsTextTest extends HackTest {
 		);
 		echo "finished.\n\n";
 	}
+
+	public function testMultiLineIframe(): void {
+		echo "\ntestSingleLineIframe()...";
+		//porting over first config classes....
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault()
+			|> $$->addAllowedTag(Enums\HtmlTags::IFRAME);
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$dirty_html = '<iframe src="https://example.org" title="iframe Example 1" width="400" height="300">
+	hello world
+</iframe>';
+		$clean_html = $purifier->purify($dirty_html);
+		expect($clean_html)->toEqual(
+			'<iframe src="https://example.org" title="iframe Example 1" width="400" height="300">
+	hello world
+</iframe>',
+		);
+		echo "finished.\n\n";
+	}
+
+	public function testSingleLineIframe(): void {
+		echo "\ntestSingleLineIframe()...";
+		//porting over first config classes....
+		$config = HTMLPurifier\HTMLPurifier_Config::createDefault();
+		$policy = HTMLPurifier\HTMLPurifier_Policy::fromDefault()
+			|> $$->addAllowedTag(Enums\HtmlTags::IFRAME);
+		$purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
+		$dirty_html =
+			'<iframe src="https://example.org" title="iframe Example 1" width="400" height="300">hello world</iframe>';
+		$clean_html = $purifier->purify($dirty_html);
+		expect($clean_html)->toEqual(
+			'<iframe src="https://example.org" title="iframe Example 1" width="400" height="300">hello world</iframe>',
+		);
+		echo "finished.\n\n";
+	}
 }
