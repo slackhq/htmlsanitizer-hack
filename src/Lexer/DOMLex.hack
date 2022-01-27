@@ -95,7 +95,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 			while (!$nodes[$level]->isEmpty()) {
 				$node = $nodes[$level]->dequeue();
 				$collect = $level > 0 ? true : false;
-				$needEndingTag = $this->createStartNode($node, inout $tokens, $collect, $config);
+				$needEndingTag = $this->createStartNode(inout $node, inout $tokens, $collect, $config);
 				if ($needEndingTag) {
 					$nodesAtlevel = new \SplStack();
 					$closingNodes[$level] = $nodesAtlevel;
@@ -135,7 +135,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 	* start and close are collected, set to false at first recursion because we are dealing with the implicit DIV tag
 	*/
 	protected function createStartNode(
-		\DOMNode $node,
+		inout \DOMNode $node,
 		inout vec<HTMLPurifier\HTMLPurifier_Token> $tokens,
 		bool $collect,
 		HTMLPurifier\HTMLPurifier_Config $config,
@@ -185,6 +185,25 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier\HTMLPurifier_Lexer {
 		} else {
 			if ($collect) {
 				$tokens[] = $this->factory->createStart($tag_name, $attr);
+
+				/* If the node is an iframe, we don't want to sanitize the child nodes.
+				* The child nodes should be handled like text.
+				* This block adds the children (and their children and data) to a DOMDocument
+				* in order to convert the children to a string that can be converted into
+				* a HTMLPurifier_Token_Text 
+				*/
+				if ($this->getTagName($node) === 'iframe') {
+					$doc = new \DOMDocument();
+					$children = vec($node->childNodes);
+					foreach ($children as $childNode) {
+						$doc->appendChild($doc->importNode($childNode, true));
+						$node->removeChild($childNode);
+					}
+
+					// Trim the one "\n" that is added when saving
+					$text = $doc->saveHTML() |> Str\slice($$, 0, Str\length($$) - 1);
+					$tokens[] = $this->factory->createText($text);
+				}
 			}
 			return true;
 		}
