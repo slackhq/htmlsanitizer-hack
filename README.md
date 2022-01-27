@@ -15,10 +15,28 @@ $purifier = new HTMLPurifier($config);
 $clean_html = $purifier->purify($dirty_html);
 print($clean_html) --> '<div>Body of my text</div>'
 ```
-With policy specification for allowlist:
+With policy specification for custom allowlist:
 ```php
 $config = HTMLPurifier\HTMLPurifier_Config::createDefault();
-$policy = new HTMLPurifier\HTMLPurifier_Policy(dict["div"=>vec["align"]]);
+$policy = HTMLPurifier\HTMLPurifier_Policy::fromEmpty();
+		$policy->addAllowedTags(
+			keyset[
+				Enums\HtmlTags::B,
+				Enums\HtmlTags::STRONG,
+			],
+		);
+		$policy->addAllowedTagsWithAttributes(
+			dict[
+				Enums\HtmlTags::A => keyset[
+					Enums\HtmlAttributes::ID,
+					Enums\HtmlAttributes::NAME,
+					Enums\HtmlAttributes::HREF,
+					Enums\HtmlAttributes::TARGET,
+					Enums\HtmlAttributes::REL,
+				],
+				Enums\HtmlTags::P => keyset[Enums\HtmlAttributes::CLASSES],
+			],
+		);
 $purifier = new HTMLPurifier\HTMLPurifier($config, $policy);
 $dirty_html = "<div align='center' title='hi'><b>Hello</b>";
 $clean_html = $purifier->purify($dirty_html);
