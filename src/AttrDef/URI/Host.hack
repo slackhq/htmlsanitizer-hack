@@ -112,7 +112,7 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier\HTMLPurifier_AttrDef {
 			// If we have Net_IDNA2 support, we can support IRIs by
 			// punycoding them. (This is the most portable thing to do,
 			// since otherwise we have to assume browsers support
-		} elseif ($config->def->defaults['Core.EnableIDNA']) {
+		} else if ($config->def->defaults['Core.EnableIDNA']) {
 			throw new \Exception("No Net_IDNA2 support");
 			// $idna = new Net_IDNA2(array('encoding' => 'utf8', 'overlong' => false, 'strict' => true));
 			// // we need to encode each period separately

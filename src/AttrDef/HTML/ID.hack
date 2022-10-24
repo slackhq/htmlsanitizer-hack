@@ -60,7 +60,7 @@ class HTMLPurifier_AttrDef_HTML_ID extends HTMLPurifier\HTMLPurifier_AttrDef {
 			if (Str\search($id, $prefix) !== 0) {
 				$id = $prefix.$id;
 			}
-		} elseif ($config->def->defaults['Attr.IDPrefixLocal'] !== '') {
+		} else if ($config->def->defaults['Attr.IDPrefixLocal'] !== '') {
 			// trigger_error(
 			//     '%Attr.IDPrefixLocal cannot be used unless ' .
 			//     '%Attr.IDPrefix is set',

@@ -192,7 +192,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
 						if ($token is Token\HTMLPurifier_Token_Start) {
 							$stack_length = C\count($this->stack);
 							$this->stack = Vec\take($this->stack, $stack_length - 1);
-						} elseif ($token is Token\HTMLPurifier_Token_End && $token->start is nonnull) {
+						} else if ($token is Token\HTMLPurifier_Token_End && $token->start is nonnull) {
 							$this->stack[] = $token->start;
 
 						}
@@ -285,7 +285,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
 				);
 				$this->token = $token;
 				$ok = true;
-			} elseif ($type && $type !== 'empty' && $token is Token\HTMLPurifier_Token_Empty) {
+			} else if ($type && $type !== 'empty' && $token is Token\HTMLPurifier_Token_Empty) {
 				// claims to be empty but really is a start tag
 				// NB: this assignment is required
 				$old_token = $token;
@@ -304,10 +304,10 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
 				// punt (since we had to modify the input stream in a non-trivial way)
 				$reprocess = false;
 				continue;
-			} elseif ($token is Token\HTMLPurifier_Token_Empty) {
+			} else if ($token is Token\HTMLPurifier_Token_Empty) {
 				// real empty token
 				$ok = true;
-			} elseif ($token is Token\HTMLPurifier_Token_Start) {
+			} else if ($token is Token\HTMLPurifier_Token_Start) {
 				$ok = true;
 			}
 
@@ -337,7 +337,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier\HTMLPurifier_Str
 						if ($i is int) {
 							$this->injectors[$i]->currentNesting[] = $token;
 						}
-					} elseif ($token is Token\HTMLPurifier_Token_End) {
+					} else if ($token is Token\HTMLPurifier_Token_End) {
 						throw new \Exception(
 							'Improper handling of end tag in start code; possible error in MakeWellFormed',
 						);

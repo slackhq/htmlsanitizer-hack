@@ -425,7 +425,7 @@ class HTMLPurifier_HTMLModuleManager {
 
 			if (!$def && $new_def->standalone) {
 				$def = $new_def;
-			} elseif ($def) {
+			} else if ($def) {
 				// This will occur even if $new_def is standalone. In practice,
 				// this will usually result in a full replacement.
 				//$def->mergeIn($new_def);

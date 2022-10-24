@@ -47,7 +47,7 @@ class HTMLPurifier_URIScheme_ftp extends HTMLPurifier\HTMLPurifier_URIScheme {
 				if ($key !== 'type') {
 					// invalid key, tack it back on encoded
 					$uri->path .= '%3B'.$type;
-				} elseif ($typecode === 'a' || $typecode === 'i' || $typecode === 'd') {
+				} else if ($typecode === 'a' || $typecode === 'i' || $typecode === 'd') {
 					$type_ret = ";type=$typecode";
 				}
 			} else {

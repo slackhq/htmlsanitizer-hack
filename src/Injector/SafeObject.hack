@@ -82,11 +82,11 @@ class HTMLPurifier_Injector_SafeObject extends HTMLPurifier\HTMLPurifier_Injecto
 				$new[] = new Token\HTMLPurifier_Token_Empty('param', dict['name' => $name, 'value' => $value]);
 			}
 			return $new;
-		} elseif ($token->name == 'param') {
+		} else if ($token->name == 'param') {
 			$nest = C\count($this->currentNesting) - 1;
 			$nestToken = $this->currentNesting[$nest];
 			if (!($nestToken is Token\HTMLPurifier_Token_Tag || $nestToken is Token\HTMLPurifier_Token_Text)) {
-				throw new \Exception("Handle Element needs a node with a name in the elseif in SafeObject.hack");
+				throw new \Exception("Handle Element needs a node with a name in the else if in SafeObject.hack");
 			}
 
 			if ($token is Token\HTMLPurifier_Token_Tag && $nest >= 0 && $nestToken->name === 'object') {
@@ -116,7 +116,7 @@ class HTMLPurifier_Injector_SafeObject extends HTMLPurifier\HTMLPurifier_Injecto
 					// keep token, and add to param stack
 					$this->paramStack[$i][$n] = true;
 					return $token;
-				} elseif (C\contains_key($this->allowedParam, Str\lowercase($n))) {
+				} else if (C\contains_key($this->allowedParam, Str\lowercase($n))) {
 					// keep token, don't do anything to it
 					// (could possibly check for duplicates here)
 					// Note: In principle, parameters should be case sensitive.

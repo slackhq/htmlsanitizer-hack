@@ -45,7 +45,7 @@ class HTMLPurifier_AttrDef_Lang extends HTMLPurifier\HTMLPurifier_AttrDef {
 			case 3:
 				if (!\ctype_alpha($subtags[0])) {
 					return '';
-				} elseif (!\ctype_lower($subtags[0])) {
+				} else if (!\ctype_lower($subtags[0])) {
 					$subtags[0] = Str\lowercase($subtags[0]);
 				}
 				break;

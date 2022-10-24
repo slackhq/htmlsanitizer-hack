@@ -73,7 +73,7 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier\HTMLPurifier_AttrDef 
 
 		if ($right === '') {
 			return $left ? $sign.$left : '0';
-		} elseif (!\ctype_digit($right)) {
+		} else if (!\ctype_digit($right)) {
 			return '';
 		}
 		return $sign.$left.'.'.$right;

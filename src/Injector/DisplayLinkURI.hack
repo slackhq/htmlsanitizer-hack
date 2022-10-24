@@ -34,7 +34,7 @@ class HTMLPurifier_Injector_DisplayLinkURI extends HTMLPurifier\HTMLPurifier_Inj
 				unset($token_end_start->attr['href']);
 				$token_end->start = $token_end_start;
 				$token = vec[$token_end, new Token\HTMLPurifier_Token_Text(" ($url)")];
-			} elseif (!($token_end_start is Token\HTMLPurifier_Token_Tag)) {
+			} else if (!($token_end_start is Token\HTMLPurifier_Token_Tag)) {
 				throw new \Exception('Tokens are not the correct types in handleEnd in DisplayLinkURI');
 			}
 		}
