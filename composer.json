@@ -17,5 +17,10 @@
 		"post-update-cmd": [
 			"find vendor -type d -name tests -or -name docs -or -name .git | xargs -n1 rm -rf"
 		]
+	},
+	"config": {
+		"allow-plugins": {
+			"hhvm/hhvm-autoload": true
+		}
 	}
 }
