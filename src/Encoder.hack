@@ -21,7 +21,7 @@ class HTMLPurifier_Encoder {
 	const int ICONV_UNUSABLE = 2;
 
 	<<__Deprecated('Cannot instantiate encoder, call methods statically')>>
-	final private function __construct() {}
+	final public function __construct() {}
 
 	/**
 	* Error-handler that mutes errors, alternative to shut-up operator
