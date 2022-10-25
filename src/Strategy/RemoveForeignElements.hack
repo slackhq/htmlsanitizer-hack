@@ -49,7 +49,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
 		// remove script contents compatibility
 		if ($remove_script_contents === true) {
 			$hidden_elements['script'] = true;
-		} elseif ($remove_script_contents === false && isset($hidden_elements['script'])) {
+		} else if ($remove_script_contents === false && isset($hidden_elements['script'])) {
 			unset($hidden_elements['script']);
 		}
 
@@ -122,11 +122,11 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
 
 					if (isset($hidden_elements[$token->name]) && $token is Token\HTMLPurifier_Token_Start) {
 						$textify_comments = $token->name;
-					} elseif ($token->name === $textify_comments && $token is Token\HTMLPurifier_Token_End) {
+					} else if ($token->name === $textify_comments && $token is Token\HTMLPurifier_Token_End) {
 						$textify_comments = false;
 					}
 
-				} elseif ($escape_invalid_tags) {
+				} else if ($escape_invalid_tags) {
 					// invalid tag, generate HTML representation and insert in
 					if ($e) {
 						echo 'Strategy_RemoveForeignElements: Foreign element to text';
@@ -139,7 +139,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
 					if (isset($hidden_elements[$token->name])) {
 						if ($token is Token\HTMLPurifier_Token_Start) {
 							$remove_until = $token->name;
-						} elseif ($token is Token\HTMLPurifier_Token_Empty) {
+						} else if ($token is Token\HTMLPurifier_Token_Empty) {
 							// do nothing: we're still looking
 						} else {
 							$remove_until = false;
@@ -154,13 +154,13 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
 					}
 					continue;
 				}
-			} elseif ($token is Token\HTMLPurifier_Token_Comment) {
+			} else if ($token is Token\HTMLPurifier_Token_Comment) {
 				// textify comments in script tags when they are allowed
 				if ($textify_comments !== false) {
 					$data = $token->data;
 					$token = new Token\HTMLPurifier_Token_Text($data);
 					$context->register('CurrentToken', $token);
-				} elseif ($trusted || $check_comments) {
+				} else if ($trusted || $check_comments) {
 					// always cleanup comments
 					$trailing_hyphen = false;
 					if ($e) {
@@ -204,7 +204,7 @@ class HTMLPurifier_Strategy_RemoveForeignElements extends HTMLPurifier\HTMLPurif
 					}
 					continue;
 				}
-			} elseif ($token is Token\HTMLPurifier_Token_Text) {
+			} else if ($token is Token\HTMLPurifier_Token_Text) {
 			} else {
 				continue;
 			}

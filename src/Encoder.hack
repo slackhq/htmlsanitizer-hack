@@ -80,11 +80,11 @@ class HTMLPurifier_Encoder {
 					$chunk_size = $max_chunk_size;
 					if (0x80 != (0xC0 & \ord($text[$i + $max_chunk_size]))) {
 						$chunk_size = $max_chunk_size;
-					} elseif (0x80 != (0xC0 & \ord($text[$i + $max_chunk_size - 1]))) {
+					} else if (0x80 != (0xC0 & \ord($text[$i + $max_chunk_size - 1]))) {
 						$chunk_size = $max_chunk_size - 1;
-					} elseif (0x80 != (0xC0 & \ord($text[$i + $max_chunk_size - 2]))) {
+					} else if (0x80 != (0xC0 & \ord($text[$i + $max_chunk_size - 2]))) {
 						$chunk_size = $max_chunk_size - 2;
-					} elseif (0x80 != (0xC0 & \ord($text[$i + $max_chunk_size - 3]))) {
+					} else if (0x80 != (0xC0 & \ord($text[$i + $max_chunk_size - 3]))) {
 						$chunk_size = $max_chunk_size - 3;
 					} else {
 						return shape('val' => '', 'isValid' => false);
@@ -152,25 +152,25 @@ class HTMLPurifier_Encoder {
 					// reset
 					$char = '';
 					$mBytes = 1;
-				} elseif (0xC0 == (0xE0 & ($in))) {
+				} else if (0xC0 == (0xE0 & ($in))) {
 					// First octet of 2 octet sequence
 					$mUcs4 = ($in);
 					$mUcs4 = ($mUcs4 & 0x1F) << 6;
 					$mState = 1;
 					$mBytes = 2;
-				} elseif (0xE0 == (0xF0 & ($in))) {
+				} else if (0xE0 == (0xF0 & ($in))) {
 					// First octet of 3 octet sequence
 					$mUcs4 = ($in);
 					$mUcs4 = ($mUcs4 & 0x0F) << 12;
 					$mState = 2;
 					$mBytes = 3;
-				} elseif (0xF0 == (0xF8 & ($in))) {
+				} else if (0xF0 == (0xF8 & ($in))) {
 					// First octet of 4 octet sequence
 					$mUcs4 = ($in);
 					$mUcs4 = ($mUcs4 & 0x07) << 18;
 					$mState = 3;
 					$mBytes = 4;
-				} elseif (0xF8 == (0xFC & ($in))) {
+				} else if (0xF8 == (0xFC & ($in))) {
 					// First octet of 5 octet sequence.
 					//
 					// This is illegal because the encoded codepoint must be
@@ -184,7 +184,7 @@ class HTMLPurifier_Encoder {
 					$mUcs4 = ($mUcs4 & 0x03) << 24;
 					$mState = 4;
 					$mBytes = 5;
-				} elseif (0xFC == (0xFE & ($in))) {
+				} else if (0xFC == (0xFE & ($in))) {
 					// First octet of 6 octet sequence, see comments for 5
 					// octet sequence.
 					$mUcs4 = ($in);
@@ -227,7 +227,7 @@ class HTMLPurifier_Encoder {
 							($mUcs4 > 0x10FFFF)
 						) {
 							// do nothing
-						} elseif (
+						} else if (
 							0xFEFF != $mUcs4 && // omit BOM
 							// check for valid Char unicode codepoints
 							(
@@ -427,7 +427,7 @@ class HTMLPurifier_Encoder {
 			if ($str_shape['isValid']) {
 				return $str_shape['val'];
 			}
-		} elseif ($encoding === 'iso-8859-1') {
+		} else if ($encoding === 'iso-8859-1') {
 			$str = \utf8_decode($str);
 			return $str;
 		}
@@ -462,17 +462,17 @@ class HTMLPurifier_Encoder {
 			if ($bytevalue <= 0x7F) { //0xxx xxxx
 				$result .= \chr($bytevalue);
 				$bytesleft = 0;
-			} elseif ($bytevalue <= 0xBF) { //10xx xxxx
+			} else if ($bytevalue <= 0xBF) { //10xx xxxx
 				$working = $working << 6;
 				$working += ($bytevalue & 0x3F);
 				$bytesleft--;
 				if ($bytesleft <= 0) {
 					$result .= "&#".$working.";";
 				}
-			} elseif ($bytevalue <= 0xDF) { //110x xxxx
+			} else if ($bytevalue <= 0xDF) { //110x xxxx
 				$working = $bytevalue & 0x1F;
 				$bytesleft = 1;
-			} elseif ($bytevalue <= 0xEF) { //1110 xxxx
+			} else if ($bytevalue <= 0xEF) { //1110 xxxx
 				$working = $bytevalue & 0x0F;
 				$bytesleft = 2;
 			} else { //1111 0xxx

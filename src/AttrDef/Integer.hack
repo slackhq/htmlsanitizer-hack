@@ -69,7 +69,7 @@ class HTMLPurifier_AttrDef_Integer extends HTMLPurifier\HTMLPurifier_AttrDef {
 			} else {
 				$is_negative = true;
 			}
-		} elseif ($this->positive && $integer[0] === '+') {
+		} else if ($this->positive && $integer[0] === '+') {
 			$integer = Str\slice($integer, 1); // rm unnecessary plus
 			$digits = $integer;
 		} else {

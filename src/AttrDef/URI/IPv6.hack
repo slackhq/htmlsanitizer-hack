@@ -64,7 +64,7 @@ class HTMLPurifier_AttrDef_URI_IPv6 extends HTMLPurifier_AttrDef_URI_IPv4 {
 		$c = C\count($aIP);
 		if ($c > 2) {
 			return '';
-		} elseif ($c == 2) {
+		} else if ($c == 2) {
 			list($first, $second) = $aIP;
 			$first = Str\split($first, ':');
 			$second = Str\split($second, ':');

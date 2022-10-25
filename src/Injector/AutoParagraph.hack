@@ -95,7 +95,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier\HTMLPurifier_Inje
 				}
 			}
 			// Is the current parent a <p> tag?
-		} elseif (!C\count($this->currentNesting)) {
+		} else if (!C\count($this->currentNesting)) {
 			$currentNestingToken = $this->currentNesting[C\count($this->currentNesting) - 1];
 			if (
 				(
@@ -271,7 +271,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier\HTMLPurifier_Inje
 						// it was in the source code.
 						\array_unshift(inout $result, new Token\HTMLPurifier_Token_Text("\n\n"));
 					}
-				} elseif ($i + 1 == $c) {
+				} else if ($i + 1 == $c) {
 					// Double newline at the end
 					// There should be a trailing </p> when we're finally done.
 					$needs_end = true;
@@ -367,7 +367,7 @@ class HTMLPurifier_Injector_AutoParagraph extends HTMLPurifier\HTMLPurifier_Inje
 				// Terminate early, since we hit a block element
 				return false;
 			}
-		} elseif ($current is Token\HTMLPurifier_Token_Text) {
+		} else if ($current is Token\HTMLPurifier_Token_Text) {
 			if (Str\search($current->data, "\n\n")) {
 				// <div>PAR1<b>PAR1\n\nPAR2
 				//      ----

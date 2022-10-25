@@ -227,7 +227,7 @@ abstract class HTMLPurifier_Injector {
 		}
 		if ($current is Token\HTMLPurifier_Token_Start) {
 			$nesting++;
-		} elseif ($current is Token\HTMLPurifier_Token_End) {
+		} else if ($current is Token\HTMLPurifier_Token_End) {
 			if ($nesting <= 0) {
 				return false;
 			}

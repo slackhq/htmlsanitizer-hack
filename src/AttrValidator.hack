@@ -104,7 +104,7 @@ class HTMLPurifier_AttrValidator {
 					$value = $value;
 					$result = $defs[$attr_key]->validate($value, $config, $context);
 				}
-			} elseif (C\contains_key($d_defs, $attr_key)) {
+			} else if (C\contains_key($d_defs, $attr_key)) {
 				// there is a global definition defined, validate according
 				// to the global definition
 				$value = $value;
@@ -124,7 +124,7 @@ class HTMLPurifier_AttrValidator {
 
 				// remove the attribute
 				unset($attr[$attr_key]);
-			} elseif (\is_string($result)) {
+			} else if (\is_string($result)) {
 				// generally, if a substitution is happening, there
 				// was some sort of implicit correction going on. We'll
 				// delegate it to the attribute classes to say exactly what.
