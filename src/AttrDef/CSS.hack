@@ -85,23 +85,15 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier\HTMLPurifier_AttrDef {
 			list($property, $value) = Str\split($declaration, ':', 2);
 			$property = Str\trim($property);
 			$value = Str\trim($value);
-			$ok = false;
-			do {
-				if (isset($definition->info[$property])) {
-					$ok = true;
-					break;
+			if (!isset($definition->info[$property])) {
+				if (!\ctype_lower($property)) {
+					$property = Str\lowercase($property);
+					if (!isset($definition->info[$property])) {
+						continue;
+					}
+				} else {
+					continue;
 				}
-				if (\ctype_lower($property)) {
-					break;
-				}
-				$property = Str\lowercase($property);
-				if (isset($definition->info[$property])) {
-					$ok = true;
-					break;
-				}
-			} while (0);
-			if (!$ok) {
-				continue;
 			}
 			// inefficient call, since the validator will do this again
 			if (Str\lowercase(Str\trim($value)) !== 'inherit') {
