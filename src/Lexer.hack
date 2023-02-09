@@ -283,8 +283,14 @@ class HTMLPurifier_Lexer {
 	 */
 	public function extractBody(string $html): string {
 		$matches = vec[];
-		$result = \preg_match_with_matches('|(.*?)<body[^>]*>(.*)</body>|is', $html, inout $matches);
-		if ($result) {
+		$error = null;
+		$result = \preg_match_with_matches_and_error('|(.*?)<body[^>]*>(.*)</body>|is', $html, inout $matches, inout $error);
+		if ($error is nonnull) {
+			// Adding some better error tracing here to get more info out of what's wrong with the regex on line 287
+			// The error codes can be found here: https://github.com/facebook/hhvm/blob/c5da95da0bd1f0ba9524e6a6e020ab824c1e75b0/hphp/runtime/base/preg.h#L42
+			throw new \Error("Error in preg_match_with_matches_and_error: $error", \E_USER_WARNING);
+		}
+		else if ($result) {
 			// Make sure it's not in a comment
 			$comment_start = \strrpos($matches[1], '<!--');
 			$comment_end = \strrpos($matches[1], '-->');
