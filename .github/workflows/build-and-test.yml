@@ -13,7 +13,7 @@ jobs:
         os: [ ubuntu ]
         hhvm:
           - '4.153'
-    runs-on: ${{matrix.os}}-latest
+    runs-on: ${{matrix.os}}-20.04
     steps:
       - uses: actions/checkout@v2
       # Runs a single command using the runners shell
