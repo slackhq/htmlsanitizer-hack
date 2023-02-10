@@ -1,6 +1,6 @@
 /* Created by Nikita Ashok and Jake Polacek on 08/04/2020 */
 namespace HTMLPurifier;
-use namespace HH\Lib\Regex;
+use namespace HH\Lib\{Regex, Str};
 
 /**
  * Forgivingly lexes HTML markup into tokens. 
@@ -282,20 +282,24 @@ class HTMLPurifier_Lexer {
 	 * @todo Consider making protected
 	 */
 	public function extractBody(string $html): string {
-		$matches = vec[];
-		$error = null;
-		$result = \preg_match_with_matches_and_error('|(.*?)<body[^>]*>(.*)</body>|is', $html, inout $matches, inout $error);
-		if ($error is nonnull) {
-			// Adding some better error tracing here to get more info out of what's wrong with the regex on line 287
-			// The error codes can be found here: https://github.com/facebook/hhvm/blob/c5da95da0bd1f0ba9524e6a6e020ab824c1e75b0/hphp/runtime/base/preg.h#L42
-			throw new \Error("Error in preg_match_with_matches_and_error: $error", \E_USER_WARNING);
-		}
-		else if ($result) {
-			// Make sure it's not in a comment
-			$comment_start = \strrpos($matches[1], '<!--');
-			$comment_end = \strrpos($matches[1], '-->');
-			if ($comment_start === false || ($comment_end !== false && $comment_end > $comment_start)) {
-				return $matches[2];
+		// If the html doesn't even contain the start of a body tag, the regex on line 289 will never match.
+		// This can lead to catastrophic backtracking, which has caused errors in the past, so let's just avoid that altogehter
+		if (Str\contains($html, "<body")){
+			$matches = vec[];
+			$error = null;
+			$result = \preg_match_with_matches_and_error('|(.*?)<body[^>]*>(.*)</body>|is', $html, inout $matches, inout $error);
+			if ($error is nonnull) {
+				// Adding some better error tracing here to get more info out of what's wrong with the regex on line 289
+				// The error codes can be found here: https://github.com/facebook/hhvm/blob/c5da95da0bd1f0ba9524e6a6e020ab824c1e75b0/hphp/runtime/base/preg.h#L42
+				throw new \Error("Error in preg_match_with_matches_and_error: $error", \E_USER_WARNING);
+			}
+			else if ($result) {
+				// Make sure it's not in a comment
+				$comment_start = \strrpos($matches[1], '<!--');
+				$comment_end = \strrpos($matches[1], '-->');
+				if ($comment_start === false || ($comment_end !== false && $comment_end > $comment_start)) {
+					return $matches[2];
+				}
 			}
 		}
 		return $html;
